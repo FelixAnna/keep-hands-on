@@ -1,0 +1,17 @@
+{
+  "startFrom": "2020-12-31",
+  "baseCurrencyPool": 1650000,
+  "baseHousePool": 0,
+  "monthlySalary": 25000,
+  "annuallyBonus": 25000,
+  "monthlyLifeCharges": 9500,
+  "otherAnnuallyCharges": {
+    "回家及车旅费": 18000,
+    "学杂费": 18000,
+    "孝敬父母": 12000
+  },
+  "monthlyRentIncome": 0,
+  "monthlyRentCharge": 4600,
+  "houseIncreaseRate": 0.02,
+  "currencyIncreaseRate": 0.04
+}

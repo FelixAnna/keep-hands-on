@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/life-brainstorm.iml" filepath="$PROJECT_DIR$/life-brainstorm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/life-brainstorm-nohouse/life-brainstorm-nohouse.iml" filepath="$PROJECT_DIR$/life-brainstorm-nohouse/life-brainstorm-nohouse.iml" />
+      <module fileurl="file://$PROJECT_DIR$/life-brainstorm-nohouse/nohouse-function/nohouse-function.iml" filepath="$PROJECT_DIR$/life-brainstorm-nohouse/nohouse-function/nohouse-function.iml" />
+    </modules>
+  </component>
+</project>

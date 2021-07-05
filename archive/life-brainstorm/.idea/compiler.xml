@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="life-brainstorm" />
+        <module name="nohouse-function" />
+        <module name="life-brainstorm-nohouse" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="life-brainstorm" target="1.8" />
+      <module name="life-brainstorm-nohouse" target="1.8" />
+      <module name="nohouse-function" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="life-brainstorm" options="-parameters" />
+      <module name="life-brainstorm-nohouse" options="-parameters" />
+      <module name="nohouse-function" options="" />
+    </option>
+  </component>
+</project>
