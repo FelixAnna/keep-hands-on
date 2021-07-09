@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package com.felix.grpc.st_proto;
+
+option java_multiple_files = true;
+option java_package = "com.felix.grpc.st_proto";
+option java_outer_classname = "ProductProto";
+
+// The greeting service definition.
+service ProductService {
+    // Sends a greeting
+    rpc GetProduct (GetProductRequest) returns (ProductResponse) {
+    }
+}
+
+// The request message containing the user's name.
+message GetProductRequest {
+    int32 id = 1;
+}
+
+// The response message containing the greetings
+message ProductResponse {
+	int32 id = 1;
+    string name = 2;
+    string description = 3;
+    
+    Price price=4;
+    Category  category=5;
+}
+
+message Price {
+	int32 id=1;
+	double price=2;
+	int64 start_time=3;
+}
+
+message Category {
+	int32 id=1;
+	string name=2;
+}
