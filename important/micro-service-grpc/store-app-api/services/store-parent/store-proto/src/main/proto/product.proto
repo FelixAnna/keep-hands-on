@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package com.felix.grpc.product_proto;
+
+option java_multiple_files = true;
+option java_package = "com.felix.grpc.product_proto";
+option java_outer_classname = "ProductProto";
+
+service ProductService {
+    rpc GetProduct (GetProductRequest) returns (ProductResponse) {};
+    rpc GetProductList (GetProductListRequest) returns (ProductListResponse) {};
+}
+
+message GetProductRequest {
+    int32 id = 1;
+}
+
+message GetProductListRequest {
+	string keywords = 1;
+    int32 page = 2;
+    int32 rows = 3;
+}
+
+message ProductResponse {
+	int32 id = 1;
+    string name = 2;
+    string description = 3;
+    
+    Price price=4;
+    Category  category=5;
+}
+
+message Price {
+	int32 id=1;
+	double price=2;
+	int64 start_time=3;
+}
+
+message Category {
+	int32 id=1;
+	string name=2;
+}
+
+message ProductListResponse {
+	repeated ProductResponse products=1;
+    int32 count = 2;
+}

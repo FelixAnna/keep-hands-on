@@ -1,0 +1,3 @@
+grpc:
+  enable-reflection: true
+  port: 5000
