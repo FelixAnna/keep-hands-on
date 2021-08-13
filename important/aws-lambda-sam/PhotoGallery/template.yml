@@ -1,0 +1,127 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Lambda application that calls the Lambda API.
+Parameters:
+  bucketName:
+    Type: String
+    Default: felix-photo-board-test
+  tableName:
+    Type: String
+    Default: Images
+  roleName:
+    Type: String
+    Default: lambda_role_s3_dynamo_full_access
+  functionName:
+    Type: String
+    Default: photo-gallery-lambda
+Resources:
+  role:
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Description: Allows Lambda functions to call AWS services on your behalf. 
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Path: /
+      RoleName: !Ref roleName
+  dynamodb:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - 
+          AttributeName: "GalleryId"
+          AttributeType: "N"
+        - 
+          AttributeName: "FullName"
+          AttributeType: "S"
+      KeySchema:
+        - 
+          AttributeName: "GalleryId"
+          KeyType: "HASH"
+        - 
+          AttributeName: "FullName"
+          KeyType: "RANGE"
+      BillingMode: PROVISIONED
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "2"
+        WriteCapacityUnits: "2"
+      TableName: !Ref tableName
+  bucket:
+    Type: AWS::S3::Bucket
+    # DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref bucketName
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  s3Permission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt function.Arn
+      Action: lambda:InvokeFunction
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref 'AWS::AccountId'
+      SourceArn: !GetAtt bucket.Arn
+  function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src\PhotoGallery\bin\Release\netcoreapp3.1\PhotoGallery.zip
+      Handler: 'PhotoGallery::PhotoGallery.PhotoFunction::PhotoFunctionHandler'
+      Runtime: dotnetcore3.1
+      FunctionName: !Ref functionName
+      Description: dotnet photo resize function
+      MemorySize: 512
+      Timeout: 10
+      # Function's execution role
+      Role: !GetAtt role.Arn
+      #Policies:
+      #  - AWSLambdaBasicExecutionRole
+      #  - AWSLambda_ReadOnlyAccess
+      #  - AWSXrayWriteOnlyAccess
+      #  - AWSLambdaVPCAccessExecutionRole
+      #  - AmazonS3FullAccess
+      Tracing: Active
+      Events:
+        resizePNGEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref bucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                - Name: prefix
+                  Value: original/
+                - Name: suffix
+                  Value: .png
+        resizeJPGEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref bucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                - Name: prefix
+                  Value: original/
+                - Name: suffix
+                  Value: .jpg
+      Environment:
+        Variables:
+          destFolder: processed/
+          dynamoTable: Images
+          height: '10'
+          sourceFolder: original/
+          width: '10'
