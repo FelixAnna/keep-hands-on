@@ -14,20 +14,25 @@ namespace PhotoGallery
 {
     public class PhotoFunction
     {
+        private readonly IServiceCollection serviceCollection;
+        private readonly App app;
+
+        public PhotoFunction()
+        {
+            serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            app = serviceProvider.GetService<App>();
+        }
+
         /// <summary>
         /// A simple function that takes a string and does a ToUpper
         /// </summary>
         /// <param name="input"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-
         public async Task<string> PhotoFunctionHandler(S3Event input, ILambdaContext context)
         {
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
-
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-
             var sourceFolder = Environment.GetEnvironmentVariable("sourceFolder") ?? "original/";
             var destFolder = Environment.GetEnvironmentVariable("destFolder") ?? "processed/";
 
@@ -39,7 +44,7 @@ namespace PhotoGallery
             var destBucket = Environment.GetEnvironmentVariable("destBucket") ?? sourceBucket;
             var destObjectKey = objectKey.Replace(sourceFolder, destFolder);
 
-            var result = await serviceProvider.GetService<App>().RunAsync(sourceBucket, objectKey, destBucket, destObjectKey);
+            var result = await app.RunAsync(sourceBucket, objectKey, destBucket, destObjectKey);
 
             return result;
         }
