@@ -1,0 +1,24 @@
+
+{
+    "Information" : [
+        "This file provides default values for the deployment wizard inside Visual Studio and the AWS Lambda commands added to the .NET Core CLI.",
+        "To learn more about the Lambda commands with the .NET Core CLI execute the following command at the command line in the project root directory.",
+        "dotnet lambda help",
+        "All the command line options for the Lambda command can be specified in this file."
+    ],
+    "profile"     : "default",
+    "region"      : "ap-southeast-1",
+    "configuration" : "Release",
+    "framework"     : "netcoreapp3.1",
+    "function-runtime" : "dotnetcore3.1",
+    "function-memory-size" : 512,
+    "function-timeout"     : 15,
+    "function-handler"     : "PhotoGallery::PhotoGallery.PhotoFunction::PhotoFunctionHandler",
+    "function-name"        : "csharp-test-function",
+    "function-description" : "",
+    "package-type"         : "Zip",
+    "function-role"        : "arn:aws:iam::365358585348:role/service-role/photo-resize-function-role",
+    "tracing-mode"         : "PassThrough",
+    "environment-variables" : "\"dynamoTable\"=\"Images\";\"sourceFolder\"=\"original/\";\"width\"=\"10\";\"destFolder\"=\"processed/\";\"height\"=\"10\"",
+    "image-tag"             : ""
+}
