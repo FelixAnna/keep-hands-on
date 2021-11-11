@@ -4,8 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"rsc.io/quote"
 	"time"
+
+	"rsc.io/quote"
 )
 
 //function name with Captical leter are known as exported function, can be called by func in other package

@@ -162,7 +162,19 @@ func Sqrt(x float64) (float64, error) {
 
 		r = z
 	}
+	const aa, bb, cc = iota, iota, iota //0,0,0
+	fmt.Println(aa, bb, cc)
 
+	const (
+		a = 1 << iota // a == 1  (iota == 0)
+		b = 1 << iota // b == 2  (iota == 1)
+		c = 3         // c == 3  (iota == 2, unused)
+		d = 1 << iota // d == 8  (iota == 3)
+	)
+	/*
+		αβ :=1
+		const ab =1
+		fmt.Println(αβ)*/
 	return r, nil
 }
 

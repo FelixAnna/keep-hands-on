@@ -233,6 +233,7 @@ func Pic(dx, dy int) [][]uint8 {
 
 	sl := make([][]uint8, dy)
 
+	//range for slice
 	for i := range sl {
 		sl[i] = make([]uint8, dx)
 		for j := range sl[i] {
@@ -265,7 +266,7 @@ func mapExample() {
 	mp = map[string]int{"iwhat": 2019} //Literal assignment
 	mp["hi"] = 2016
 	mp["test"] = 2020
-	delete(mp, "hi")
+	delete(mp, "hi") //delete map element
 	element, ok := mp["test"]
 	element2, ok2 := mp["test2"]
 
