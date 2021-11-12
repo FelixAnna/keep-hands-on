@@ -24,9 +24,39 @@ func main() {
 	// Creates a gin router with default middleware:
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
+
+	router = gin.New()         //no middleware
+	router.Use(gin.Logger())   //write logs to gin.DefaultWriter, By default gin.DefaultWriter = os.Stdout
+	router.Use(gin.Recovery()) //recover from any panics and writes a 500 if there was one
 	router.GET("/albums", getAlbums)
 	router.POST("/albums", postAlbums)
 	router.GET("/albums/:id", getAlbumsById)
+
+	v1 := router.Group("/v1")
+	{
+		v1.GET("/users/:userId/info", func(c *gin.Context) {
+			version := c.Query("version")
+			userId := c.Param("userId")
+
+			c.String(http.StatusOK, fmt.Sprintf("%v %v  of v1", userId, version))
+		})
+
+		//nested group
+		v11 := v1.Group("v1.1")
+		v11.GET("/hello", func(c *gin.Context) {
+			c.String(http.StatusOK, "hello")
+		})
+	}
+
+	v2 := router.Group("/v2")
+	{
+		v2.GET("/users/:userId/info", func(c *gin.Context) {
+			version := c.Query("version")
+			userId := c.Param("userId")
+
+			c.String(http.StatusOK, fmt.Sprintf("%v %v of v2", userId, version))
+		})
+	}
 
 	router.Run("localhost:8080")
 }
@@ -42,6 +72,12 @@ func postAlbums(c *gin.Context) {
 	if err := c.BindJSON(&newAlbum); err != nil {
 		return
 	}
+
+	/* //ShoudBindxxx: it is our resposibility to handle error
+	if err := c.ShouldBindJSON(&newAlbum); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} */
 
 	albums = append(albums, newAlbum)
 
@@ -60,6 +96,6 @@ func getAlbumsById(c *gin.Context) {
 			return
 		}
 	}
-
+	// gin.H is a shortcut for map[string]interface{}
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
 }
