@@ -203,7 +203,7 @@ https://github.com/gin-gonic/examples
     link: https://github.com/gin-gonic/gin#graceful-shutdown-or-restart
 
     one way is use third-party lib to enable graceful shutdown:
-    fvbock/endless :  endless.ListenAndServe(":4242", router)
+    fvbock/endless :  endless.ListenAndServe(":4242", router)  --for linux only
 
     another way is:
     1. initial the server in a goroutine so it dont block shutdown process

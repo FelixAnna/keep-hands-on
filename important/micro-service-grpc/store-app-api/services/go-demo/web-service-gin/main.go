@@ -58,7 +58,7 @@ func main() {
 		})
 	}
 
-	router.Run("localhost:8080")
+	router.Run(":8080")
 }
 func getAlbums(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, albums)
