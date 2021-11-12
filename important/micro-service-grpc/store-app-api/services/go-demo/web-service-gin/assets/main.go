@@ -25,8 +25,7 @@ func main() {
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
 
-	router = gin.New() //no middleware
-	router.Static("/assets", "./assets")
+	router = gin.New()         //no middleware
 	router.Use(gin.Logger())   //write logs to gin.DefaultWriter, By default gin.DefaultWriter = os.Stdout
 	router.Use(gin.Recovery()) //recover from any panics and writes a 500 if there was one
 	router.GET("/albums", getAlbums)
