@@ -1,0 +1,6 @@
+[GIN-debug] GET    /status/running           --> main.main.func1 (3 handlers)
+[GIN-debug] GET    /users/                   --> main.getAllUsers (3 handlers)
+[GIN-debug] GET    /users/:userId            --> main.getUserById (3 handlers)
+[GIN-debug] POST   /users/:userId            --> main.updateUserById (3 handlers)
+[GIN-debug] PUT    /users/                   --> main.addUser (3 handlers)
+[GIN-debug] Listening and serving HTTP on :8181
