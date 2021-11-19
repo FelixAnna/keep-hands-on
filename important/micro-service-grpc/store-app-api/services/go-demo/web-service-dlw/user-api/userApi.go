@@ -20,8 +20,6 @@ func main() {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
-	router.Use()
-
 	router.GET("/status/running", func(c *gin.Context) {
 		c.String(http.StatusOK, "running")
 	})
@@ -48,6 +46,8 @@ func initialLogger() {
 
 curl -H "Content-Type:application/json" -X POST  http://localhost:8181/users/1?name=felix1
 
-curl -H "Content-Type:application/json" -X PUT -d '{"id":3,"name":"felix","email":"felix@example.com","phone":"+8612345678901","birthday":{"year":1989,"month":7, "day":11},"address":[{"country":"China","state":"Guangdong","city":"Shenzhen","details":"futian"}]}' http://localhost:8181/users/
+curl -H "Content-Type:application/json" -X PUT -d '{"id":"3","name":"felix","email":"felix@example.com","phone":"+8612345678901","birthday":{"year":1989,"month":7, "day":11},"address":[{"country":"China","state":"Guangdong","city":"Shenzhen","details":"futian"}]}' http://localhost:8181/users/
+
+curl -H "Content-Type:application/json" -X PUT -d '{"name":"felix","email":"felix@example.com","phone":"+8612345678901","birthday": "1989-07-11","address":[{"country":"China","state":"Guangdong","city":"Shenzhen","details":"futian"}]}' http://localhost:8181/users/
 
 */

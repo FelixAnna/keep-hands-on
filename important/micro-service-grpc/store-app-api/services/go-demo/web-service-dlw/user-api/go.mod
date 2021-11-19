@@ -3,6 +3,7 @@ module github.com/web-service-dlw/user-api
 go 1.14
 
 require (
+	github.com/aws/aws-sdk-go v1.42.8
 	github.com/aws/aws-sdk-go-v2 v1.11.0 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.10.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.8.0 // indirect

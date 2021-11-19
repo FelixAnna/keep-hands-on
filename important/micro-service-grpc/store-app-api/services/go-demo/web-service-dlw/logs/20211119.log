@@ -1,0 +1,6 @@
+[GIN-debug] GET    /status/running           --> main.main.func1 (3 handlers)
+[GIN-debug] GET    /users/                   --> github.com/web-service-dlw/user-api/users.GetAllUsers (3 handlers)
+[GIN-debug] GET    /users/:userId            --> github.com/web-service-dlw/user-api/users.GetUserById (3 handlers)
+[GIN-debug] POST   /users/:userId            --> github.com/web-service-dlw/user-api/users.UpdateUserById (3 handlers)
+[GIN-debug] PUT    /users/                   --> github.com/web-service-dlw/user-api/users.AddUser (3 handlers)
+[GIN-debug] Listening and serving HTTP on :8181

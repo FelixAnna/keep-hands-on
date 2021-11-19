@@ -3,11 +3,16 @@ package users
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/web-service-dlw/user-api/users/entity"
+	"github.com/web-service-dlw/user-api/users/repository"
 )
+
+var repo *repository.UserRepo = &repository.UserRepo{
+	TableName: "Users",
+	DynamoDB:  repository.GetClient(),
+}
 
 func GetAllUsers(c *gin.Context) {
 	users := getUsers()
@@ -17,25 +22,31 @@ func GetAllUsers(c *gin.Context) {
 
 func GetUserById(c *gin.Context) {
 	strId := c.Param("userId")
-	id, _ := strconv.Atoi(strId)
-	fmt.Println(strId)
-	for _, val := range getUsers() {
-		if val.Id == id {
+	user, err := repo.GetUserById(strId)
+	if err != nil {
+		c.JSON(http.StatusNotFound, err.Error())
+	} else {
+		c.JSON(http.StatusOK, user)
+		return
+	}
+
+	/*for _, val := range getUsers() {
+		if val.Id == strId {
 			user := val
 			c.JSON(http.StatusOK, user)
 			return
 		}
 	}
 
-	c.JSON(http.StatusNotFound, "User not found!")
+	c.JSON(http.StatusNotFound, "User not found!")*/
 }
 
 func UpdateUserById(c *gin.Context) {
 	strId := c.Param("userId")
-	id, _ := strconv.Atoi(strId)
+	//id, _ := strconv.Atoi(strId)
 	name := c.Query("name")
 	for _, val := range getUsers() {
-		if val.Id == id {
+		if val.Id == strId {
 			val.Name = name
 			c.JSON(http.StatusOK, val)
 			return
@@ -51,8 +62,13 @@ func AddUser(c *gin.Context) {
 		return
 	}
 
-	entity.InmemoryUsers = append(entity.InmemoryUsers, new_user)
-	c.JSON(http.StatusOK, new_user)
+	id, err := repo.CreateUser(&new_user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	//entity.InmemoryUsers = append(entity.InmemoryUsers, new_user)
+	c.JSON(http.StatusOK, fmt.Sprintf("User %v created!", id))
 }
 
 func getUsers() []entity.User {
