@@ -10,13 +10,12 @@ import (
 )
 
 var repo *repository.UserRepo = &repository.UserRepo{
-	TableName: "Users",
+	TableName: "dlf.Users",
 	DynamoDB:  repository.GetClient(),
 }
 
 func GetAllUsers(c *gin.Context) {
 	users := getUsers()
-	//fmt.Println(inmemoryUsers, inmemoryUsers[0])
 	c.JSON(http.StatusOK, users)
 }
 
@@ -29,30 +28,35 @@ func GetUserById(c *gin.Context) {
 		c.JSON(http.StatusOK, user)
 		return
 	}
-
-	/*for _, val := range getUsers() {
-		if val.Id == strId {
-			user := val
-			c.JSON(http.StatusOK, user)
-			return
-		}
-	}
-
-	c.JSON(http.StatusNotFound, "User not found!")*/
 }
 
-func UpdateUserById(c *gin.Context) {
-	strId := c.Param("userId")
-	//id, _ := strconv.Atoi(strId)
-	name := c.Query("name")
-	for _, val := range getUsers() {
-		if val.Id == strId {
-			val.Name = name
-			c.JSON(http.StatusOK, val)
-			return
-		}
+func UpdateUserBirthdayById(c *gin.Context) {
+	userId := c.Param("userId")
+	birthday := c.Query("birthday")
+	err := repo.UpdateUserBirthday(userId, birthday)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	} else {
+		c.JSON(http.StatusOK, fmt.Sprintf("User birthday updated, userId: %v.", userId))
+		return
 	}
-	c.JSON(http.StatusNotFound, "User not found")
+}
+
+func UpdateUserAddressById(c *gin.Context) {
+	userId := c.Param("userId")
+	var addresses []entity.Address
+	if err := c.BindJSON(&addresses); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	err := repo.UpdateUserAddress(userId, addresses)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	} else {
+		c.JSON(http.StatusOK, fmt.Sprintf("User address updated, userId: %v.", userId))
+		return
+	}
 }
 
 func AddUser(c *gin.Context) {
@@ -67,8 +71,18 @@ func AddUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	//entity.InmemoryUsers = append(entity.InmemoryUsers, new_user)
-	c.JSON(http.StatusOK, fmt.Sprintf("User %v created!", id))
+	c.JSON(http.StatusOK, fmt.Sprintf("User %v created!", *id))
+}
+
+func RemoveUser(c *gin.Context) {
+	userId := c.Param("userId")
+	err := repo.DeleteUser(userId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	} else {
+		c.JSON(http.StatusOK, fmt.Sprintf("User %v deleted!", userId))
+		return
+	}
 }
 
 func getUsers() []entity.User {

@@ -14,20 +14,8 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 
-	//"github.com/aws/aws-sdk-go-v2/aws"
-	//"github.com/aws/aws-sdk-go-v2/aws/session"
-	//"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	//"github.com/aws/aws-sdk-go-v2/config"
-	//"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-
-	//"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-
 	"github.com/web-service-dlw/user-api/users/entity"
 )
-
-//const tableName = "Users"
-
-//var client *dynamodb.Client = getClient()
 
 type UserRepo struct {
 	TableName string
@@ -54,9 +42,9 @@ func GetClient() *dynamodb.DynamoDB {
 	// Initialize a session that the SDK will use to load
 	// credentials from the shared credentials file ~/.aws/credentials
 	// and region from the shared configuration file ~/.aws/config.
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
+	/*sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
-	}))
+	}))*/
 
 	sess, err := session.NewSession(&aws.Config{
 		Region:      aws.String("ap-southeast-1"),
@@ -93,8 +81,7 @@ func (u *UserRepo) GetUserById(userId string) (*entity.User, error) {
 	result, err := u.DynamoDB.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(u.TableName),
 		Key: map[string]*dynamodb.AttributeValue{
-			"Id":         {S: aws.String(userId)},
-			"CreateTime": {S: aws.String("20211115151133")},
+			"Id": {S: aws.String(userId)},
 		},
 	},
 	)
@@ -109,9 +96,6 @@ func (u *UserRepo) GetUserById(userId string) (*entity.User, error) {
 	}
 
 	item := entity.User{}
-	//fmt.Println(result.Item["Address"])
-	//fmt.Println(result.Item)
-	//err = dynamodbattribute.UnmarshalList(result.Item["Address"].L, &item.Address)
 	err = dynamodbattribute.UnmarshalMap(result.Item, &item)
 	if err != nil {
 		log.Fatalf("Failed to unmarshal Record, %v", err)
@@ -147,14 +131,14 @@ func (u *UserRepo) CreateUser(user *entity.User) (*string, error) {
 func (u *UserRepo) UpdateUserBirthday(userId, birthday string) error {
 	input := &dynamodb.UpdateItemInput{
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
-			":r": {S: aws.String(birthday)},
+			":birthday": {S: aws.String(birthday)},
 		},
 		TableName: aws.String(u.TableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"Id": {S: aws.String(userId)},
 		},
 		ReturnValues:     aws.String("ALL_NEW"),
-		UpdateExpression: aws.String("set Rating = :r"),
+		UpdateExpression: aws.String("set Birthday = :birthday"),
 	}
 
 	_, err := u.DynamoDB.UpdateItem(input)
@@ -166,10 +150,42 @@ func (u *UserRepo) UpdateUserBirthday(userId, birthday string) error {
 	return nil
 }
 
+func (u *UserRepo) UpdateUserAddress(userId string, addresses []entity.Address) error {
+
+	addressJson, err := dynamodbattribute.MarshalList(addresses)
+	if err != nil {
+		log.Fatalf("Got error calling UpdateItem: %s", err)
+		return err
+	}
+
+	fmt.Println(addressJson)
+	input := &dynamodb.UpdateItemInput{
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":addresses": {L: addressJson},
+		},
+		TableName: aws.String(u.TableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			"Id": {S: aws.String(userId)},
+		},
+		ReturnValues:     aws.String("ALL_NEW"),
+		UpdateExpression: aws.String("set Address = :addresses"),
+	}
+
+	_, err = u.DynamoDB.UpdateItem(input)
+	if err != nil {
+		log.Fatalf("Got error calling UpdateItem: %s", err)
+		return err
+	}
+
+	return nil
+}
+
 func (u *UserRepo) DeleteUser(userId string) error {
 	_, err := u.DynamoDB.DeleteItem(&dynamodb.DeleteItemInput{
 		TableName: aws.String(u.TableName),
-		Key:       map[string]*dynamodb.AttributeValue{"Id": {S: aws.String(userId)}},
+		Key: map[string]*dynamodb.AttributeValue{
+			"Id": {S: aws.String(userId)},
+		},
 	})
 
 	if err != nil {
