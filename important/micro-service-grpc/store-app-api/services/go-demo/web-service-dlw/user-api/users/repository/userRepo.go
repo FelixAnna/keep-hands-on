@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
@@ -43,18 +42,23 @@ func GetClient() *dynamodb.DynamoDB {
 	// Initialize a session that the SDK will use to load
 	// credentials from the shared credentials file ~/.aws/credentials
 	// and region from the shared configuration file ~/.aws/config.
-	/*sess := session.Must(session.NewSessionWithOptions(session.Options{
+	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
-	}))*/
+	}))
+
+	//set AWS_REGION=ap-southeast-1
+	/*sess, err := session.NewSession(&aws.Config{
+		Region: aws.String("ap-southeast-1")},
+	)
 
 	sess, err := session.NewSession(&aws.Config{
 		Region:      aws.String("ap-southeast-1"),
-		Credentials: credentials.NewStaticCredentials("", "", ""),
+		Credentials: credentials.NewStaticCredentials(key, value, ""),
 	})
 
 	if err != nil {
 		log.Fatalf("Error when connecting to dynamodb: %v", err)
-	}
+	}*/
 
 	// Create DynamoDB client
 	dynamoDB := dynamodb.New(sess)
