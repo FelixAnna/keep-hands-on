@@ -50,12 +50,13 @@ func initialLogger() {
 /*
 
 update name:
-curl -H "Content-Type:application/json" -X POST  http://localhost:8181/users/1637418650081?birthday=1989-07-12
-
-curl -H "Content-Type:application/json" -X POST -d '[{"country":"China","state":"Guangdong","city":"Shenzhen","details":"futian2"}]' http://localhost:8181/users/1637418650081/address
-
 curl -H "Content-Type:application/json" -X PUT -d '{"name":"felix","email":"felix@example.com","phone":"+8612345678901","birthday": "1989-07-11","address":[{"country":"China","state":"Guangdong","city":"Shenzhen","details":"futian"}]}' http://localhost:8181/users/
 
-curl -H "Content-Type:application/json" -X DELETE  http://localhost:8181/users/1637418650081
+curl -H "Content-Type:application/json" -X POST  http://localhost:8181/users/1637418999081?birthday=1989-07-12
+
+curl -H "Content-Type:application/json" -X POST -d '[{"country":"China","state":"Guangdong","city":"Shenzhen","details":"futian2"}]' http://localhost:8181/users/1637418999081/address
+
+
+curl -H "Content-Type:application/json" -X DELETE  http://localhost:8181/users/1637418999081
 
 */

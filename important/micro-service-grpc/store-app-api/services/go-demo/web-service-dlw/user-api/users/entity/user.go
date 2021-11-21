@@ -21,8 +21,8 @@ type User struct {
 	Email      string    `json:"Email" binding:"required,email"`
 	Phone      string    `json:"Phone" binding:"-"`
 	Birthday   string    `json:"Birthday" binding:"required"`
-	Address    []Address `json:"Address" binding:"required,dive,required"`
-	CreateTime string
+	Address    []Address `json:"Address,omitempty" binding:"required,dive,required"`
+	CreateTime string    `json:"Address,omitempty"`
 }
 
 //fake data

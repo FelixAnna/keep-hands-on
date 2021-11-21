@@ -15,7 +15,10 @@ var repo *repository.UserRepo = &repository.UserRepo{
 }
 
 func GetAllUsers(c *gin.Context) {
-	users := getUsers()
+	users, err := repo.GetAllUsers()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+	}
 	c.JSON(http.StatusOK, users)
 }
 

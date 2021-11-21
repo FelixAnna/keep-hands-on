@@ -13,6 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 
 	"github.com/web-service-dlw/user-api/users/entity"
 )
@@ -75,6 +76,48 @@ func (u *UserRepo) GetAllTables() {
 	for _, tableName := range resp.TableNames {
 		fmt.Println(tableName)
 	}
+}
+
+func (u *UserRepo) GetAllUsers() ([]entity.User, error) {
+	filt := expression.Name("Email").AttributeExists()
+	projection := expression.NamesList(expression.Name("Id"), expression.Name("Name"), expression.Name("Email"), expression.Name("Phone"), expression.Name("Birthday"))
+
+	expr, err := expression.NewBuilder().WithFilter(filt).WithProjection(projection).Build()
+	if err != nil {
+		log.Fatalf("Got error building expression: %s", err)
+		return nil, err
+	}
+
+	// Build the query input parameters
+	params := &dynamodb.ScanInput{
+		ExpressionAttributeNames:  expr.Names(),
+		ExpressionAttributeValues: expr.Values(),
+		FilterExpression:          expr.Filter(),
+		ProjectionExpression:      expr.Projection(),
+		TableName:                 aws.String(u.TableName),
+	}
+
+	result, err := u.DynamoDB.Scan(params)
+	if err != nil {
+		log.Fatalf("Query API call failed: %s", err)
+		return nil, err
+	}
+
+	var users []entity.User = make([]entity.User, 0)
+	for _, item := range result.Items {
+		user := entity.User{}
+
+		err = dynamodbattribute.UnmarshalMap(item, &user)
+
+		if err != nil {
+			log.Fatalf("Got error unmarshalling: %s", err)
+			return nil, err
+		}
+
+		users = append(users, user)
+	}
+
+	return users, nil
 }
 
 func (u *UserRepo) GetUserById(userId string) (*entity.User, error) {
