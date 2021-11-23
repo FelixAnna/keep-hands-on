@@ -5,13 +5,18 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/web-service-dlw/user-api/aws"
 	"github.com/web-service-dlw/user-api/users/entity"
 	"github.com/web-service-dlw/user-api/users/repository"
 )
 
-var repo *repository.UserRepo = &repository.UserRepo{
-	TableName: "dlf.Users",
-	DynamoDB:  repository.GetClient(),
+var repo *repository.UserRepo
+
+func init() {
+	repo = &repository.UserRepo{
+		TableName: "dlf.Users",
+		DynamoDB:  aws.GetDynamoDBClient(),
+	}
 }
 
 func GetAllUsers(c *gin.Context) {

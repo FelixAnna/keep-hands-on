@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
@@ -22,48 +21,8 @@ type UserRepo struct {
 	DynamoDB  *dynamodb.DynamoDB
 }
 
-/*
-func GetClientByConfig() *dynamodb.Client {
-	// Using the SDK's default configuration, loading additional config
-	// and credentials values from the environment variables, shared
-	// credentials, and shared configuration files
-	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("ap-southeast-1"))
-	if err != nil {
-		log.Fatalf("unable to load SDK config, %v", err)
-	}
+func init() {
 
-	// Using the Config value, create the DynamoDB client
-	client := dynamodb.NewFromConfig(cfg)
-
-	return client
-}*/
-
-func GetClient() *dynamodb.DynamoDB {
-	// Initialize a session that the SDK will use to load
-	// credentials from the shared credentials file ~/.aws/credentials
-	// and region from the shared configuration file ~/.aws/config.
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-	}))
-
-	//set AWS_REGION=ap-southeast-1
-	/*sess, err := session.NewSession(&aws.Config{
-		Region: aws.String("ap-southeast-1")},
-	)
-
-	sess, err := session.NewSession(&aws.Config{
-		Region:      aws.String("ap-southeast-1"),
-		Credentials: credentials.NewStaticCredentials(key, value, ""),
-	})
-
-	if err != nil {
-		log.Fatalf("Error when connecting to dynamodb: %v", err)
-	}*/
-
-	// Create DynamoDB client
-	dynamoDB := dynamodb.New(sess)
-
-	return dynamoDB
 }
 
 func (u *UserRepo) GetAllTables() {

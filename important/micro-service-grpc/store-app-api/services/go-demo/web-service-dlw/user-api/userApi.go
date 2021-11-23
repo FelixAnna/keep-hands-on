@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/web-service-dlw/user-api/auth"
 	"github.com/web-service-dlw/user-api/lib"
 	userService "github.com/web-service-dlw/user-api/users"
 )
@@ -15,6 +16,7 @@ import (
 func main() {
 	router := gin.New()
 
+	//Test()
 	lib.Add(1, 2)
 	initialLogger()
 	router.Use(gin.Logger())
@@ -23,6 +25,12 @@ func main() {
 	router.GET("/status/running", func(c *gin.Context) {
 		c.String(http.StatusOK, "running")
 	})
+
+	authRouter := router.Group("/oauth2")
+	{
+		authRouter.GET("/github/authorize", auth.AuthorizeGithub)
+		authRouter.GET("/github/redirect", auth.GetTokenGithub)
+	}
 
 	userGroupRouter := router.Group("/users")
 	{

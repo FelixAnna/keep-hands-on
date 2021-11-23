@@ -1,9 +1,0 @@
-[GIN-debug] GET    /status/running           --> main.main.func1 (3 handlers)
-[GIN-debug] GET    /users/                   --> github.com/web-service-dlw/user-api/users.GetAllUsers (3 handlers)
-[GIN-debug] GET    /users/:userId            --> github.com/web-service-dlw/user-api/users.GetUserById (3 handlers)
-[GIN-debug] POST   /users/:userId            --> github.com/web-service-dlw/user-api/users.UpdateUserById (3 handlers)
-[GIN-debug] PUT    /users/                   --> github.com/web-service-dlw/user-api/users.AddUser (3 handlers)
-[GIN-debug] Listening and serving HTTP on :8181
-[GIN-debug] redirecting request 301: /users/ --> /users/
-[GIN] 2021/11/15 - 18:22:23 | 200 |       682.9µs |             ::1 | GET      "/users/"
-[GIN] 2021/11/15 - 18:22:23 | 404 |            0s |             ::1 | GET      "/favicon.ico"
