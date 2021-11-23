@@ -21,10 +21,6 @@ type UserRepo struct {
 	DynamoDB  *dynamodb.DynamoDB
 }
 
-func init() {
-
-}
-
 func (u *UserRepo) GetAllTables() {
 	// Build the request with its input parameters
 	resp, err := u.DynamoDB.ListTables(&dynamodb.ListTablesInput{
