@@ -9,7 +9,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/web-service-dlw/user-api/auth"
-	"github.com/web-service-dlw/user-api/lib"
 	userService "github.com/web-service-dlw/user-api/users"
 )
 
@@ -17,7 +16,7 @@ func main() {
 	router := gin.New()
 
 	//Test()
-	lib.Add(1, 2)
+	//lib.Add(1, 2)
 	initialLogger()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())

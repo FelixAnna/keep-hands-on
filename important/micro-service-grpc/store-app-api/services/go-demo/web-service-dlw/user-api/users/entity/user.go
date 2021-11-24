@@ -25,7 +25,7 @@ type User struct {
 	CreateTime string    `json:"Address,omitempty"`
 }
 
-//fake data
+//dummy data
 var addresses = []Address{
 	{Country: "China", State: "Guangdong", City: "Shenzhen", Details: "futian"},
 }
