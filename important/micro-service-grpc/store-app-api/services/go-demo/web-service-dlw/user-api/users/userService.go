@@ -27,6 +27,17 @@ func GetAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+func GetUserByEmail(c *gin.Context) {
+	email := c.Param("email")
+	user, err := repo.GetUserByEmail(email)
+	if err != nil {
+		c.JSON(http.StatusNotFound, err.Error())
+	} else {
+		c.JSON(http.StatusOK, user)
+		return
+	}
+}
+
 func GetUserById(c *gin.Context) {
 	strId := c.Param("userId")
 	user, err := repo.GetUserById(strId)

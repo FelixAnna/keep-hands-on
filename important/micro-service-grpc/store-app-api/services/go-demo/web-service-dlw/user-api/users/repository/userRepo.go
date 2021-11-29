@@ -79,6 +79,39 @@ func (u *UserRepo) GetAllUsers() ([]entity.User, error) {
 	return users, nil
 }
 
+func (u *UserRepo) GetUserByEmail(email string) (*entity.User, error) {
+	result, err := u.DynamoDB.Query(&dynamodb.QueryInput{
+		TableName:              aws.String(u.TableName),
+		IndexName:              aws.String("Email-index"),
+		KeyConditionExpression: aws.String("Email = :email"),
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":email": {S: &email},
+		},
+		Limit: aws.Int64(1),
+	})
+
+	if err != nil {
+		log.Fatalf("Query API call failed: %s", err)
+		return nil, err
+	}
+
+	if length := len(result.Items); length > 0 {
+		user := entity.User{}
+
+		err = dynamodbattribute.UnmarshalMap(result.Items[0], &user)
+
+		if err != nil {
+			log.Fatalf("Got error unmarshalling: %s", err)
+			return nil, err
+		}
+
+		return &user, nil
+
+	} else {
+		return nil, err
+	}
+}
+
 func (u *UserRepo) GetUserById(userId string) (*entity.User, error) {
 	result, err := u.DynamoDB.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(u.TableName),

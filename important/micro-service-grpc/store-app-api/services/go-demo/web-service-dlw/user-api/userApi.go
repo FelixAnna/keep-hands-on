@@ -29,12 +29,14 @@ func main() {
 	{
 		authRouter.GET("/github/authorize", auth.AuthorizeGithub)
 		authRouter.GET("/github/redirect", auth.GetTokenGithub)
+		authRouter.GET("/github/user", auth.GetUserGitHub)
 	}
 
 	userGroupRouter := router.Group("/users")
 	{
 		userGroupRouter.GET("/", userService.GetAllUsers)
 		userGroupRouter.GET("/:userId", userService.GetUserById)
+		userGroupRouter.GET("/email/:email", userService.GetUserByEmail)
 
 		userGroupRouter.POST("/:userId", userService.UpdateUserBirthdayById)
 		userGroupRouter.POST("/:userId/address", userService.UpdateUserAddressById)
@@ -66,4 +68,5 @@ curl -H "Content-Type:application/json" -X POST -d '[{"country":"China","state":
 
 curl -H "Content-Type:application/json" -X DELETE  http://localhost:8181/users/1637418999081
 
+http://localhost:8181/users/email/felix@example.com
 */
