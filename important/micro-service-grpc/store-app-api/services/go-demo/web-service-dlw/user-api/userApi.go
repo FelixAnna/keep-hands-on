@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/web-service-dlw/user-api/auth"
+	"github.com/web-service-dlw/user-api/middleware"
 	userService "github.com/web-service-dlw/user-api/users"
 )
 
@@ -19,8 +20,15 @@ func main() {
 	//lib.Add(1, 2)
 	initialLogger()
 	router.Use(gin.Logger())
+	router.Use(middleware.ErrorHandler())
 	router.Use(gin.Recovery())
 
+	defineRoutes(router)
+
+	router.Run(":8181")
+}
+
+func defineRoutes(router *gin.Engine) {
 	router.GET("/status/running", func(c *gin.Context) {
 		c.String(http.StatusOK, "running")
 	})
@@ -28,11 +36,12 @@ func main() {
 	authRouter := router.Group("/oauth2")
 	{
 		authRouter.GET("/github/authorize", auth.AuthorizeGithub)
+		authRouter.GET("/github/authorize/url", auth.AuthorizeGithubUrl)
 		authRouter.GET("/github/redirect", auth.GetTokenGithub)
 		authRouter.GET("/github/user", auth.GetUserGitHub)
 	}
 
-	userGroupRouter := router.Group("/users")
+	userGroupRouter := router.Group("/users", middleware.AuthorizationHandler())
 	{
 		userGroupRouter.GET("/", userService.GetAllUsers)
 		userGroupRouter.GET("/:userId", userService.GetUserById)
@@ -45,8 +54,6 @@ func main() {
 
 		userGroupRouter.DELETE("/:userId", userService.RemoveUser)
 	}
-
-	router.Run(":8181")
 }
 
 func initialLogger() {

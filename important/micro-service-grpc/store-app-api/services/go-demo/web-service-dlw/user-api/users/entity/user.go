@@ -18,6 +18,7 @@ type Address struct {
 type User struct {
 	Id         string    `json:"Id" binding:""`
 	Name       string    `json:"Name" binding:"required"`
+	AvatarUrl  string    `json:"AvatarUrl" binding:""`
 	Email      string    `json:"Email" binding:"required,email"`
 	Phone      string    `json:"Phone" binding:"-"`
 	Birthday   string    `json:"Birthday" binding:"required"`

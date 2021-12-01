@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -11,6 +12,13 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 )
+
+type GitHubUser struct {
+	Email     string `json:"email"`
+	Login     string `json:"login"`
+	Id        int    `json:"id"`
+	AvatarUrl string `json:"avatar_url"`
+}
 
 var confGitHub *oauth2.Config
 
@@ -31,16 +39,30 @@ func AuthorizeGithub(c *gin.Context) {
 	c.Redirect(http.StatusTemporaryRedirect, url)
 }
 
+func AuthorizeGithubUrl(c *gin.Context) {
+	//ctx := context.Background()
+	//generate state and return to client can stop CSRF
+	url := confGitHub.AuthCodeURL("state123", oauth2.AccessTypeOffline)
+
+	c.String(http.StatusOK, url)
+}
+
 func GetTokenGithub(c *gin.Context) {
 	code := c.Query("code")
+	state := c.Query("state")
+
 	if code == "" {
 		c.JSON(http.StatusUnauthorized, "Token not found.")
+	}
+
+	if state != "state123" {
+		c.JSON(http.StatusBadGateway, "Invalid state.")
 	}
 
 	//TODO: how to verify dynamic csrf token
 	tok, err := confGitHub.Exchange(c.Request.Context(), code)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	c.JSON(http.StatusOK, tok)
@@ -51,6 +73,11 @@ func GetUserGitHub(c *gin.Context) {
 	url := "https://api.github.com/user"
 
 	request, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		log.Fatal(err.Error())
+		c.String(http.StatusBadRequest, err.Error())
+	}
+
 	request.Header.Add("Authorization", fmt.Sprintf("token %v", token))
 	response, err := http.DefaultClient.Do(request)
 
@@ -65,12 +92,8 @@ func GetUserGitHub(c *gin.Context) {
 		c.String(http.StatusInternalServerError, err.Error())
 	}
 
-	c.String(http.StatusOK, string(responseData))
-	/*var responseObject Response
-	json.Unmarshal(responseData, &responseObject)
+	var user *GitHubUser = &GitHubUser{}
+	json.Unmarshal(responseData, &user)
 
-	fmt.Println(responseObject.Name)
-	fmt.Println(len(responseObject.Pokemon))
-
-	c.Redirect(http.StatusTemporaryRedirect, url)*/
+	c.JSON(http.StatusOK, user)
 }

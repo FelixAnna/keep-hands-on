@@ -30,10 +30,10 @@ func (u *UserRepo) GetAllTables() {
 		log.Fatalf("failed to list tables, %v", err)
 	}
 
-	fmt.Println("Tables:")
+	log.Println("Tables:")
 
 	for _, tableName := range resp.TableNames {
-		fmt.Println(tableName)
+		log.Println(tableName)
 	}
 }
 
@@ -43,7 +43,7 @@ func (u *UserRepo) GetAllUsers() ([]entity.User, error) {
 
 	expr, err := expression.NewBuilder().WithFilter(filt).WithProjection(projection).Build()
 	if err != nil {
-		log.Fatalf("Got error building expression: %s", err)
+		log.Printf("Got error building expression: %s", err)
 		return nil, err
 	}
 
@@ -58,7 +58,7 @@ func (u *UserRepo) GetAllUsers() ([]entity.User, error) {
 
 	result, err := u.DynamoDB.Scan(params)
 	if err != nil {
-		log.Fatalf("Query API call failed: %s", err)
+		log.Printf("Query API call failed: %s", err)
 		return nil, err
 	}
 
@@ -69,7 +69,7 @@ func (u *UserRepo) GetAllUsers() ([]entity.User, error) {
 		err = dynamodbattribute.UnmarshalMap(item, &user)
 
 		if err != nil {
-			log.Fatalf("Got error unmarshalling: %s", err)
+			log.Printf("Got error unmarshalling: %s", err)
 			return nil, err
 		}
 
@@ -91,7 +91,7 @@ func (u *UserRepo) GetUserByEmail(email string) (*entity.User, error) {
 	})
 
 	if err != nil {
-		log.Fatalf("Query API call failed: %s", err)
+		log.Printf("Query API call failed: %s", err)
 		return nil, err
 	}
 
@@ -101,7 +101,7 @@ func (u *UserRepo) GetUserByEmail(email string) (*entity.User, error) {
 		err = dynamodbattribute.UnmarshalMap(result.Items[0], &user)
 
 		if err != nil {
-			log.Fatalf("Got error unmarshalling: %s", err)
+			log.Printf("Got error unmarshalling: %s", err)
 			return nil, err
 		}
 
@@ -122,7 +122,8 @@ func (u *UserRepo) GetUserById(userId string) (*entity.User, error) {
 	)
 
 	if err != nil {
-		log.Fatalf("Got error calling GetItem: %s", err)
+		log.Printf("Got error calling GetItem: %s", err)
+		return nil, err
 	}
 
 	if result.Item == nil {
@@ -133,7 +134,7 @@ func (u *UserRepo) GetUserById(userId string) (*entity.User, error) {
 	item := entity.User{}
 	err = dynamodbattribute.UnmarshalMap(result.Item, &item)
 	if err != nil {
-		log.Fatalf("Failed to unmarshal Record, %v", err)
+		log.Printf("Failed to unmarshal Record, %v", err)
 		return nil, err
 	}
 
@@ -141,13 +142,18 @@ func (u *UserRepo) GetUserById(userId string) (*entity.User, error) {
 }
 
 func (u *UserRepo) CreateUser(user *entity.User) (*string, error) {
+	if eu, _ := u.GetUserByEmail(user.Email); eu != nil {
+		return nil, errors.New("user with same email already exists")
+	}
+
 	randId := fmt.Sprintf("%d%03d", time.Now().Unix(), rand.Intn(1000))
 	user.Id = randId
 	user.CreateTime = strconv.FormatInt(time.Now().UTC().Unix(), 10)
 
 	userJson, err := dynamodbattribute.MarshalMap(user)
 	if err != nil {
-		log.Fatalf("Got error marshalling new User item: %s", err)
+		log.Printf("Got error marshalling new User item: %s", err)
+		return nil, err
 	}
 
 	_, err = u.DynamoDB.PutItem(&dynamodb.PutItemInput{
@@ -156,7 +162,7 @@ func (u *UserRepo) CreateUser(user *entity.User) (*string, error) {
 	})
 
 	if err != nil {
-		log.Fatalf("Got error calling PutItem: %s", err)
+		log.Printf("Got error calling PutItem: %s", err)
 		return nil, err
 	}
 
@@ -178,7 +184,7 @@ func (u *UserRepo) UpdateUserBirthday(userId, birthday string) error {
 
 	_, err := u.DynamoDB.UpdateItem(input)
 	if err != nil {
-		log.Fatalf("Got error calling UpdateItem: %s", err)
+		log.Printf("Got error calling UpdateItem: %s", err)
 		return err
 	}
 
@@ -189,11 +195,11 @@ func (u *UserRepo) UpdateUserAddress(userId string, addresses []entity.Address) 
 
 	addressJson, err := dynamodbattribute.MarshalList(addresses)
 	if err != nil {
-		log.Fatalf("Got error calling UpdateItem: %s", err)
+		log.Printf("Got error calling UpdateItem: %s", err)
 		return err
 	}
 
-	fmt.Println(addressJson)
+	log.Println(addressJson)
 	input := &dynamodb.UpdateItemInput{
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
 			":addresses": {L: addressJson},
@@ -208,7 +214,7 @@ func (u *UserRepo) UpdateUserAddress(userId string, addresses []entity.Address) 
 
 	_, err = u.DynamoDB.UpdateItem(input)
 	if err != nil {
-		log.Fatalf("Got error calling UpdateItem: %s", err)
+		log.Printf("Got error calling UpdateItem: %s", err)
 		return err
 	}
 
@@ -216,6 +222,10 @@ func (u *UserRepo) UpdateUserAddress(userId string, addresses []entity.Address) 
 }
 
 func (u *UserRepo) DeleteUser(userId string) error {
+	if _, err := u.GetUserById(userId); err != nil {
+		return errors.New("user not exists")
+	}
+
 	_, err := u.DynamoDB.DeleteItem(&dynamodb.DeleteItemInput{
 		TableName: aws.String(u.TableName),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -224,7 +234,7 @@ func (u *UserRepo) DeleteUser(userId string) error {
 	})
 
 	if err != nil {
-		log.Fatalf("Got error calling UpdateItem: %s", err)
+		log.Printf("Got error calling UpdateItem: %s", err)
 		return err
 	}
 
