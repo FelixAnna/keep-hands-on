@@ -2,6 +2,7 @@ package users
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -65,7 +66,7 @@ func UpdateUserAddressById(c *gin.Context) {
 	userId := c.Param("userId")
 	var addresses []entity.Address
 	if err := c.BindJSON(&addresses); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
@@ -81,7 +82,7 @@ func UpdateUserAddressById(c *gin.Context) {
 func AddUser(c *gin.Context) {
 	var new_user entity.User
 	if err := c.BindJSON(&new_user); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 

@@ -4,11 +4,10 @@ go 1.14
 
 require (
 	github.com/aws/aws-sdk-go v1.42.8
-	github.com/aws/aws-sdk-go-v2 v1.11.0 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.10.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.8.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.19.0 // indirect
 	github.com/gin-gonic/gin v1.7.4
+	github.com/go-oauth2/oauth2/v4 v4.4.2
+	github.com/golang-jwt/jwt v3.2.1+incompatible
+	github.com/google/go-cmp v0.5.6 // indirect
 	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8
 )
 
