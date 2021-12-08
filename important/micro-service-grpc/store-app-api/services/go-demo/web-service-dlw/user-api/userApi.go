@@ -50,7 +50,7 @@ func defineRoutes(router *gin.Engine) {
 		authGitHubRouter.GET("/authorize", auth.AuthorizeGithub)
 		authGitHubRouter.GET("/authorize/url", auth.AuthorizeGithubUrl)
 		authGitHubRouter.GET("/redirect", auth.GetTokenGithub)
-		authGitHubRouter.GET("/user", auth.GetUserGitHub)
+		authGitHubRouter.GET("/user", auth.GetNativeToken)
 		authGitHubRouter.GET("/checktoken", auth.TempCheckToken)
 	}
 

@@ -2,9 +2,12 @@ package jwt
 
 import (
 	"log"
+	"strconv"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
+	"github.com/web-service-dlw/user-api/aws"
 )
 
 type MyCustomClaims struct {
@@ -17,18 +20,24 @@ type MyToken struct {
 	Token string `json:"token"`
 }
 
-var mySigningKey = []byte("AllYourBase")
-
-const myIssuer = "dlw"
-const myExpireAt = 15000
+var (
+	mySigningKey = []byte(aws.Parameters["/dlf/dev/jwt/signKey"])
+	myIssuer     = aws.Parameters["/dlf/dev/jwt/issuer"]
+	myExpireAt   = aws.Parameters["/dlf/dev/jwt/expiryAfter"]
+)
 
 func NewToken(id, email string) (*MyToken, error) {
+	iExpiryAfter, err := strconv.ParseInt(myExpireAt, 10, 64)
+	if err != nil {
+		iExpiryAfter = 86400
+	}
+
 	// Create the Claims
 	claims := MyCustomClaims{
 		id,
 		email,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Unix() + myExpireAt,
+			ExpiresAt: time.Now().Unix() + iExpiryAfter,
 			Issuer:    myIssuer,
 		},
 	}
@@ -40,17 +49,24 @@ func NewToken(id, email string) (*MyToken, error) {
 }
 
 func ParseToken(tokenString string) (*MyCustomClaims, error) {
-	//tokenString = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJleHAiOjE1MDAwLCJpc3MiOiJ0ZXN0In0.HE7fK0xOQwFEr4WDgRWj4teRPZ6i3GLwD5YCm6Pwu_c"
-
 	token, err := jwt.ParseWithClaims(tokenString, &MyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return mySigningKey, nil
 	})
 
 	if claims, ok := token.Claims.(*MyCustomClaims); ok && token.Valid {
-		log.Println("Valid")
+		log.Println("Valid token and claims")
 		return claims, nil
 	} else {
-		log.Println("invalid")
+		log.Println("invalid token and claims")
 		return nil, err
 	}
+}
+
+func GetToken(c *gin.Context) string {
+	token := c.Query("access_code")
+	if token == "" {
+		token = c.GetHeader("Authorization")
+		token = token[7:]
+	}
+	return token
 }
