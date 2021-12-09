@@ -13,7 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 
-	"github.com/web-service-dlw/user-api/users/entity"
+	"github.com/FelixAnna/web-service-dlw/user-api/users/entity"
 )
 
 type UserRepo struct {

@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/FelixAnna/web-service-dlw/common/aws"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"github.com/web-service-dlw/user-api/aws"
 )
 
 type MyCustomClaims struct {

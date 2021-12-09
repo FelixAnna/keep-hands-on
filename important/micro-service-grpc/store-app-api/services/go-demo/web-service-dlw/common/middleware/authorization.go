@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/web-service-dlw/user-api/auth/jwt"
+	"github.com/FelixAnna/web-service-dlw/common/jwt"
 
 	"github.com/gin-gonic/gin"
 )

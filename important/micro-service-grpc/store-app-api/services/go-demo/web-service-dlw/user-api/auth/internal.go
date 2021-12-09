@@ -10,13 +10,13 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/FelixAnna/web-service-dlw/common/aws"
 	"github.com/gin-gonic/gin"
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/manage"
 	"github.com/go-oauth2/oauth2/v4/models"
 	"github.com/go-oauth2/oauth2/v4/server"
 	"github.com/go-oauth2/oauth2/v4/store"
-	"github.com/web-service-dlw/user-api/aws"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
 )
@@ -180,3 +180,14 @@ func genCodeChallengeS256(s string) string {
 	s256 := sha256.Sum256([]byte(s))
 	return base64.URLEncoding.EncodeToString(s256[:])
 }
+
+/* native oauth2 server
+authNativeRouter := router.Group("/oauth2")
+{
+	authNativeRouter.GET("/redirect", auth.GetRedirectUrl)
+	authNativeRouter.GET("/token", auth.GetToken)
+	authNativeRouter.GET("/refresh", auth.RefreshToken)
+	authNativeRouter.GET("/test", auth.TestAccess)
+	authNativeRouter.GET("/pwd", auth.PassordLogin)
+	authNativeRouter.GET("/client", auth.ClientSecretLogin)
+}*/

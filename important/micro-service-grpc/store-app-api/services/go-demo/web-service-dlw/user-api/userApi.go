@@ -7,10 +7,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/FelixAnna/web-service-dlw/common/middleware"
+	"github.com/FelixAnna/web-service-dlw/user-api/auth"
+	userService "github.com/FelixAnna/web-service-dlw/user-api/users"
 	"github.com/gin-gonic/gin"
-	"github.com/web-service-dlw/user-api/auth"
-	"github.com/web-service-dlw/user-api/middleware"
-	userService "github.com/web-service-dlw/user-api/users"
 )
 
 func main() {
@@ -32,26 +32,13 @@ func defineRoutes(router *gin.Engine) {
 		c.String(http.StatusOK, "running")
 	})
 
-	authNativeRouter := router.Group("/oauth2")
-	{
-		//authNativeRouter.GET("/authorize", auth.FireNativeAuthorize)
-		//authNativeRouter.GET("/token", auth.GetNativeToken)
-
-		authNativeRouter.GET("/redirect", auth.GetRedirectUrl)
-		authNativeRouter.GET("/token", auth.GetToken)
-		authNativeRouter.GET("/refresh", auth.RefreshToken)
-		authNativeRouter.GET("/test", auth.TestAccess)
-		authNativeRouter.GET("/pwd", auth.PassordLogin)
-		authNativeRouter.GET("/client", auth.ClientSecretLogin)
-	}
-
 	authGitHubRouter := router.Group("/oauth2/github")
 	{
 		authGitHubRouter.GET("/authorize", auth.AuthorizeGithub)
 		authGitHubRouter.GET("/authorize/url", auth.AuthorizeGithubUrl)
-		authGitHubRouter.GET("/redirect", auth.GetTokenGithub)
+		authGitHubRouter.GET("/redirect", auth.GetGithubToken)
 		authGitHubRouter.GET("/user", auth.GetNativeToken)
-		authGitHubRouter.GET("/checktoken", auth.TempCheckToken)
+		authGitHubRouter.GET("/checktoken", auth.CheckNativeToken)
 	}
 
 	userGroupRouter := router.Group("/users", middleware.AuthorizationHandler())

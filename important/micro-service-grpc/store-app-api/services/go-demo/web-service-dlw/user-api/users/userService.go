@@ -5,10 +5,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/FelixAnna/web-service-dlw/common/aws"
+	"github.com/FelixAnna/web-service-dlw/user-api/users/entity"
+	"github.com/FelixAnna/web-service-dlw/user-api/users/repository"
 	"github.com/gin-gonic/gin"
-	"github.com/web-service-dlw/user-api/aws"
-	"github.com/web-service-dlw/user-api/users/entity"
-	"github.com/web-service-dlw/user-api/users/repository"
 )
 
 var repo *repository.UserRepo
