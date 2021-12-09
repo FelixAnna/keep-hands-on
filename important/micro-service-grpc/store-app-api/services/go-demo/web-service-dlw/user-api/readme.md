@@ -2,11 +2,12 @@
 
 ## functionalities 
 
-support user CRUD operations,
+1. user can login by github account
 
-support login by github account
+2. user can fire CRUD operations on user table after login /register
 
-support login from own oauth2 server
+3. generate native jwt token for user after login
 
-## aws support
-need setup aws credentials: https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/ 
+4. filter by jwt token for some api
+
+* support login from own oauth2 server (enhance later)

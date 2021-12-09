@@ -22,13 +22,13 @@ import (
 )
 
 var (
-	authServerURL = aws.Parameters["/dlf/dev/oauth2/serverDomain"]
+	authServerURL = aws.GetParameterByKey("oauth2/serverDomain")
 
 	config = oauth2.Config{
-		ClientID:     aws.Parameters["/dlf/dev/oauth2/clientId"],
-		ClientSecret: aws.Parameters["/dlf/dev/oauth2/clientSecret"],
+		ClientID:     aws.GetParameterByKey("oauth2/clientId"),
+		ClientSecret: aws.GetParameterByKey("oauth2/clientSecret"),
 		Scopes:       []string{"all"},
-		RedirectURL:  fmt.Sprintf("%v/oauth2/token", aws.Parameters["/dlf/dev/oauth2/clientDomain"]),
+		RedirectURL:  fmt.Sprintf("%v/oauth2/token", aws.GetParameterByKey("oauth2/clientDomain")),
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  authServerURL + "/oauth/authorize",
 			TokenURL: authServerURL + "/oauth/token",

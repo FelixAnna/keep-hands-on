@@ -18,16 +18,17 @@ import (
 
 const githubUserUrl = "https://api.github.com/user"
 
+var (
+	confGitHub *oauth2.Config
+	repo       *repository.UserRepo
+)
+
 type GitHubUser struct {
 	Email     string `json:"email"`
 	Login     string `json:"login"`
 	Id        int    `json:"id"`
 	AvatarUrl string `json:"avatar_url"`
 }
-
-var confGitHub *oauth2.Config
-
-var repo *repository.UserRepo
 
 func init() {
 	repo = &repository.UserRepo{
@@ -38,8 +39,8 @@ func init() {
 
 func init() {
 	confGitHub = &oauth2.Config{
-		ClientID:     aws.Parameters["/dlf/dev/githubClientId"],
-		ClientSecret: aws.Parameters["/dlf/dev/githubClientSecret"],
+		ClientID:     aws.GetParameterByKey("githubClientId"),
+		ClientSecret: aws.GetParameterByKey("githubClientSecret"),
 		Scopes:       []string{"read:user", "user:email", "read:repo_hook"},
 		Endpoint:     github.Endpoint,
 	}

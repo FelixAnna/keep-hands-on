@@ -1,6 +1,7 @@
 package aws
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -25,18 +26,22 @@ func GetClientByConfig() *dynamodb.Client {
 	return client
 }*/
 
-var sess = session.Must(session.NewSessionWithOptions(session.Options{
-	SharedConfigState: session.SharedConfigEnable,
-}))
+const basePath = "/dlf"
 
-var Parameters map[string]string
+var (
+	sess       *session.Session
+	parameters map[string]string
+)
 
 func init() {
+	sess = session.Must(session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+	}))
+
 	ssmClient := ssm.New(sess)
 
-	path := "/dlf/dev"
 	out, err := ssmClient.GetParametersByPath(&ssm.GetParametersByPathInput{
-		Path:           &path,
+		Path:           aws.String(basePath),
 		WithDecryption: aws.Bool(true),
 		Recursive:      aws.Bool(true),
 	})
@@ -46,10 +51,16 @@ func init() {
 		panic(err)
 	}
 
-	Parameters = make(map[string]string, len(out.Parameters))
+	parameters = make(map[string]string, len(out.Parameters))
 	for _, parameter := range out.Parameters {
-		Parameters[*parameter.Name] = *parameter.Value
+		parameters[*parameter.Name] = *parameter.Value
 	}
+}
+
+func GetParameterByKey(key string) string {
+	env := "dev"
+	fullKey := fmt.Sprintf("%v/%v/%v", basePath, env, key)
+	return parameters[fullKey]
 }
 
 func GetDynamoDBClient() *dynamodb.DynamoDB {

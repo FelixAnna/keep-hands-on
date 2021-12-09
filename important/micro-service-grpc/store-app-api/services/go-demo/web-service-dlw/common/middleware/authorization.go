@@ -23,6 +23,9 @@ func AuthorizationHandler() gin.HandlerFunc {
 			return
 		}
 
+		//set UserId in the request context
+		c.Set("userId", claims.UserId)
+
 		// before request
 		log.Printf("User with email %v, Id %v send this request", claims.Email, claims.UserId)
 		c.Next()

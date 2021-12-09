@@ -26,16 +26,6 @@ type User struct {
 	CreateTime string    `json:"CreateTime,omitempty"`
 }
 
-//dummy data
-var addresses = []Address{
-	{Country: "China", State: "Guangdong", City: "Shenzhen", Details: "futian"},
-}
-var date = "1989-07-11"
-var InmemoryUsers = []User{
-	{Id: "1", Name: "felix", Email: "felix@example.com", Phone: "+8612345678901", Birthday: date, Address: addresses},
-	{Id: "2", Name: "anna", Email: "anna@example.com", Phone: "+8612345678902", Birthday: date, Address: addresses},
-}
-
 func (d *Date) String() string {
 	return fmt.Sprintf("%04d%02d%02d", d.Year, d.Month, d.Day)
 }

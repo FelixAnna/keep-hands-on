@@ -104,7 +104,3 @@ func RemoveUser(c *gin.Context) {
 		return
 	}
 }
-
-func getUsers() []entity.User {
-	return entity.InmemoryUsers
-}
