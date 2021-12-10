@@ -20,7 +20,9 @@ func GetAllUsers(c *gin.Context) {
 	users, err := repo.GetAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
+		return
 	}
+
 	c.JSON(http.StatusOK, users)
 }
 
@@ -29,10 +31,10 @@ func GetUserByEmail(c *gin.Context) {
 	user, err := repo.GetByEmail(email)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, user)
 		return
 	}
+
+	c.JSON(http.StatusOK, user)
 }
 
 func GetUserById(c *gin.Context) {
@@ -40,10 +42,10 @@ func GetUserById(c *gin.Context) {
 	user, err := repo.GetById(strId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err.Error())
-	} else {
-		c.JSON(http.StatusOK, user)
 		return
 	}
+
+	c.JSON(http.StatusOK, user)
 }
 
 func UpdateUserBirthdayById(c *gin.Context) {
@@ -52,10 +54,10 @@ func UpdateUserBirthdayById(c *gin.Context) {
 	err := repo.UpdateBirthday(userId, birthday)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, fmt.Sprintf("User birthday updated, userId: %v.", userId))
 		return
 	}
+
+	c.JSON(http.StatusOK, fmt.Sprintf("User birthday updated, userId: %v.", userId))
 }
 
 func UpdateUserAddressById(c *gin.Context) {
@@ -63,28 +65,31 @@ func UpdateUserAddressById(c *gin.Context) {
 	var addresses []entity.Address
 	if err := c.BindJSON(&addresses); err != nil {
 		log.Println(err)
+		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	err := repo.UpdateAddress(userId, addresses)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, fmt.Sprintf("User address updated, userId: %v.", userId))
 		return
 	}
+
+	c.JSON(http.StatusOK, fmt.Sprintf("User address updated, userId: %v.", userId))
 }
 
 func AddUser(c *gin.Context) {
 	var new_user entity.User
 	if err := c.BindJSON(&new_user); err != nil {
 		log.Println(err)
+		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	id, err := repo.Add(&new_user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
+		return
 	}
 
 	c.JSON(http.StatusOK, fmt.Sprintf("User %v created!", *id))
@@ -95,8 +100,8 @@ func RemoveUser(c *gin.Context) {
 	err := repo.Delete(userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
-	} else {
-		c.JSON(http.StatusOK, fmt.Sprintf("User %v deleted!", userId))
 		return
 	}
+
+	c.JSON(http.StatusOK, fmt.Sprintf("User %v deleted!", userId))
 }

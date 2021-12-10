@@ -33,9 +33,12 @@ func defineRoutes(router *gin.Engine) {
 
 	userGroupRouter := router.Group("/memos", middleware.AuthorizationHandler())
 	{
+		userGroupRouter.PUT("/", memoService.AddMemo)
+
+		userGroupRouter.GET("/:id", memoService.GetMemoById)
 		userGroupRouter.GET("/", memoService.GetMemosByUserId)
 		userGroupRouter.GET("/recent", memoService.GetRecentMemos)
-		userGroupRouter.PUT("/", memoService.AddMemo)
+
 		userGroupRouter.POST("/:id", memoService.UpdateMemoById)
 		userGroupRouter.DELETE("/:id", memoService.RemoveMemo)
 	}

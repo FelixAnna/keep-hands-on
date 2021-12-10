@@ -66,6 +66,10 @@ func GetToken(c *gin.Context) string {
 	token := c.Query("access_code")
 	if token == "" {
 		token = c.GetHeader("Authorization")
+		if len(token) <= 7 {
+			return ""
+		}
+
 		token = token[7:]
 	}
 	return token

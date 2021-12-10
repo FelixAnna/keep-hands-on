@@ -2,26 +2,28 @@ package entity
 
 type Memo struct {
 	Id               string `json:"Id" binding:""`
-	Name             string `json:"Name" binding:"required"`
+	Subject          string `json:"Subject" binding:"required"`
 	Description      string `json:"Description" binding:""`
 	UserId           string `json:"UserId" binding:"required"`
-	DateTime         string `json:"DateTime" binding:"required"`
-	Lunar            bool   `json:"Lunar" binding:"required"` //user care about chinese Lunar only if checked
+	MemoDate         string `json:"MemoDate" binding:"required"`
+	Lunar            bool   `json:"Lunar" binding:""` //user care about chinese Lunar only if checked
 	CreateTime       string `json:"CreateTime,omitempty"`
-	LastModifiedTime string `json:"LastModifyTime,omitempty"`
+	LastModifiedTime string `json:"LastModifiedTime,omitempty"`
 }
 
 type MemoRequest struct {
-	Name        string `json:"Name" binding:"required"`
+	Subject     string `json:"Subject" binding:"required"`
 	Description string `json:"Description" binding:""`
-	DateTime    string `json:"DateTime" binding:"required"`
-	Lunar       bool   `json:"Lunar" binding:"required"`
+	MemoDate    string `json:"MemoDate" binding:"required"`
+	Lunar       bool   `json:"Lunar" binding:""`
 }
 
 type MemoResponse struct {
-	Name        string `json:"Name" binding:"required"`
-	Description string `json:"Description" binding:""`
-	DateTime    string `json:"DateTime" binding:"required"`
-	Lunar       bool   `json:"Lunar" binding:"required"`
-	Distance    int    `json:"Distance" binding:"required"`
+	Subject          string `json:"Subject" binding:"required"`
+	Description      string `json:"Description" binding:""`
+	MemoDate         string `json:"MemoDate" binding:"required"`
+	Lunar            bool   `json:"Lunar" binding:""`
+	Distance         int    `json:"Distance" binding:"required"`
+	CreateTime       string `json:"CreateTime,omitempty"`       // - TODO convert to formated datetime
+	LastModifiedTime string `json:"LastModifiedTime,omitempty"` //  - TODO convert to formated datetime
 }

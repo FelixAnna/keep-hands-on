@@ -14,12 +14,17 @@ func AuthorizationHandler() gin.HandlerFunc {
 		// Set example variable
 		token := jwt.GetToken(c)
 
-		log.Println(token)
+		if token == "" {
+			c.String(http.StatusForbidden, "token not found!")
+			c.Abort()
+			return
+		}
 
 		claims, err := jwt.ParseToken(token)
 		if err != nil {
-			log.Fatal(err.Error())
+			log.Println(err.Error())
 			c.String(http.StatusForbidden, err.Error())
+			c.Abort()
 			return
 		}
 
@@ -29,5 +34,6 @@ func AuthorizationHandler() gin.HandlerFunc {
 		// before request
 		log.Printf("User with email %v, Id %v send this request", claims.Email, claims.UserId)
 		c.Next()
+
 	}
 }
