@@ -5,23 +5,19 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/FelixAnna/web-service-dlw/common/aws"
 	"github.com/FelixAnna/web-service-dlw/user-api/users/entity"
 	"github.com/FelixAnna/web-service-dlw/user-api/users/repository"
 	"github.com/gin-gonic/gin"
 )
 
-var repo *repository.UserRepo
+var repo repository.UserRepo
 
 func init() {
-	repo = &repository.UserRepo{
-		TableName: "dlf.Users",
-		DynamoDB:  aws.GetDynamoDBClient(),
-	}
+	repo = &repository.UserRepoDynamoDB{}
 }
 
 func GetAllUsers(c *gin.Context) {
-	users, err := repo.GetAllUsers()
+	users, err := repo.GetAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 	}
@@ -30,7 +26,7 @@ func GetAllUsers(c *gin.Context) {
 
 func GetUserByEmail(c *gin.Context) {
 	email := c.Param("email")
-	user, err := repo.GetUserByEmail(email)
+	user, err := repo.GetByEmail(email)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err.Error())
 	} else {
@@ -41,7 +37,7 @@ func GetUserByEmail(c *gin.Context) {
 
 func GetUserById(c *gin.Context) {
 	strId := c.Param("userId")
-	user, err := repo.GetUserById(strId)
+	user, err := repo.GetById(strId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err.Error())
 	} else {
@@ -53,7 +49,7 @@ func GetUserById(c *gin.Context) {
 func UpdateUserBirthdayById(c *gin.Context) {
 	userId := c.Param("userId")
 	birthday := c.Query("birthday")
-	err := repo.UpdateUserBirthday(userId, birthday)
+	err := repo.UpdateBirthday(userId, birthday)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 	} else {
@@ -70,7 +66,7 @@ func UpdateUserAddressById(c *gin.Context) {
 		return
 	}
 
-	err := repo.UpdateUserAddress(userId, addresses)
+	err := repo.UpdateAddress(userId, addresses)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 	} else {
@@ -86,7 +82,7 @@ func AddUser(c *gin.Context) {
 		return
 	}
 
-	id, err := repo.CreateUser(&new_user)
+	id, err := repo.Add(&new_user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -96,7 +92,7 @@ func AddUser(c *gin.Context) {
 
 func RemoveUser(c *gin.Context) {
 	userId := c.Param("userId")
-	err := repo.DeleteUser(userId)
+	err := repo.Delete(userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 	} else {

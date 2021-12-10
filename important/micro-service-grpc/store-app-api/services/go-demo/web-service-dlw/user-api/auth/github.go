@@ -20,7 +20,7 @@ const githubUserUrl = "https://api.github.com/user"
 
 var (
 	confGitHub *oauth2.Config
-	repo       *repository.UserRepo
+	repo       repository.UserRepo
 )
 
 type GitHubUser struct {
@@ -31,10 +31,7 @@ type GitHubUser struct {
 }
 
 func init() {
-	repo = &repository.UserRepo{
-		TableName: "dlf.Users",
-		DynamoDB:  aws.GetDynamoDBClient(),
-	}
+	repo = &repository.UserRepoDynamoDB{}
 }
 
 func init() {
@@ -113,9 +110,9 @@ func GetNativeToken(c *gin.Context) {
 		c.String(http.StatusInternalServerError, err.Error())
 	}
 
-	nativeUser, err := repo.GetUserByEmail(user.Email)
+	nativeUser, err := repo.GetByEmail(user.Email)
 	if err != nil {
-		repo.CreateUser(&entity.User{
+		repo.Add(&entity.User{
 			AvatarUrl: user.AvatarUrl,
 			Email:     user.Email,
 			Name:      user.Login,
@@ -123,7 +120,7 @@ func GetNativeToken(c *gin.Context) {
 			Address:   make([]entity.Address, 0),
 		})
 
-		nativeUser, err = repo.GetUserByEmail(user.Email)
+		nativeUser, err = repo.GetByEmail(user.Email)
 
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
