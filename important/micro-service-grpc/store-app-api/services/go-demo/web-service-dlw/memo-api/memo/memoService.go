@@ -29,7 +29,8 @@ func AddMemo(c *gin.Context) {
 		Subject:     request.Subject,
 		Description: request.Description,
 		UserId:      userId,
-		MemoDate:    request.MemoDate,
+		MonthDay:    request.MonthDay,
+		StartYear:   request.StartYear,
 		Lunar:       request.Lunar,
 	}
 
@@ -76,6 +77,10 @@ func GetRecentMemos(c *gin.Context) {
 		return
 	}
 
+	for i, val := range memos {
+		val
+	}
+
 	c.JSON(http.StatusOK, memos)
 }
 
@@ -94,7 +99,8 @@ func UpdateMemoById(c *gin.Context) {
 		Subject:     request.Subject,
 		Description: request.Description,
 		UserId:      userId, //keep current userId for compare before update db
-		MemoDate:    request.MemoDate,
+		MonthDay:    request.MonthDay,
+		StartYear:   request.StartYear,
 		Lunar:       request.Lunar,
 	}
 

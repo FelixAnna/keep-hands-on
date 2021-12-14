@@ -118,11 +118,11 @@ func (m *MemoRepoDynamoDB) GetByUserId(userId string) ([]entity.Memo, error) {
 func (m *MemoRepoDynamoDB) GetByDateRange(start, end, userId string) ([]entity.Memo, error) {
 	result, err := client.Query(&dynamodb.QueryInput{
 		TableName:              aws.String(tableName),
-		IndexName:              aws.String("UserId-MemoDate-index"),
-		KeyConditionExpression: aws.String("UserId = :userId and MemoDate BETWEEN :start and :end"),
+		IndexName:              aws.String("UserId-MonthDay-index"),
+		KeyConditionExpression: aws.String("UserId = :userId and MonthDay BETWEEN :start and :end"),
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
-			":start":  {S: &start},
-			":end":    {S: &end},
+			":start":  {N: &start},
+			":end":    {N: &end},
 			":userId": {S: &userId},
 		},
 		Limit: aws.Int64(100),
@@ -163,7 +163,8 @@ func (m *MemoRepoDynamoDB) Update(memo entity.Memo) error {
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
 			":subject":    {S: aws.String(memo.Subject)},
 			":desc":       {S: aws.String(memo.Description)},
-			":date":       {S: aws.String(memo.MemoDate)},
+			":monthDay":   {N: aws.String(strconv.Itoa(memo.MonthDay))},
+			":year":       {N: aws.String(strconv.Itoa(memo.StartYear))},
 			":lunar":      {BOOL: aws.Bool(memo.Lunar)},
 			":updateTime": {S: aws.String(strconv.FormatInt(time.Now().UTC().Unix(), 10))},
 		},
@@ -172,7 +173,7 @@ func (m *MemoRepoDynamoDB) Update(memo entity.Memo) error {
 			"Id": {S: aws.String(memo.Id)},
 		},
 		ReturnValues:     aws.String("ALL_NEW"),
-		UpdateExpression: aws.String("set Subject = :subject, Description = :desc, MemoDate = :date, Lunar = :lunar, LastModifiedTime = :updateTime"),
+		UpdateExpression: aws.String("set Subject = :subject, Description = :desc, MonthDay = :monthDay, StartYear = :year, Lunar = :lunar, LastModifiedTime = :updateTime"),
 	}
 
 	_, err = client.UpdateItem(input)
