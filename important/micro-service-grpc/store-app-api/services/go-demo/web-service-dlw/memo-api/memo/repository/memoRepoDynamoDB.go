@@ -86,7 +86,7 @@ func (m *MemoRepoDynamoDB) GetById(id string) (*entity.Memo, error) {
 func (m *MemoRepoDynamoDB) GetByUserId(userId string) ([]entity.Memo, error) {
 	result, err := client.Query(&dynamodb.QueryInput{
 		TableName:              aws.String(tableName),
-		IndexName:              aws.String("UserId-index"),
+		IndexName:              aws.String("UserId-MonthDay-index"),
 		KeyConditionExpression: aws.String("UserId = :userId"),
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
 			":userId": {S: &userId},

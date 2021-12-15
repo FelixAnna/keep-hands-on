@@ -3,7 +3,7 @@ package entity
 import (
 	"time"
 
-	carbon "github.com/golang-module/carbon/v2"
+	"github.com/FelixAnna/web-service-dlw/memo-api/memo/services"
 )
 
 type Memo struct {
@@ -32,7 +32,7 @@ type MemoResponse struct {
 	MonthDay         int    `json:"MonthDay" binding:"required"`
 	StartYear        int    `json:"StartYear" binding:""`
 	Lunar            bool   `json:"Lunar" binding:""`
-	Distance         int    `json:"Distance" binding:"required"`
+	Distance         []int  `json:"Distance" binding:"required"`
 	CreateTime       string `json:"CreateTime,omitempty"`       //  - TODO convert to formated datetime
 	LastModifiedTime string `json:"LastModifiedTime,omitempty"` //  - TODO convert to formated datetime
 }
@@ -52,12 +52,20 @@ func (memo *Memo) ToResponse(now *time.Time) *MemoResponse {
 	return resp
 }
 
-func (memo *Memo) getDistance(now *time.Time) int {
-	year, month, day := memo.StartYear, memo.MonthDay/100, memo.MonthDay%100
-	startDate := carbon.CreateFromDate(year, month, day, carbon.UTC)
-	if memo.Lunar {
-		_ = startDate.Lunar()
+func (memo *Memo) getDistance(target *time.Time) []int {
+	year := memo.StartYear
+	if year <= 1900 {
+		year = time.Now().Year()
 	}
 
-	return 100
+	startDate := year*10000 + memo.MonthDay
+	targetDate := target.Year()*10000 + int(target.Month())*100 + target.Day()
+
+	if memo.Lunar {
+		before, after := services.GetLunarDistanceWithCacheAside(startDate, targetDate)
+		return []int{int(before), int(after)}
+	} else {
+		before, after := services.GetCarbonDistanceWithCacheAside(startDate, targetDate)
+		return []int{int(before), int(after)}
+	}
 }

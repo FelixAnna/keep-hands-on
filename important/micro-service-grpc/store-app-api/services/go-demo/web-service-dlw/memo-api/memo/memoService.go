@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/FelixAnna/web-service-dlw/memo-api/memo/entity"
 	"github.com/FelixAnna/web-service-dlw/memo-api/memo/repository"
@@ -77,11 +78,13 @@ func GetRecentMemos(c *gin.Context) {
 		return
 	}
 
+	respMemos := make([]*entity.MemoResponse, len(memos))
+	now := time.Now()
 	for i, val := range memos {
-		val
+		respMemos[i] = val.ToResponse(&now)
 	}
 
-	c.JSON(http.StatusOK, memos)
+	c.JSON(http.StatusOK, respMemos)
 }
 
 func UpdateMemoById(c *gin.Context) {
