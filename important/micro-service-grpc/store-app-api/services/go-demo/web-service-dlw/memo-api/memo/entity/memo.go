@@ -1,9 +1,12 @@
 package entity
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"time"
-
-	"github.com/FelixAnna/web-service-dlw/memo-api/memo/services"
 )
 
 type Memo struct {
@@ -39,6 +42,14 @@ type MemoResponse struct {
 	LastModifiedTime string `json:"LastModifiedTime,omitempty"` //  - TODO convert to formated datetime
 }
 
+type Distance struct {
+	StartYMD  int
+	TargetYMD int
+	Lunar     bool
+	Before    int64
+	After     int64
+}
+
 func (memo *Memo) ToResponse(now *time.Time) *MemoResponse {
 	resp := &MemoResponse{
 		Id:               memo.Id,
@@ -66,10 +77,31 @@ func (memo *Memo) getDistance(target *time.Time) []int {
 	targetDate := target.Year()*10000 + int(target.Month())*100 + target.Day()
 
 	if memo.Lunar {
-		before, after := services.GetLunarDistanceWithCacheAside(startDate, targetDate)
-		return []int{int(before), int(after)}
+		url := fmt.Sprintf("http://localhost:8383/date/distance/lunar?start=%v&end=%v", startDate, targetDate)
+		result, _ := getDistance(url)
+		return []int{int(result.Before), int(result.After)}
 	} else {
-		before, after := services.GetCarbonDistanceWithCacheAside(startDate, targetDate)
-		return []int{int(before), int(after)}
+		url := fmt.Sprintf("http://localhost:8383/date/distance/?start=%v&end=%v", startDate, targetDate)
+		result, _ := getDistance(url)
+		return []int{int(result.Before), int(result.After)}
 	}
+}
+
+func getDistance(url string) (*Distance, error) {
+	response, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err.Error())
+		return nil, err
+	}
+
+	responseData, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	var distance *Distance = &Distance{}
+	json.Unmarshal(responseData, distance)
+
+	return distance, nil
 }

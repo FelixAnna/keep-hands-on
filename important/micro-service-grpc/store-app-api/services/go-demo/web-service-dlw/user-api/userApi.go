@@ -28,7 +28,7 @@ func main() {
 }
 
 func defineRoutes(router *gin.Engine) {
-	router.GET("/status/running", func(c *gin.Context) {
+	router.GET("/status", func(c *gin.Context) {
 		c.String(http.StatusOK, "running")
 	})
 

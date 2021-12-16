@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/FelixAnna/web-service-dlw/common/middleware"
-	memoService "github.com/FelixAnna/web-service-dlw/memo-api/memo"
+	dateService "github.com/FelixAnna/web-service-dlw/date-api/date"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,7 +23,7 @@ func main() {
 
 	defineRoutes(router)
 
-	router.Run(":8282")
+	router.Run(":8383")
 }
 
 func defineRoutes(router *gin.Engine) {
@@ -31,16 +31,11 @@ func defineRoutes(router *gin.Engine) {
 		c.String(http.StatusOK, "running")
 	})
 
-	userGroupRouter := router.Group("/memos", middleware.AuthorizationHandler())
+	userGroupRouter := router.Group("/date")
 	{
-		userGroupRouter.PUT("/", memoService.AddMemo)
-
-		userGroupRouter.GET("/:id", memoService.GetMemoById)
-		userGroupRouter.GET("/", memoService.GetMemosByUserId)
-		userGroupRouter.GET("/recent", memoService.GetRecentMemos)
-
-		userGroupRouter.POST("/:id", memoService.UpdateMemoById)
-		userGroupRouter.DELETE("/:id", memoService.RemoveMemo)
+		userGroupRouter.GET("/current/month", dateService.GetMonthDate)
+		userGroupRouter.GET("/distance", dateService.GetDateDistance)
+		userGroupRouter.GET("/distance/lunar", dateService.GetLunarDateDistance)
 	}
 }
 
