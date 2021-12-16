@@ -27,6 +27,8 @@ type MemoRequest struct {
 }
 
 type MemoResponse struct {
+	Id               string `json:"Id" binding:""`
+	UserId           string `json:"UserId" binding:"required"`
 	Subject          string `json:"Subject" binding:"required"`
 	Description      string `json:"Description" binding:""`
 	MonthDay         int    `json:"MonthDay" binding:"required"`
@@ -39,6 +41,8 @@ type MemoResponse struct {
 
 func (memo *Memo) ToResponse(now *time.Time) *MemoResponse {
 	resp := &MemoResponse{
+		Id:               memo.Id,
+		UserId:           memo.UserId,
 		Subject:          memo.Subject,
 		Description:      memo.Description,
 		MonthDay:         memo.MonthDay,

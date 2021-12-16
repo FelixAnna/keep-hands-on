@@ -52,7 +52,9 @@ func GetMemoById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, memo)
+	now := time.Now()
+	response := memo.ToResponse(&now)
+	c.JSON(http.StatusOK, response)
 }
 
 func GetMemosByUserId(c *gin.Context) {
@@ -63,7 +65,13 @@ func GetMemosByUserId(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, memos)
+	respMemos := make([]*entity.MemoResponse, len(memos))
+	now := time.Now()
+	for i, val := range memos {
+		respMemos[i] = val.ToResponse(&now)
+	}
+
+	c.JSON(http.StatusOK, respMemos)
 }
 
 func GetRecentMemos(c *gin.Context) {

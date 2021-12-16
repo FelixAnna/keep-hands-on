@@ -7,7 +7,7 @@ import (
 var CarbonTimeMap map[int]int
 var LunarTimeMap map[int]int
 
-const start = 19010101
+const start = 19500101
 const end = 20501231
 
 func init() {
@@ -27,7 +27,11 @@ func initMap() {
 		lunar := startCarbon.Lunar()
 
 		carbonKey := startCarbon.Year()*10000 + startCarbon.Month()*100 + startCarbon.Day()
-		lunarKey := lunar.Year()*10000 + lunar.Month()*100 + lunar.Day()
+		lunarKey := lunar.Year()*100000 + lunar.Month()*1000 + lunar.Day()*10
+		if lunar.IsLeapMonth() {
+			lunarKey += 1
+		}
+
 		CarbonTimeMap[carbonKey] = i
 		LunarTimeMap[lunarKey] = j
 
@@ -83,23 +87,30 @@ func GetLunarDistanceWithCacheAside(startDate, targetDate int) (before, after in
 	startLunarDate := startCarbon.Lunar()
 	targetLunarDate := targetCarbon.Lunar()
 
-	startDate = startLunarDate.Year()*10000 + startLunarDate.Month()*100 + startLunarDate.Day()
-	targetDate = targetLunarDate.Year()*10000 + targetLunarDate.Month()*100 + targetLunarDate.Day()
+	startDate = startLunarDate.Year()*100000 + startLunarDate.Month()*1000 + startLunarDate.Day()*10
+	targetDate = targetLunarDate.Year()*100000 + targetLunarDate.Month()*1000 + targetLunarDate.Day()*10
 
-	targetValue, ok := CarbonTimeMap[targetDate]
+	if startLunarDate.IsLeapMonth() {
+		startDate += 1
+	}
+	if targetLunarDate.IsLeapMonth() {
+		targetDate += 1
+	}
+
+	targetValue, ok := LunarTimeMap[targetDate]
 	if ok {
-		_, startMonthDay := startDate/10000, startDate%10000
-		targetYear, targetMonthDay := targetDate/10000, targetDate%10000
+		_, startMonthDay, _ := startDate/100000, (startDate%100000)/10, startDate%10
+		targetYear, targetMonthDay, _ := targetDate/100000, (targetDate%100000)/10, targetDate%10
 
 		if startMonthDay < targetMonthDay {
 			//targetYear + startMonthDay
 			//targetYear+1 + startMonthDay
-			preDate, nextDate := targetYear*10000+startMonthDay, (targetYear+1)*10000+startMonthDay
-			preDateValue, okPre := CarbonTimeMap[preDate]
-			nextDateValue, okNext := CarbonTimeMap[nextDate]
-			if okPre && okNext {
-				before = int64(preDateValue) - int64(targetValue)
-				after = int64(nextDateValue) - int64(targetValue)
+			preDate, nextDate := targetYear*100000+startMonthDay*10, (targetYear+1)*100000+startMonthDay*10
+
+			preDateFinal, nextDateFinal := getLunarCacheValue(preDate, nextDate)
+			if preDateFinal > 0 && nextDateFinal > 0 {
+				before = int64(preDateFinal) - int64(targetValue)
+				after = int64(nextDateFinal) - int64(targetValue)
 				return
 			}
 
@@ -107,11 +118,10 @@ func GetLunarDistanceWithCacheAside(startDate, targetDate int) (before, after in
 			//targetYear-1 + startMonthDay
 			//targetYear + startMonthDay
 			preDate, nextDate := (targetYear-1)*10000+startMonthDay, targetYear*10000+startMonthDay
-			preDateValue, okPre := CarbonTimeMap[preDate]
-			nextDateValue, okNext := CarbonTimeMap[nextDate]
-			if okPre && okNext {
-				before = int64(preDateValue) - int64(targetValue)
-				after = int64(nextDateValue) - int64(targetValue)
+			preDateFinal, nextDateFinal := getLunarCacheValue(preDate, nextDate)
+			if preDateFinal > 0 && nextDateFinal > 0 {
+				before = int64(preDateFinal) - int64(targetValue)
+				after = int64(nextDateFinal) - int64(targetValue)
 				return
 			}
 
@@ -121,6 +131,36 @@ func GetLunarDistanceWithCacheAside(startDate, targetDate int) (before, after in
 	}
 
 	return GetLunarDistance(startDate, targetDate)
+}
+
+/*
+Get lunar cache value with consideration of Leap month
+*/
+func getLunarCacheValue(preDate, nextDate int) (int, int) {
+	preDateFinal := 0
+	preDateLeapValue, okPreLeap := LunarTimeMap[preDate+1]
+	if okPreLeap {
+		preDateFinal = preDateLeapValue
+
+	} else {
+		preDateValue, okPre := LunarTimeMap[preDate]
+		if okPre {
+			preDateFinal = preDateValue
+		}
+	}
+
+	nextDateFinal := 0
+	nextDateValue, okNext := LunarTimeMap[nextDate]
+	if okNext {
+		nextDateFinal = nextDateValue
+	} else {
+		nextDateLeapValue, okNextLeap := LunarTimeMap[nextDate+1]
+		if okNextLeap {
+			nextDateFinal = nextDateLeapValue
+		}
+	}
+
+	return preDateFinal, nextDateFinal
 }
 
 /*
