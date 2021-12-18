@@ -1,12 +1,19 @@
 package entity
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
+
+	httpClient "github.com/asim/go-micro/plugins/client/http/v4"
+	"github.com/asim/go-micro/plugins/registry/consul/v4"
+	"go-micro.dev/v4/client"
+	"go-micro.dev/v4/registry"
+	"go-micro.dev/v4/selector"
 )
 
 type Memo struct {
@@ -77,14 +84,35 @@ func (memo *Memo) getDistance(target *time.Time) []int {
 	targetDate := target.Year()*10000 + int(target.Month())*100 + target.Day()
 
 	if memo.Lunar {
-		url := fmt.Sprintf("http://localhost:8383/date/distance/lunar?start=%v&end=%v", startDate, targetDate)
-		result, _ := getDistance(url)
+		//url := fmt.Sprintf("http://localhost:8383/date/distance/lunar?start=%v&end=%v", startDate, targetDate)
+		//result, _ := getDistance(url)
+
+		result := CallHttpServer("date-api", fmt.Sprintf("/date/distance/lunar?start=%v&end=%v", startDate, targetDate), "")
 		return []int{int(result.Before), int(result.After)}
 	} else {
-		url := fmt.Sprintf("http://localhost:8383/date/distance/?start=%v&end=%v", startDate, targetDate)
-		result, _ := getDistance(url)
+		//url := fmt.Sprintf("http://localhost:8383/date/distance/?start=%v&end=%v", startDate, targetDate)
+		//result, _ := getDistance(url)
+		result := CallHttpServer("date-api", fmt.Sprintf("/date/distance/?start=%v&end=%v", startDate, targetDate), "")
 		return []int{int(result.Before), int(result.After)}
 	}
+}
+
+func CallHttpServer(service, path, req string) *Distance {
+	//path = "/status"
+	consulReg := consul.NewRegistry(registry.Addrs("localhost:8500"))
+	//r := registry.NewRegistry()
+	s := selector.NewSelector(selector.Registry(consulReg))
+	// new client
+	c := httpClient.NewClient(client.Selector(s))
+	// create request/response
+	request := c.NewRequest(service, path, req, client.WithContentType("application/json"))
+
+	response := new(Distance)
+	// call service
+	err := c.Call(context.Background(), request, response)
+	log.Printf("err:%v response:%#v\n", err, response)
+
+	return response
 }
 
 func getDistance(url string) (*Distance, error) {
