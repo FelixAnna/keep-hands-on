@@ -9,7 +9,6 @@ require (
 	github.com/asim/go-micro/plugins/server/http/v4 v4.0.0-20211210113221-37de747d195c
 	github.com/aws/aws-sdk-go v1.42.21
 	github.com/gin-gonic/gin v1.7.7
-	github.com/golang-module/carbon/v2 v2.0.1
 	go-micro.dev/v4 v4.4.0
 )
 

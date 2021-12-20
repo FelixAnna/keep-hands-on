@@ -8,29 +8,42 @@ import (
 	"os"
 	"time"
 
+	"github.com/FelixAnna/web-service-dlw/common/mesh"
 	"github.com/FelixAnna/web-service-dlw/common/middleware"
 	"github.com/FelixAnna/web-service-dlw/user-api/auth"
 	userService "github.com/FelixAnna/web-service-dlw/user-api/users"
 
-	"github.com/asim/go-micro/plugins/registry/consul/v4"
 	httpServer "github.com/asim/go-micro/plugins/server/http/v4"
 	"go-micro.dev/v4"
 
 	"github.com/gin-gonic/gin"
-	"go-micro.dev/v4/registry"
 	"go-micro.dev/v4/server"
 )
 
 const SERVER_NAME = "user-api"
 
 func main() {
-	consulReg := consul.NewRegistry(registry.Addrs("localhost:8500"))
-
 	srv := httpServer.NewServer(
 		server.Name(SERVER_NAME),
 		server.Address(":8181"),
 	)
 
+	router := GetGinRouter()
+
+	hd := srv.NewHandler(router)
+	if err := srv.Handle(hd); err != nil {
+		log.Fatalln(err)
+	}
+
+	service := micro.NewService(
+		micro.Server(srv),
+		micro.Registry(mesh.GetConsulRegistry()),
+	)
+	service.Init()
+	service.Run()
+}
+
+func GetGinRouter() *gin.Engine {
 	router := gin.New()
 
 	//define middleware before apis
@@ -41,19 +54,8 @@ func main() {
 
 	defineRoutes(router)
 
-	hd := srv.NewHandler(router)
-	if err := srv.Handle(hd); err != nil {
-		log.Fatalln(err)
-	}
-
-	service := micro.NewService(
-		micro.Server(srv),
-		micro.Registry(consulReg),
-	)
-	service.Init()
-	service.Run()
-
 	//router.Run(":8181")
+	return router
 }
 
 func defineRoutes(router *gin.Engine) {

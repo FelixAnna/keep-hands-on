@@ -4,10 +4,9 @@ go 1.17
 
 require (
 	github.com/FelixAnna/web-service-dlw/common v0.0.0-00010101000000-000000000000
-	github.com/asim/go-micro/plugins/registry/consul/v4 v4.0.0-20211210113221-37de747d195c
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-module/carbon/v2 v2.0.1
-	go-micro.dev/v4 v4.2.1
+	go-micro.dev/v4 v4.4.0
 )
 
 require (
@@ -15,6 +14,7 @@ require (
 	github.com/ProtonMail/go-crypto v0.0.0-20210428141323-04723f9f07d7 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da // indirect
+	github.com/asim/go-micro/plugins/registry/consul/v4 v4.0.0-20211210113221-37de747d195c // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
