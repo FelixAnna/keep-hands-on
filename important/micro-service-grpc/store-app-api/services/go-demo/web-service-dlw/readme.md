@@ -1,5 +1,5 @@
 # design for daily life web microservices
-
+# moved to repo: https://github.com/FelixAnna/web-service-dlw
 # auth api
 auth/register
 auth/login
