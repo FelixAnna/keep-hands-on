@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import SearchBar from './component/SearchBar';
+import SearchBar from './components/searchBar/SearchBar';
 import './App.css';
 
 function App() {
