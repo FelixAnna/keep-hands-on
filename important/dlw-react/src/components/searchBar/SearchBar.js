@@ -26,59 +26,63 @@ class SearchBar extends React.Component{
     }
 
     handleChange(event, type) {
-        //console.log(event.target.value, type)
+        const min = 1;
+        const max = 1000;
+
+        const value =Number(event.target.value)
         switch (type) {
             case 0:
-                this.setState({Category: event.target.value});
+                this.setState({Category: value});
                 break;
 
             case 1:
-                this.setState({Min: event.target.value});
+                this.setState({Min: value});
                 break;
             case 2:
-                this.setState({Max: event.target.value});
+                this.setState({Max: value});
                 break;
 
             case 3:
-                this.setState({ResultMin: event.target.value});
+                this.setState({ResultMin: value});
                 break;
             case 4:
-                this.setState({ResultMax: event.target.value});
+                this.setState({ResultMax: value});
                 break;
             
             case 5:
-                this.setState({Kind: event.target.value});
+                this.setState({Kind: value});
                 break;
             case 6:
-                this.setState({Type: event.target.value});
+                this.setState({Type: value});
                 break;
             case 7:
-                this.setState({Quantity: event.target.value});
+                const quantity = Math.max(min, Math.min(max, value));
+                this.setState({Quantity: quantity});
                 break;
 
             default:
                 break;
         }
-        
     }
 
     handleSubmit(event) {
-        alert('A request was submitted: ' + JSON.stringify(this.state));
+        //alert('A request was submitted: ' + JSON.stringify(this.state));
         const criterias = [{
-            Min: 0, 
-            Max: 100,
-            Quantity: 10,
+            Min: this.state.Min, 
+            Max: this.state.Max,
+            Quantity: this.state.Quantity,
 
             Range:{
-                Min: 0,
-                Max:100,
+                Min: this.state.ResultMin,
+                Max:this.state.ResultMax,
             },
 
-            Category: 0, 
-            Kind: 1, 
-            Type: 0
+            Category: this.state.Category, 
+            Kind: this.state.Kind, 
+            Type: this.state.Type
         }]
-        GetProblems(criterias).then(response => {
+        GetProblems(criterias)
+        .then(response => {
             this.handleQuestions(response.data)
         }).catch((error) => {
             console.log(error)
@@ -89,12 +93,12 @@ class SearchBar extends React.Component{
 
     handleQuestions(data){
         console.log(data)
-        const questions = data.map(d =>
-            <div>
-            <p>{d.Question}</p>
-            <p>{d.Answer}</p>
-            <p>{d.Kind}</p>
-            <p>{d.FullText}</p>
+        const questions = data.map((d, index)=>
+            <div key={index}>
+                <p>{d.Question}</p>
+                <p>{d.Answer}</p>
+                <p>{d.Kind}</p>
+                <p>{d.FullText}</p>
             </div>
         )
 
