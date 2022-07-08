@@ -1,40 +1,67 @@
 import React from 'react';
 import Criteria from "../criteria/Criteria";
-import { useSelector, useDispatch } from 'react-redux';
-import './CriteriaList.css';
+import { useSelector} from 'react-redux';
+import { DataGrid } from '@mui/x-data-grid';
+import {MathCategory, MathKind, MathType} from '../const'
+import {currentCriterias} from '../reducers/searchBar';
 
-import {
-    loadAsync,currentCriterias
-} from '../reducers/searchBar';
+const convertToText = (value, type) =>{
+    let result =""
+    console.log(MathCategory)
+     switch (type) {
+         case "Category":
+             result = MathCategory.find(op=> Number(op.key) === value).text
+             break;
+         case "Kind":
+             result = MathKind.find(op=> Number(op.key) === value).text
+             break;
+         case "Type":
+             result = MathType.find(op=> Number(op.key) === value).text
+             break;
+     
+         default:
+             break;
+     }
+
+     return result
+ }
+const columns = [
+    { field: 'id', headerName: 'ID', width: 70},
+    { field: 'inputRange', headerName: '数字范围', width: 100,
+        valueGetter: (params) =>
+        `${params.row.Min || ''} ${params.row.Max || ''}`
+    },
+    { field: 'outputRange', headerName: '结果范围', width: 100,
+        valueGetter: (params) =>
+        `${params.row.Range.Min || ''} ${params.row.Range.Max || ''}` },
+    { field: 'Quantity', headerName: '题目数量', width: 70 },
+    { field: 'Category', headerName: '算术类型', width: 70,
+    valueGetter: (params) =>
+    `${convertToText(params.row.Category,"Category")}` },
+    { field: 'Kind', headerName: '求值类型', width: 150,
+    valueGetter: (params) =>
+    `${convertToText(params.row.Kind,"Kind")}` },
+    { field: 'Type', headerName: '输出格式', width: 220,
+    valueGetter: (params) =>
+    `${convertToText(params.row.Type,"Type")}` },
+]
+
 
 function CriteriaList(){
-    const dispatch = useDispatch();
     const criterias = useSelector(currentCriterias)
+    const rows = criterias.map((q,i) => { return {id: i+1, ...q}})
 
     return (
-        <div className="form-style-right">
-        <div className="form-style-right-heading">配置列表</div>
-        <div>
-            <div key ="head">
-                <span>No.</span>
-                <span>数字范围</span>
-                <span>结果范围</span>
-                <span>题目数量</span>
-                <span>算术类型</span>
-                <span>求值类型</span>
-                <span>输出格式</span>
-            </div>
-            {
-                criterias !== undefined ? 
-                criterias.map((q,i) => {
-                    return <Criteria index={i} {...q}  />
-                }):(<div>No data</div>)
-            }
-            <div>
-                <input type="button" value="刷新" onClick={()=>dispatch(loadAsync(null))} />
-            </div>
+        <div style={{ height: '400px', width: '100%' }}>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                checkboxSelection
+            />
         </div>
-        </div>)
+        )
 }
 
 export default CriteriaList;

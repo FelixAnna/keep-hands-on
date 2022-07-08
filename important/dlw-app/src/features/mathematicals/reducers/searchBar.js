@@ -12,9 +12,8 @@ const initialState = {
 // typically used to make async requests.
 export const loadAsync = createAsyncThunk(
     'criteria/GetProblems',
-    async (data, {getState }) => {
-      const state = getState();
-      const response = await GetProblems(state.criteria.Criterias);
+    async (criterias) => {
+      const response = await GetProblems(criterias);
       // The value we return becomes the `fulfilled` action payload
       return response.data;
     }

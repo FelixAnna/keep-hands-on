@@ -11,7 +11,6 @@ function QuestionList(){
 
     return (
         <div className="form-style">
-        <div className="form-style-heading">题目列表</div>
         <div>
             {
                 questions !== undefined ? 
