@@ -2,8 +2,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCheckCircle, faXmarkCircle} from "@fortawesome/free-solid-svg-icons";
 
-  const correct = <FontAwesomeIcon icon={faCheckCircle} style={{color:'green', fontSize: '20px'}}/>
-  const wrong =<FontAwesomeIcon icon={faXmarkCircle} style={{color:'red', fontSize: '20px'}}/>
+const correct = <FontAwesomeIcon icon={faCheckCircle} style={{color:'green', fontSize: '20px'}}/>
+const wrong =<FontAwesomeIcon icon={faXmarkCircle} style={{color:'red', fontSize: '20px'}}/>
 
 class Question extends React.Component{
     constructor(props){
@@ -25,14 +25,17 @@ class Question extends React.Component{
     }
 
     render(){
+        
+
         return (
             <div key={this.props.index}>
                 <span>{this.props.index+1}.</span>
                 <span>{this.props.Question}</span>
                 <input key="value" className="number-range-field" type="number" value={this.state.value} onChange={this.handleChange}/>
-                {this.state.correct?(correct):(wrong)}
-                <input key="Kind" type="hidden" value={this.props.Kind} />
-                <input key="FullText" type="hidden" value={this.props.FullText} />
+                {this.props.showResult?
+                (<span>{this.state.correct?(correct):(wrong)} Answer: {this.props.Answer}</span>)
+                :""
+                }
             </div>)
     }
 }
