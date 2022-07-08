@@ -5,6 +5,8 @@ import {
     clearAll, saveCriterias
 } from '../reducers/searchBar';
 
+import {MathCategory, MathKind, MathType} from '../const'
+
 const defaultCriteria = {
     Min: 0, Max: 100,
     Quantity: 10,
@@ -88,9 +90,10 @@ function SearchBar(){
         <div>
             <div>
                 <span>算术类型:</span>
-                <select className="select-field" value={state.Category} onChange={(e)=>  handleChange(e, 0)} >
-                    <option value="0">加法</option>
-                    <option value="1">减法</option>
+                <select className="select-field" value={criteria.Category} onChange={(e)=>  handleChange(e, 0)} >
+                    {MathCategory.map((op,i) =>{
+                            return <option key={i} value={op.key}>{op.text}</option>
+                    })}
                 </select>
             </div>
             <div>
@@ -108,16 +111,17 @@ function SearchBar(){
             <div>
                 <span>求值类型:</span>
                 <select className="select-field" value={criteria.Kind} onChange={(e)=> handleChange(e, 5)} >
-                    <option value="1">第一个数：? * b= c </option>
-                    <option value="2">第二个数: a * ?= c </option>
-                    <option value="3">结果: a * b= ? </option>
+                {MathKind.map((op,i) =>{
+                            return <option key={i} value={op.key}>{op.text}</option>
+                    })}
                 </select>
             </div>
             <div>
                 <span>输出格式:</span>
                 <select className="select-field" value={criteria.Type} onChange={(e)=> handleChange(e, 6)} >
-                    <option value="0">算术表达式: a+b=c</option>
-                    <option value="1">应用题: 比a多b的数是c</option>
+                    {MathType.map((op,i) =>{
+                            return <option key={i} value={op.key}>{op.text}</option>
+                    })}
                 </select>
             </div>
             <div>
