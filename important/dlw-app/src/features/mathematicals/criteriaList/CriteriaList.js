@@ -1,5 +1,4 @@
 import React from 'react';
-import Criteria from "../criteria/Criteria";
 import { useSelector} from 'react-redux';
 import { DataGrid } from '@mui/x-data-grid';
 import {MathCategory, MathKind, MathType} from '../const'

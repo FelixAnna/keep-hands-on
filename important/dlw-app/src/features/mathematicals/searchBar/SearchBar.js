@@ -21,7 +21,6 @@ const defaultCriteria = {
 
 function SearchBar(){
     const dispatch = useDispatch();
-    const state = defaultCriteria;
     const [criteria, updateCriteria] = useState(defaultCriteria);
 
     const handleChange = (event, type) => {

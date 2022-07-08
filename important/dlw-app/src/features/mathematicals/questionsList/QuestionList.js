@@ -1,6 +1,7 @@
 import React from 'react';
 import Question from "../question/Question";
 import { useSelector } from 'react-redux';
+import './QuestionList.css'
 
 import {
     currentQuestions
@@ -10,7 +11,7 @@ function QuestionList(){
     const questions = useSelector(currentQuestions)
 
     return (
-        <div className="form-style">
+        <div className="form-style-right">
         <div>
             {
                 questions !== undefined ? 
