@@ -5,11 +5,11 @@ import Button from '@mui/material/Button';
 import './QuestionList.css'
 
 import {
-    currentQuestions,checkResult,currentShowResult
+    currentQuestions,checkResult,currentShowResult,submitResult,currentScore
 } from '../reducers/searchBar';
 
 function QuestionList(){
-    
+    const score = useSelector(currentScore)
     const dispatch = useDispatch();
     const questions = useSelector(currentQuestions)
     const showResult = useSelector(currentShowResult)
@@ -20,11 +20,14 @@ function QuestionList(){
             {
                 questions !== undefined ? 
                 questions.map((q,i) => {
-                    return <Question key={i} showResult={showResult} index={i} Question = {q.Question} Answer = {q.Answer} Kind = {q.Kind} FullText={q.FullText}  />
+                    return <Question key={i} showResult={showResult} index={i} {...q}  />
                 }):(<div>No data</div>)
             }
         </div>
-        <Button variant="outlined" onClick={() => dispatch(checkResult())} >交卷</Button>
+        <Button variant="outlined" onClick={() => dispatch(checkResult())} >检查</Button>
+        <Button variant="outlined" onClick={() => dispatch(submitResult())} >交卷</Button>
+        <div></div>
+        <div>Your score:{score}</div>
         </div>)
 }
 

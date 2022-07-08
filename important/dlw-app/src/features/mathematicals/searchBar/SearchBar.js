@@ -2,9 +2,9 @@ import './SearchBar.css';
 import React, {useState} from 'react';
 import { useDispatch } from 'react-redux';
 import {
-    clearAll, saveCriterias
+    clearAll, saveCriterias,addCriteriaTemplate
 } from '../reducers/searchBar';
-
+import Button from '@mui/material/Button';
 import {MathCategory, MathKind, MathType} from '../const'
 
 const defaultCriteria = {
@@ -84,6 +84,44 @@ function SearchBar(){
     }
       
     return (
+        <div style={{display:'flex'}}>
+        <div className="form-style">
+        <div className="form-style-heading">常用模板</div>
+        <div>
+            <div>100以内</div>
+            <div>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 2, max:100}))} >任意各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 5, max:100}))} >任意各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 10, max:100}))} >任意各出10道</Button>
+            </div>
+            <div>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 2, max:100}))} >加法各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 5, max:100}))} >加法各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 10, max:100}))} >加法各出10道</Button>
+            </div>
+            <div>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 2, max:100}))} >减法各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 5, max:100}))} >减法各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 10, max:100}))} >减法各出10道</Button>
+            </div>
+            <div>1000以内</div>
+            <div>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 2, max:1000}))} >任意各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 5, max:1000}))} >任意各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 10, max:1000}))} >任意各出10道</Button>
+            </div>
+            <div>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 2, max:1000}))} >加法各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 5, max:1000}))} >加法各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 10, max:1000}))} >加法各出10道</Button>
+            </div>
+            <div>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 2, max:1000}))} >减法各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 5, max:1000}))} >减法各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 10, max:1000}))} >减法各出10道</Button>
+            </div>
+        </div>
+        </div>
         <div className="form-style">
         <div className="form-style-heading">配置题目生成模板</div>
         <div>
@@ -132,7 +170,7 @@ function SearchBar(){
                 <input type="button" value="清除所有" onClick = {() =>dispatch(clearAll()) } />
             </div>
         </div>
-        </div>
+        </div></div>
       )
 }
 

@@ -34,7 +34,7 @@ export function Mathematicals() {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="题目生成配置" value="1" />
+            <Tab label="题目配置" value="1" />
             <Tab label="题目列表" value="2" />
           </TabList>
         </Box>
