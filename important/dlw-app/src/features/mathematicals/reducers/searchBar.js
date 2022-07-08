@@ -12,7 +12,7 @@ const initialState = {
 // typically used to make async requests.
 export const loadAsync = createAsyncThunk(
     'criteria/GetProblems',
-    async (data, { dispatch, getState }) => {
+    async (data, {getState }) => {
       const state = getState();
       const response = await GetProblems(state.criteria.Criterias);
       // The value we return becomes the `fulfilled` action payload
@@ -53,7 +53,7 @@ export const criteriaSlice = createSlice({
 });
 
 export const { clearAll, saveCriterias, loadDate} = criteriaSlice.actions;
-export const currentCriterias = (state) => state.Criterias;
-export const currentQuestions = (state) => state.Questions;
+export const currentCriterias = (state) => state.criteria.Criterias;
+export const currentQuestions = (state) => state.criteria.Questions;
 
 export default criteriaSlice.reducer;

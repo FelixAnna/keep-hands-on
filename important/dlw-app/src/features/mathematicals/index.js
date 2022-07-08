@@ -5,7 +5,7 @@ import QuestionList from './questionsList/QuestionList';
 export function Mathematicals() {
 
   return (
-    <div>
+    <div style={{display: 'flex'}}>
         <SearchBar />
         <QuestionList />
     </div>
