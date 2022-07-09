@@ -79,46 +79,45 @@ function SearchBar(){
                 Type: criteria.Type
         }
 
-        console.log(current)
         return current
     }
       
     return (
         <div style={{display:'flex'}}>
         <div className="form-style">
-        <div className="form-style-heading">常用模板</div>
+        <div className="form-style-heading">快速配置</div>
         <div>
             <div>100以内</div>
             <div>
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 2, max:100}))} >任意各出2道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 5, max:100}))} >任意各出5道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 10, max:100}))} >任意各出10道</Button>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: -1, quantity: 2, max:100}))} >任意各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: -1, quantity: 5, max:100}))} >任意各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: -1, quantity: 10, max:100}))} >任意各出10道</Button>
             </div>
             <div>
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 2, max:100}))} >加法各出2道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 5, max:100}))} >加法各出5道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 10, max:100}))} >加法各出10道</Button>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 0, quantity: 2, max:100}))} >加法各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 0, quantity: 5, max:100}))} >加法各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 0, quantity: 10, max:100}))} >加法各出10道</Button>
             </div>
             <div>
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 2, max:100}))} >减法各出2道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 5, max:100}))} >减法各出5道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 10, max:100}))} >减法各出10道</Button>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 1, quantity: 2, max:100}))} >减法各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 1, quantity: 5, max:100}))} >减法各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 1, quantity: 10, max:100}))} >减法各出10道</Button>
             </div>
             <div>1000以内</div>
             <div>
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 2, max:1000}))} >任意各出2道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 5, max:1000}))} >任意各出5道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: -1, count: 10, max:1000}))} >任意各出10道</Button>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: -1, quantity: 2, max:1000}))} >任意各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: -1, quantity: 5, max:1000}))} >任意各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: -1, quantity: 10, max:1000}))} >任意各出10道</Button>
             </div>
             <div>
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 2, max:1000}))} >加法各出2道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 5, max:1000}))} >加法各出5道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 0, count: 10, max:1000}))} >加法各出10道</Button>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 0, quantity: 2, max:1000}))} >加法各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 0, quantity: 5, max:1000}))} >加法各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 0, quantity: 10, max:1000}))} >加法各出10道</Button>
             </div>
             <div>
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 2, max:1000}))} >减法各出2道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 5, max:1000}))} >减法各出5道</Button>&nbsp;
-                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({type: 1, count: 10, max:1000}))} >减法各出10道</Button>
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 1, quantity: 2, max:1000}))} >减法各出2道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 1, quantity: 5, max:1000}))} >减法各出5道</Button>&nbsp;
+                <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({category: 1, quantity: 10, max:1000}))} >减法各出10道</Button>
             </div>
         </div>
         </div>
@@ -156,8 +155,13 @@ function SearchBar(){
             <div>
                 <span>输出格式:</span>
                 <select className="select-field" value={criteria.Type} onChange={(e)=> handleChange(e, 6)} >
-                    {MathType.map((op,i) =>{
+                    {MathType.map((group,igroup) =>{
+                        return (
+                        <optgroup key={igroup} label={group.text}>
+                            {group.options.map((op,i) =>{
                             return <option key={i} value={op.key}>{op.text}</option>
+                            })}
+                        </optgroup>)
                     })}
                 </select>
             </div>

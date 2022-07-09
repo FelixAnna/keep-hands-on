@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {GetProblems} from '../../../api/request'
+import {MathCategory, MathKind, MathType} from '../const'
 
 const initialState = { 
     Criterias: [],
@@ -51,9 +52,36 @@ export const criteriaSlice = createSlice({
           state.Questions.at(index).UserAnswer = answer
          },
          addCriteriaTemplate(state, action){
-          const {type, count, max} = action.payload
-          //todo tommorrow
-          state.Criterias = []
+          const {category, quantity, max} = action.payload
+
+          var criterias = []
+          MathCategory.forEach(cat => {
+            if(category!=-1 && category!= cat.value){
+              return
+            }
+            MathKind.forEach(kind => {
+              MathType.forEach(type =>{
+                const criteria = {
+                  Min: 0, Max: max,
+                  Quantity: quantity,
+              
+                  Range:{
+                      Min: 0,
+                      Max:max,
+                  },
+              
+                  Category: cat.value, 
+                  Kind: kind.value, 
+                  Type: type.value
+              }
+
+              criterias.push(criteria)
+              })
+            })
+
+          });
+
+          state.Criterias = criterias
          }
     },  
     // The `extraReducers` field lets the slice handle actions defined elsewhere,

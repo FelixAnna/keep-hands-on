@@ -4,18 +4,22 @@ import { DataGrid } from '@mui/x-data-grid';
 import {MathCategory, MathKind, MathType} from '../const'
 import {currentCriterias} from '../reducers/searchBar';
 
-const convertToText = (value, type) =>{
+const convertToText = (value, type) => {
     let result =""
-    console.log(MathCategory)
      switch (type) {
          case "Category":
-             result = MathCategory.find(op=> Number(op.key) === value).text
+             result = MathCategory.find(op=> op.value === value).text
              break;
          case "Kind":
-             result = MathKind.find(op=> Number(op.key) === value).text
+             result = MathKind.find(op=> op.value === value).text
              break;
          case "Type":
-             result = MathType.find(op=> Number(op.key) === value).text
+            MathType.forEach(group=> {
+                const option = group.options.find(op=>op.value === value)
+                if(option !== undefined){
+                    result = option.text
+                }
+            })
              break;
      
          default:
