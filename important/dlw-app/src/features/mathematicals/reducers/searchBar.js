@@ -33,12 +33,17 @@ export const criteriaSlice = createSlice({
         clearAll(state) {
             state.Criterias = []
             state.Questions = []
-            state.ShowResult = false
+            state.CheckResult = false
+            state.ShowAnswer = false
             state.Score = 0
         },
 
         checkResult(state) {
-            state.ShowResult = !state.ShowResult
+            state.CheckResult = !state.CheckResult
+        },
+
+        showAnswer(state) {
+          state.ShowAnswer = !state.ShowAnswer
         },
 
         submitResult(state) {
@@ -98,10 +103,11 @@ export const criteriaSlice = createSlice({
     },
 });
 
-export const { clearAll, saveCriterias, checkResult, submitResult,updateAnswer,addCriteriaTemplate} = criteriaSlice.actions;
+export const { clearAll, saveCriterias, checkResult, showAnswer, submitResult,updateAnswer,addCriteriaTemplate} = criteriaSlice.actions;
 export const currentCriterias = (state) => state.criteria.Criterias;
 export const currentQuestions = (state) => state.criteria.Questions;
-export const currentShowResult = (state) => state.criteria.ShowResult;
+export const currentCheckResult = (state) => state.criteria.CheckResult;
+export const currentShowAnswer = (state) => state.criteria.ShowAnswer;
 export const currentScore = (state) => state.criteria.Score;
 
 export default criteriaSlice.reducer;

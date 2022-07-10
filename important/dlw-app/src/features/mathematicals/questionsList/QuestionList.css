@@ -1,8 +1,19 @@
 .form-style-right{
-	max-width: 800px;
 	padding: 20px 12px 10px 20px;
 	font: 13px Arial, Helvetica, sans-serif;
 }
+.question-root{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.question-item{
+	margin: 0px 20px 15px 0px;
+}
+.buttons{
+	margin: 0px 10px 15px 0px !important;
+}
+
 .form-style-right-heading{
 	font-weight: bold;
 	font-style: italic;
@@ -10,10 +21,6 @@
 	margin-bottom: 20px;
 	font-size: 15px;
 	padding-bottom: 3px;
-}
-.form-style-right div{
-	display: block;
-	margin: 0px 0px 15px 0px;
 }
 .form-style-right div > span{
 	width: 160px;

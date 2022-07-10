@@ -20,12 +20,17 @@ const Question = (props) => {
     }
 
     return (
-        <div key={props.index}>
+        <div className="question-item" key={props.index}>
             <span>{props.index+1}.</span>
             <span>{props.Question}</span>
             <input key="value" className="number-range-field" type="number" onChange={e => handleChange(e)}/>
-            {props.showResult?
-            (<span>{props.Answer == props.UserAnswer?(correct):(wrong)} Answer: {props.Answer}</span>)
+            {props.checkResult?
+            (<text>{props.Answer == props.UserAnswer?(correct):(wrong) }</text>)
+            :""
+            }
+
+            {props.showAnswer?
+            (<text>Answer: {props.Answer}</text>)
             :""
             }
         </div>)
