@@ -4,9 +4,9 @@ export const MathCategory = [
 ]
 
 export const MathKind = [
-    {key: "1", text: "第一个数：? * b= c ", value: 1},
-    {key: "2", text: "第二个数: a * ?= c ", value: 2},
-    {key: "3", text: "结果: a * b= ? ", value: 3}
+    {key: "1", text: "第一个数：? + b= c ", value: 1},
+    {key: "2", text: "第二个数: a + ?= c ", value: 2},
+    {key: "3", text: "结果: a + b= ? ", value: 3}
 ]
 
 export const MathType = [

@@ -1,6 +1,6 @@
 import axios from 'axios';
 const instance = axios.create({
-    baseURL: 'http://192.168.1.12:8484/'
+    baseURL: 'http://localhost:8484/'
 });
 
 export function GetProblems(params){

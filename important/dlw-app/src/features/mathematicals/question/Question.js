@@ -1,11 +1,12 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCheckCircle, faXmarkCircle} from "@fortawesome/free-solid-svg-icons";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
     updateAnswer
 } from '../reducers/searchBar';
+import { display } from '@mui/system';
 
 const correct = <FontAwesomeIcon icon={faCheckCircle} style={{color:'green', fontSize: '20px'}}/>
 const wrong =<FontAwesomeIcon icon={faXmarkCircle} style={{color:'red', fontSize: '20px'}}/>
@@ -13,24 +14,27 @@ const wrong =<FontAwesomeIcon icon={faXmarkCircle} style={{color:'red', fontSize
 
 const Question = (props) => {
     const dispatch =useDispatch()
-
     const handleChange = (e) => {
         const value =Number(e.target.value)
         dispatch(updateAnswer({index: props.index, answer: value}))
     }
 
-    return (
-        <div className="question-item" key={props.index}>
-            <span>{props.index+1}.</span>
-            <span>{props.Question}</span>
-            <input key="value" className="number-range-field" type="number" onChange={e => handleChange(e)}/>
+    let display = 'flex'
+    if(props.Display === false){
+        display = 'none'
+    }
+
+    return (<div className="question-item" key={props.index} style={{display: display}}>
+            <div className='question-item-no'>{props.index+1}.</div>
+            <div className='question-item-body'>{props.Question}</div>
+            <input key="value" className="number-range-field" type="number" value={props.UserAnswer} onChange={e => handleChange(e)}/>
             {props.checkResult?
-            (<text>{props.Answer == props.UserAnswer?(correct):(wrong) }</text>)
+            (<div className='question-item-check'>{props.Answer === props.UserAnswer?(correct):(wrong) }</div>)
             :""
             }
 
             {props.showAnswer?
-            (<text>Answer: {props.Answer}</text>)
+            (<div className='question-item-answer'>Answer: {props.Answer}</div>)
             :""
             }
         </div>)
