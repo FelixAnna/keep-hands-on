@@ -26,93 +26,97 @@ export const criteriaSlice = createSlice({
     initialState,
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
-        saveCriterias(state, action) {
-            state.Criterias.push(action.payload)
-        },
+      saveCriterias(state, action) {
+          state.Criterias.push(action.payload)
+      },
 
-        clearAll(state) {
-            state.Criterias = []
-            state.Questions = []
-            state.CheckResult = false
-            state.ShowAnswer = false
-            state.Score = 0
-        },
+      clearAll(state) {
+          state.Criterias = []
+          state.Questions = []
+          state.CheckResult = false
+          state.ShowAnswer = false
+          state.Score = 0
+      },
 
-        checkResult(state) {
-            state.CheckResult = !state.CheckResult
-        },
+      checkResult(state) {
+          state.CheckResult = !state.CheckResult
+      },
 
-        showAnswer(state) {
-          state.ShowAnswer = !state.ShowAnswer
-        },
+      showAnswer(state) {
+        state.ShowAnswer = !state.ShowAnswer
+      },
 
-        submitResult(state) {
-          const correct = state.Questions.filter(x=>x.Answer === x.UserAnswer).length
-          const score = correct / state.Questions.length * 100
-          state.Score = score.toFixed(2)
-          
-          displayCorrect = !displayCorrect
-          state.Questions.filter(x=>x.Answer === x.UserAnswer).forEach(x=>{
-            x.Display = displayCorrect
-          })
+      submitResult(state) {
+        const correct = state.Questions.filter(x=>x.Answer === x.UserAnswer).length
+        const score = correct / state.Questions.length * 100
+        state.Score = score.toFixed(2)
+        
+        displayCorrect = !displayCorrect
+        state.Questions.filter(x=>x.Answer === x.UserAnswer).forEach(x=>{
+          x.Display = displayCorrect
+        })
 
-          const results = {
-            Questions: state.Questions.map((x, i) => {
-                        return {
-                            Index: i,
-                            Question: x.Question,
-                            Answer: x.Answer,
-                            Category: x.Category,
-                            Kind: x.Kind,
-                            Type: x.Type,
-                            UserAnswer: x.UserAnswer
-                        }
-                    }),
-            Score: state.Score
+        const results = {
+          Questions: state.Questions.map((x, i) => {
+                      return {
+                          Index: i,
+                          Question: x.Question,
+                          Answer: x.Answer,
+                          Category: x.Category,
+                          Kind: x.Kind,
+                          Type: x.Type,
+                          UserAnswer: x.UserAnswer
+                      }
+                  }),
+          Score: state.Score
+        }
+
+        //save to database
+        //todo
+        console.log(results)
+        console.log("Score:", score)
+      },
+
+      updateAnswer(state, action) {
+        const {index, answer} = action.payload
+        state.Questions.at(index).UserAnswer = answer
+      },
+
+      addCriteriaTemplate(state, action){
+        const {category, quantity, max} = action.payload
+
+        var criterias = []
+        MathCategory.forEach(cat => {
+          if(category!==-1 && category!== cat.value){
+            return
           }
+          MathKind.forEach(kind => {
+            MathType.forEach(group =>{
+              group.options.forEach(type => {
+                  if (type.value === 0 && cat.value === 0) {
+                    return
+                  }
 
-          //save to database
-          //todo
-          console.log(results)
-        },
+                  const criteria = {
+                    Min: 10, Max: max,
+                    Quantity: quantity,
+                    Range:{
+                        Min: 10,
+                        Max:max,
+                    },
+                    Category: cat.value, 
+                    Kind: kind.value, 
+                    Type: type.value
+                  }
 
-        updateAnswer(state, action) {
-          const {index, answer} = action.payload
-          state.Questions.at(index).UserAnswer = answer
-        },
-
-        addCriteriaTemplate(state, action){
-          const {category, quantity, max} = action.payload
-
-          var criterias = []
-          MathCategory.forEach(cat => {
-            if(category!==-1 && category!== cat.value){
-              return
-            }
-            MathKind.forEach(kind => {
-              MathType.forEach(type =>{
-                const criteria = {
-                  Min: 0, Max: max,
-                  Quantity: quantity,
-              
-                  Range:{
-                      Min: 0,
-                      Max:max,
-                  },
-              
-                  Category: cat.value, 
-                  Kind: kind.value, 
-                  Type: type.value
-              }
-
-              criterias.push(criteria)
+                criterias.push(criteria)
               })
             })
-
           });
+        });
 
-          state.Criterias = criterias
-        }
+        state.Criterias = criterias
+      },
     },  
     // The `extraReducers` field lets the slice handle actions defined elsewhere,
     // including actions generated by createAsyncThunk or in other slices.
