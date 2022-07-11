@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import {
     updateAnswer
 } from '../reducers/searchBar';
-import { display } from '@mui/system';
 
 const correct = <FontAwesomeIcon icon={faCheckCircle} style={{color:'green', fontSize: '20px'}}/>
 const wrong =<FontAwesomeIcon icon={faXmarkCircle} style={{color:'red', fontSize: '20px'}}/>
