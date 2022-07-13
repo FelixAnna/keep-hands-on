@@ -6,3 +6,7 @@ const instance = axios.create({
 export function GetProblems(params){
     return instance.post(`/homework/math/multiple`, params)
 }
+
+export function SaveResults(data){
+    return instance.post(`/homework/math/save`, data, {params: {access_code: "test"}})
+}

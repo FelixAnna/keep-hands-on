@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {GetProblems} from '../../../api/request'
+import {GetProblems, SaveResults} from '../../../api/request'
 import {MathCategory, MathKind, MathType} from '../const'
 
 const initialState = { 
     Criterias: [],
     Questions: [],
-    ShowResult: false
+    ShowResult: false,
+    ShowAnswer: false,
+    Score: 0,
+    QuestionId: ""
 };
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -36,6 +39,7 @@ export const criteriaSlice = createSlice({
           state.CheckResult = false
           state.ShowAnswer = false
           state.Score = 0
+          state.QuestionId = ""
       },
 
       checkResult(state) {
@@ -50,6 +54,10 @@ export const criteriaSlice = createSlice({
         const correct = state.Questions.filter(x=>x.Answer === x.UserAnswer).length
         const score = correct / state.Questions.length * 100
         state.Score = score.toFixed(2)
+
+        if(score === 0){
+          return
+        }
         
         displayCorrect = !displayCorrect
         state.Questions.filter(x=>x.Answer === x.UserAnswer).forEach(x=>{
@@ -57,24 +65,24 @@ export const criteriaSlice = createSlice({
         })
 
         const results = {
-          Questions: state.Questions.map((x, i) => {
+          Results: state.Questions.map((x, i) => {
                       return {
-                          Index: i,
+                          Index: i+1,
                           Question: x.Question,
-                          Answer: x.Answer,
+                          Answer: x.Answer.toString(),
                           Category: x.Category,
                           Kind: x.Kind,
                           Type: x.Type,
-                          UserAnswer: x.UserAnswer
+                          UserAnswer: x.UserAnswer === undefined? "":x.UserAnswer.toString()
                       }
                   }),
-          Score: state.Score
+          Score: score,
+          QuestionId: state.QuestionId
         }
 
         //save to database
-        //todo
         console.log(results)
-        console.log("Score:", score)
+        SaveResults(results)
       },
 
       updateAnswer(state, action) {
@@ -127,7 +135,8 @@ export const criteriaSlice = createSlice({
         })
         .addCase(loadAsync.fulfilled, (state, action) => {
           state.status = 'idle';
-          state.Questions = action.payload;
+          state.Questions = action.payload.Questions;
+          state.QuestionId =action.payload.QuestionId;
         });
     },
 });
