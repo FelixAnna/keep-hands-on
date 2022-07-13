@@ -1,148 +1,150 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {GetProblems, SaveResults} from '../../../api/request'
-import {MathCategory, MathKind, MathType} from '../const'
+import { GetProblems, SaveResults } from '../../../api/request';
+import { MathCategory, MathKind, MathType } from '../const';
 
-const initialState = { 
-    Criterias: [],
-    Questions: [],
-    ShowResult: false,
-    ShowAnswer: false,
-    Score: 0,
-    QuestionId: ""
+const initialState = {
+  Criterias: [],
+  Questions: [],
+  ShowResult: false,
+  ShowAnswer: false,
+  Score: 0,
+  QuestionId: '',
 };
+
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 export const loadAsync = createAsyncThunk(
-    'criteria/GetProblems',
-    async (criterias) => {
-      const response = await GetProblems(criterias);
-      // The value we return becomes the `fulfilled` action payload
-      return response.data;
-    }
-  );
-let displayCorrect = true 
+  'criteria/GetProblems',
+  async (criterias) => {
+    const response = await GetProblems(criterias);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  },
+);
+let displayCorrect = true;
 export const criteriaSlice = createSlice({
-    name: 'criteria',
-    initialState,
-    // The `reducers` field lets us define reducers and generate associated actions
-    reducers: {
-      saveCriterias(state, action) {
-          state.Criterias.push(action.payload)
-      },
+  name: 'criteria',
+  initialState,
+  // The `reducers` field lets us define reducers and generate associated actions
+  reducers: {
+    saveCriterias(state, action) {
+      state.Criterias.push(action.payload);
+    },
 
-      clearAll(state) {
-          state.Criterias = []
-          state.Questions = []
-          state.CheckResult = false
-          state.ShowAnswer = false
-          state.Score = 0
-          state.QuestionId = ""
-      },
+    clearAll(state) {
+      state.Criterias = [];
+      state.Questions = [];
+      state.CheckResult = false;
+      state.ShowAnswer = false;
+      state.Score = 0;
+      state.QuestionId = '';
+    },
 
-      checkResult(state) {
-          state.CheckResult = !state.CheckResult
-      },
+    checkResult(state) {
+      state.CheckResult = !state.CheckResult;
+    },
 
-      showAnswer(state) {
-        state.ShowAnswer = !state.ShowAnswer
-      },
+    showAnswer(state) {
+      state.ShowAnswer = !state.ShowAnswer;
+    },
 
-      submitResult(state) {
-        const correct = state.Questions.filter(x=>x.Answer === x.UserAnswer).length
-        const score = correct / state.Questions.length * 100
-        state.Score = score.toFixed(2)
+    submitResult(state) {
+      const correct = state.Questions.filter((x) => x.Answer === x.UserAnswer).length;
+      const score = correct / state.Questions.length;
+      state.Score = score.toFixed(2) * 100;
 
-        if(score === 0){
-          return
+      if (score === 0) {
+        return;
+      }
+
+      displayCorrect = !displayCorrect;
+      state.Questions.filter((item) => item.Answer === item.UserAnswer).forEach((item) => {
+        item.Display = displayCorrect;
+      });
+
+      const results = {
+        Results: state.Questions.map((x, i) => ({
+          Index: i + 1,
+          Question: x.Question,
+          Answer: x.Answer.toString(),
+          Category: x.Category,
+          Kind: x.Kind,
+          Type: x.Type,
+          UserAnswer: x.UserAnswer === undefined ? '' : x.UserAnswer.toString(),
+        })),
+        Score: state.Score,
+        QuestionId: state.QuestionId,
+      };
+
+      // save to database
+      // console.log(results);
+      SaveResults(results);
+    },
+
+    updateAnswer(state, action) {
+      const { index, answer } = action.payload;
+      state.Questions.at(index).UserAnswer = answer;
+    },
+
+    addCriteriaTemplate(state, action) {
+      const { category, quantity, max } = action.payload;
+
+      const criterias = [];
+      MathCategory.forEach((cat) => {
+        if (category !== -1 && category !== cat.value) {
+          return;
         }
-        
-        displayCorrect = !displayCorrect
-        state.Questions.filter(x=>x.Answer === x.UserAnswer).forEach(x=>{
-          x.Display = displayCorrect
-        })
+        MathKind.forEach((kind) => {
+          MathType.forEach((group) => {
+            group.options.forEach((type) => {
+              if (type.value === 0 && cat.value === 0) {
+                return;
+              }
 
-        const results = {
-          Results: state.Questions.map((x, i) => {
-                      return {
-                          Index: i+1,
-                          Question: x.Question,
-                          Answer: x.Answer.toString(),
-                          Category: x.Category,
-                          Kind: x.Kind,
-                          Type: x.Type,
-                          UserAnswer: x.UserAnswer === undefined? "":x.UserAnswer.toString()
-                      }
-                  }),
-          Score: score,
-          QuestionId: state.QuestionId
-        }
+              const criteria = {
+                Min: 10,
+                Max: max,
+                Quantity: quantity,
+                Range: {
+                  Min: 10,
+                  Max: max,
+                },
+                Category: cat.value,
+                Kind: kind.value,
+                Type: type.value,
+              };
 
-        //save to database
-        console.log(results)
-        SaveResults(results)
-      },
-
-      updateAnswer(state, action) {
-        const {index, answer} = action.payload
-        state.Questions.at(index).UserAnswer = answer
-      },
-
-      addCriteriaTemplate(state, action){
-        const {category, quantity, max} = action.payload
-
-        var criterias = []
-        MathCategory.forEach(cat => {
-          if(category!==-1 && category!== cat.value){
-            return
-          }
-          MathKind.forEach(kind => {
-            MathType.forEach(group =>{
-              group.options.forEach(type => {
-                  if (type.value === 0 && cat.value === 0) {
-                    return
-                  }
-
-                  const criteria = {
-                    Min: 10, Max: max,
-                    Quantity: quantity,
-                    Range:{
-                        Min: 10,
-                        Max:max,
-                    },
-                    Category: cat.value, 
-                    Kind: kind.value, 
-                    Type: type.value
-                  }
-
-                criterias.push(criteria)
-              })
-            })
+              criterias.push(criteria);
+            });
           });
         });
+      });
 
-        state.Criterias = criterias
-      },
-    },  
-    // The `extraReducers` field lets the slice handle actions defined elsewhere,
-    // including actions generated by createAsyncThunk or in other slices.
-    extraReducers: (builder) => {
-      builder
-        .addCase(loadAsync.pending, (state) => {
-          state.status = 'loading';
-        })
-        .addCase(loadAsync.fulfilled, (state, action) => {
-          state.status = 'idle';
-          state.Questions = action.payload.Questions;
-          state.QuestionId =action.payload.QuestionId;
-          state.Questions.forEach(q=>q.UserAnswer="");
-        });
+      state.Criterias = criterias;
     },
+  },
+  // The `extraReducers` field lets the slice handle actions defined elsewhere,
+  // including actions generated by createAsyncThunk or in other slices.
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(loadAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.Questions = action.payload.Questions;
+        state.QuestionId = action.payload.QuestionId;
+        state.Questions.forEach((item) => { item.UserAnswer = ''; });
+      });
+  },
 });
 
-export const { clearAll, saveCriterias, checkResult, showAnswer, submitResult,updateAnswer,addCriteriaTemplate} = criteriaSlice.actions;
+export const {
+  clearAll, saveCriterias, checkResult, showAnswer, submitResult, updateAnswer, addCriteriaTemplate,
+} = criteriaSlice.actions;
 export const currentCriterias = (state) => state.criteria.Criterias;
 export const currentQuestions = (state) => state.criteria.Questions;
 export const currentCheckResult = (state) => state.criteria.CheckResult;

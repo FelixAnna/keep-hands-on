@@ -1,7 +1,4 @@
-import React, {useState} from 'react';
-import SearchBar from "./searchBar/SearchBar";
-import QuestionList from './questionsList/QuestionList';
-import CriteriaList from './criteriaList/CriteriaList';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -9,25 +6,29 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
+import CriteriaList from './criteriaList/CriteriaList';
+import QuestionList from './questionsList/QuestionList';
+import SearchBar from './searchBar/SearchBar';
 import {
-    loadAsync,currentCriterias
+  loadAsync, currentCriterias,
 } from './reducers/searchBar';
-export function Mathematicals() {
+
+function Mathematicals() {
   const [value, setValue] = useState('1');
+  const dispatch = useDispatch();
+  const criterias = useSelector(currentCriterias);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const handleGenerate = () => {
-    if(criterias === undefined || criterias.length ===0 ) {
-        return
+    if (criterias === undefined || criterias.length === 0) {
+      return;
     }
-    dispatch(loadAsync(criterias))
-    setValue("2")
-  }
-  
-  const dispatch = useDispatch();
-  const criterias = useSelector(currentCriterias)
+    dispatch(loadAsync(criterias));
+    setValue('2');
+  };
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -39,14 +40,15 @@ export function Mathematicals() {
           </TabList>
         </Box>
         <TabPanel value="1">
-            <SearchBar />
-            <CriteriaList />
-            <Button variant="outlined" onClick={handleGenerate} >刷新题目列表</Button>
+          <SearchBar />
+          <CriteriaList />
+          <Button variant="outlined" onClick={handleGenerate}>刷新题目列表</Button>
         </TabPanel>
         <TabPanel value="2">
-            <QuestionList />
+          <QuestionList />
         </TabPanel>
       </TabContext>
     </Box>
   );
 }
+export default Mathematicals;

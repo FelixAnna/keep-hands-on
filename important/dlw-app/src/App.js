@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {Mathematicals} from './features/mathematicals/index'
+import Mathematicals from './features/mathematicals/index';
 
 function App() {
   return (
