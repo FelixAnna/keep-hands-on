@@ -137,6 +137,7 @@ export const criteriaSlice = createSlice({
           state.status = 'idle';
           state.Questions = action.payload.Questions;
           state.QuestionId =action.payload.QuestionId;
+          state.Questions.forEach(q=>q.UserAnswer="");
         });
     },
 });
