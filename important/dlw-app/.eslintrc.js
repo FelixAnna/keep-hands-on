@@ -18,16 +18,16 @@ module.exports = {
     'react',
   ],
   rules: {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "no-param-reassign": [
-      "error",
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'no-param-reassign': [
+      'error',
       {
-        "props": true,
-        "ignorePropertyModificationsFor": [
-          "state",
-          "item"
-        ]
-      }
-    ]
+        props: true,
+        ignorePropertyModificationsFor: [
+          'state',
+          'item',
+        ],
+      },
+    ],
   },
 };
