@@ -32,8 +32,8 @@ function QuestionList() {
     <div className="form-style-right">
       <div className="question-root">
         {
-                questions !== undefined ? qestionList : (<div>No data</div>)
-            }
+            questions !== undefined ? qestionList : (<div>No data</div>)
+        }
       </div>
       <Button variant="outlined" className="buttons" onClick={() => dispatch(showAnswer())}>答案</Button>
       <Button variant="outlined" className="buttons" onClick={() => dispatch(checkResult())}>检查</Button>

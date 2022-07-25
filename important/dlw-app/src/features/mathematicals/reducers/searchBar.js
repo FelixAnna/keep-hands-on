@@ -134,10 +134,10 @@ export const criteriaSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(loadAsync.fulfilled, (state, action) => {
+        const questions = action.payload.Questions;
         state.status = 'idle';
-        state.Questions = action.payload.Questions;
         state.QuestionId = action.payload.QuestionId;
-        state.Questions.forEach((item) => { item.UserAnswer = ''; });
+        state.Questions = questions;
       });
   },
 });

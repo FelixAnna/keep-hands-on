@@ -164,7 +164,7 @@ function SearchBar() {
             <span>输出格式:</span>
             <select className="select-field" value={criteria.Type} onChange={(e) => handleChange(e, 6)}>
               {MathType.map((gp) => (
-                <optgroup label={gp.text}>
+                <optgroup label={gp.text} key={gp.key}>
                   {gp.options.map((op) => <option key={op.key} value={op.key}>{op.text}</option>)}
                 </optgroup>
               ))}

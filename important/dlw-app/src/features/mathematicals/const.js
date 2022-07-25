@@ -12,12 +12,14 @@ export const MathKind = [
 export const MathType = [
   {
     text: '算术表达式',
+    key: 1,
     options: [
       { key: '0', text: 'a+b=c', value: 0 },
     ],
   },
   {
     text: '应用题',
+    key: 2,
     options: [
       { key: '1', text: '比a多b的数是c', value: 1 },
     ],
