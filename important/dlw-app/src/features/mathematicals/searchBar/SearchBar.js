@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import {
-  clearAll, saveCriterias, addCriteriaTemplate,
+  clearAll, addCriteria, addCriteriaTemplate,
 } from '../reducers/searchBar';
 import { MathCategory, MathKind, MathType } from '../const';
 
@@ -175,7 +175,7 @@ function SearchBar() {
             <input className="input-field" type="number" min="1" max="1000" value={criteria.Quantity} onChange={(e) => handleChange(e, 7)} />
           </div>
           <div>
-            <input type="submit" value="加入队列" onClick={() => dispatch(saveCriterias(getCriteria()))} />
+            <input type="submit" value="加入队列" onClick={() => dispatch(addCriteria(getCriteria()))} />
             <input type="button" value="清除所有" onClick={() => dispatch(clearAll())} />
           </div>
         </div>

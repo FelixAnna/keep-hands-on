@@ -5,7 +5,7 @@ import Question from '../question/Question';
 import './QuestionList.css';
 
 import {
-  currentQuestions, checkResult, showAnswer, currentCheckResult,
+  currentQuestions, updateShowResult, updateShowAnswer, currentShowResult,
   currentShowAnswer, submitResult, currentScore,
 } from '../reducers/searchBar';
 
@@ -13,14 +13,14 @@ function QuestionList() {
   const score = useSelector(currentScore);
   const dispatch = useDispatch();
   const questions = useSelector(currentQuestions);
-  const result = useSelector(currentCheckResult);
+  const result = useSelector(currentShowResult);
   const answer = useSelector(currentShowAnswer);
 
   let qestionList = [];
   if (questions !== undefined) {
     qestionList = questions.map((q, i) => {
       const data = { ...q };
-      data.checkResult = result;
+      data.showResult = result;
       data.showAnswer = answer;
       data.index = i;
 
@@ -35,8 +35,8 @@ function QuestionList() {
             questions !== undefined ? qestionList : (<div>No data</div>)
         }
       </div>
-      <Button variant="outlined" className="buttons" onClick={() => dispatch(showAnswer())}>答案</Button>
-      <Button variant="outlined" className="buttons" onClick={() => dispatch(checkResult())}>检查</Button>
+      <Button variant="outlined" className="buttons" onClick={() => dispatch(updateShowAnswer())}>答案</Button>
+      <Button variant="outlined" className="buttons" onClick={() => dispatch(updateShowResult())}>检查</Button>
       <Button variant="outlined" className="buttons" onClick={() => dispatch(submitResult())}>交卷</Button>
       <div />
       <div>
