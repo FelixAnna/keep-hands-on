@@ -8,9 +8,9 @@ function SocialLogin() {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
-  const dispatch = useDispatch();
   const loginStatus = useSelector(currentLoginStatus);
 
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loginAsync({ code, state }));
   }, []);
