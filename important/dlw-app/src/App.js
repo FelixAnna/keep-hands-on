@@ -8,7 +8,7 @@ import ResponsiveAppBar from './features/appbar/appbar';
 import Home from './features/home';
 import Logout from './features/auth/logout';
 import Login from './features/login';
-import SocialLogin from './features/social/login';
+import SocialLogin from './features/social/github';
 import Mathematicals from './features/mathematicals/index';
 import PrivateRoute from './features/auth/privateRoute';
 

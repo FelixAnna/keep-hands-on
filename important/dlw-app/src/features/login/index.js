@@ -3,8 +3,9 @@ import Link from '@mui/material/Link';
 import getAuthorizeUrl, { githubAuthOptions } from './provider';
 
 function Login() {
-  const state = 'state123';
-  const url = getAuthorizeUrl(githubAuthOptions, state);
+  const st = 'state123';
+  const url = getAuthorizeUrl(githubAuthOptions, st);
+
   return (
     <div>
       <div>Login Page</div>

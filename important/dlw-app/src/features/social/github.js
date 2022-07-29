@@ -1,19 +1,26 @@
 import React, { useEffect } from 'react';
-import { useSearchParams, Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { loginAsync, currentLoginStatus } from './reducer';
+import {
+  useSearchParams,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginAsync } from './reducer';
 
 function SocialLogin() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
   const state = searchParams.get('state');
-  const dispatch = useDispatch();
 
-  const loginStatus = useSelector(currentLoginStatus);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loginAsync({ code, state }))
       .then(() => {
-        console.log('welcome!');
+        console.log(from);
+        navigate('/math');
       });
   }, []);
 
@@ -22,9 +29,6 @@ function SocialLogin() {
       <div>Social Login Page: Log you in ...</div>
       <div>{code}</div>
       <div>{state}</div>
-      <div>
-        { loginStatus ? <Navigate to="/math" replace="true" /> : '' }
-      </div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout, currentLoginStatus } from '../social/reducer';
 
 function Logout() {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const loginStatus = useSelector(currentLoginStatus);
 
   const dispatch = useDispatch();
@@ -13,9 +13,8 @@ function Logout() {
       return;
     }
 
-    dispatch(logout()).then(() => {
-      history.push('/');
-    });
+    dispatch(logout());
+    navigate('/home');
   }, []);
 
   return loginStatus ? (
