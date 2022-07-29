@@ -35,12 +35,18 @@
 	padding-right: 5px;
     font-family: cursive;
 }
+
+.question-item-check{
+	padding: 5px;
+}
+
 .question-item-body{
 	width: 160px;
 }
 
 .question-item-answer{
     width: 80px;
+	color:blue;
 }
 
 .form-style-right .number-range-field{
