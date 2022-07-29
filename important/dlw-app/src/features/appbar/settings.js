@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
@@ -44,7 +44,7 @@ function ResponsiveUserSettings() {
       >
         {settings.map((setting) => (
           <MenuItem key={setting.Path} onClick={handleCloseUserMenu}>
-            <Typography component="a" textAlign="center" href={setting.Path}>{setting.Text}</Typography>
+            <Link textAlign="center" to={setting.Path}>{setting.Text}</Link>
           </MenuItem>
         ))}
       </Menu>

@@ -18,6 +18,7 @@ function App() {
     <div className="App">
       <ProvideAuth>
         <ResponsiveAppBar />
+        <h1>Auth Example</h1>
         <Routes>
           <Route path="home" element={<Home />} />
           <Route path="logout" element={<Logout />} />
