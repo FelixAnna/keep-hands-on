@@ -1,13 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './useAuth';
 import { logout, currentLoginStatus } from '../social/reducer';
 
 function Logout() {
   const history = useNavigate();
-  const auth = useAuth();
-
   const loginStatus = useSelector(currentLoginStatus);
 
   const dispatch = useDispatch();
@@ -16,11 +13,12 @@ function Logout() {
       return;
     }
 
-    dispatch(logout());
-    auth.signout(() => history.push('/'));
+    dispatch(logout()).then(() => {
+      history.push('/');
+    });
   }, []);
 
-  return auth.user ? (
+  return loginStatus ? (
     <p>
       Log you out ...
     </p>

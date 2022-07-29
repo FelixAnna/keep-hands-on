@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
 import { useSearchParams, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { currentLoginStatus } from './reducer';
-import { useAuth } from '../auth/useAuth';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginAsync, currentLoginStatus } from './reducer';
 
 function SocialLogin() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
   const state = searchParams.get('state');
+  const dispatch = useDispatch();
 
   const loginStatus = useSelector(currentLoginStatus);
-  const auth = useAuth();
-
   useEffect(() => {
-    auth.signinWithGithub(code, state, () => { console.log('welcome!'); });
+    dispatch(loginAsync({ code, state }))
+      .then(() => {
+        console.log('welcome!');
+      });
   }, []);
 
   return (

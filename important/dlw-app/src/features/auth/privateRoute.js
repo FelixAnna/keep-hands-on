@@ -3,16 +3,17 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useAuth } from './useAuth';
+import { currentLoginStatus } from '../social/reducer';
 
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
 function PrivateRoute({ children }) {
-  const auth = useAuth();
   const location = useLocation();
+  const loginStatus = useSelector(currentLoginStatus);
 
-  if (!auth.user) {
+  if (!loginStatus) {
     return <Navigate to="/login" state={{ from: location }} />;
   }
 

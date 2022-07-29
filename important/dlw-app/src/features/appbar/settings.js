@@ -44,7 +44,7 @@ function ResponsiveUserSettings() {
       >
         {settings.map((setting) => (
           <MenuItem key={setting.Path} onClick={handleCloseUserMenu}>
-            <Link textAlign="center" to={setting.Path}>{setting.Text}</Link>
+            <Link to={setting.Path}>{setting.Text}</Link>
           </MenuItem>
         ))}
       </Menu>

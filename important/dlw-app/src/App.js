@@ -4,7 +4,6 @@ import {
   Route,
 } from 'react-router-dom';
 import './App.css';
-import ProvideAuth from './features/auth/provideAuthGithub';
 import ResponsiveAppBar from './features/appbar/appbar';
 import Home from './features/home';
 import Logout from './features/auth/logout';
@@ -16,7 +15,7 @@ import PrivateRoute from './features/auth/privateRoute';
 function App() {
   return (
     <div className="App">
-      <ProvideAuth>
+      <div>
         <ResponsiveAppBar />
         <h1>Auth Example</h1>
         <Routes>
@@ -26,7 +25,7 @@ function App() {
           <Route path="login/social" element={<SocialLogin />} />
           <Route exact path="/math" element={<PrivateRoute><Mathematicals /></PrivateRoute>} />
         </Routes>
-      </ProvideAuth>
+      </div>
     </div>
   );
 }

@@ -50,7 +50,7 @@ function ResponsiveLeftMenu() {
       >
         {pages.map((page) => (
           <MenuItem key={page.Path} onClick={handleCloseNavMenu}>
-            <Link textAlign="center" to={page.Path}>{page.Text}</Link>
+            <Link to={page.Path}>{page.Text}</Link>
           </MenuItem>
         ))}
       </Menu>
