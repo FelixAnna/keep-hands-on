@@ -13,7 +13,7 @@ function SocialLogin() {
   const auth = useAuth();
 
   useEffect(() => {
-    auth.signin(code, state);
+    auth.signinWithGithub(code, state, () => { console.log('welcome!'); });
   }, []);
 
   return (

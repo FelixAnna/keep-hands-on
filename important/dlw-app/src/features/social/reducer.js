@@ -29,6 +29,9 @@ export const socialSlice = createSlice({
     logout(state) {
       state.isAuthenticated = false;
       state.User = {};
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('isAuthenticated');
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -45,6 +48,8 @@ export const socialSlice = createSlice({
         state.User = { Email: decoded.email, UserId: decoded.userId };
         state.isAuthenticated = true;
         localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(state.User));
+        localStorage.setItem('isAuthenticated', true);
       });
   },
 });

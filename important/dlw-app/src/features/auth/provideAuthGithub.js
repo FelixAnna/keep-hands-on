@@ -8,20 +8,20 @@ function useProvideAuth() {
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
-  const signin = (code, state, cb) => dispatch(loginAsync({ code, state }))
+  const signinWithGithub = (code, state, callback) => dispatch(loginAsync({ code, state }))
     .then(() => {
       setUser('user');
-      cb();
+      callback();
     });
 
-  const signout = (cb) => dispatch(logout()).then(() => {
+  const signout = (callback) => dispatch(logout()).then(() => {
     setUser(null);
-    cb();
+    callback();
   });
 
   return {
     user,
-    signin,
+    signinWithGithub,
     signout,
   };
 }
