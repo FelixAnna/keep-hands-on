@@ -4,7 +4,7 @@ import { LoginGithubUser } from '../../api/request';
 
 const initialState = {
   Status: 'initial',
-  Login: false,
+  isAuthenticated: false,
   User: {},
 };
 
@@ -27,7 +27,7 @@ export const socialSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     logout(state) {
-      state.Login = false;
+      state.isAuthenticated = false;
       state.User = {};
     },
   },
@@ -42,15 +42,15 @@ export const socialSlice = createSlice({
         state.Status = 'idle';
         const { token } = action.payload;
         const decoded = jwt(token);
-        state.Login = true;
         state.User = { Email: decoded.email, UserId: decoded.userId };
+        state.isAuthenticated = true;
         localStorage.setItem('token', token);
       });
   },
 });
 
 export const { logout } = socialSlice.actions;
-export const currentLoginStatus = (state) => state.social.Login;
+export const currentLoginStatus = (state) => state.social.isAuthenticated;
 export const currentUser = (state) => state.social.User;
 export const currentStatus = (state) => state.social.Status;
 

@@ -1,14 +1,18 @@
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import AdbIcon from '@mui/icons-material/Adb';
+import Link from '@mui/material/Link';
 import ResponsiveUserSettings from './settings';
 import ResponsiveTopMenu from './topmenu';
 import ResponsiveLeftMenu from './leftmenu';
+import { currentLoginStatus } from '../social/reducer';
 
 function ResponsiveAppBar() {
+  const loginStatus = useSelector(currentLoginStatus);
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -53,8 +57,7 @@ function ResponsiveAppBar() {
             DLW
           </Typography>
           <ResponsiveTopMenu />
-
-          <ResponsiveUserSettings />
+          { loginStatus ? <ResponsiveUserSettings /> : (<Link href="/login" color="inherit">Login</Link>) }
         </Toolbar>
       </Container>
     </AppBar>

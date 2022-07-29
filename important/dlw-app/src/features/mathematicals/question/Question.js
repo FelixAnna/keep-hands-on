@@ -31,7 +31,7 @@ function Question(props) {
       </div>
       <div className="question-item-body">{data.Question}</div>
       <input key="value" className="number-range-field" type="number" value={data.UserAnswer} onChange={(e) => handleChange(e)} />
-      {data.checkResult
+      {data.showResult
         ? (<div className="question-item-check">{data.Answer === data.UserAnswer ? (correct) : (wrong) }</div>)
         : ''}
 
@@ -50,7 +50,7 @@ function Question(props) {
 Question.propTypes = {
   data: PropTypes.shape({
     index: PropTypes.number,
-    checkResult: PropTypes.bool,
+    showResult: PropTypes.bool,
     showAnswer: PropTypes.bool,
 
     Display: PropTypes.bool,

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSearchParams, Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { loginAsync, currentLoginStatus } from './reducer';
+import { useSelector } from 'react-redux';
+import { currentLoginStatus } from './reducer';
+import { useAuth } from '../auth/useAuth';
 
 function SocialLogin() {
   const [searchParams] = useSearchParams();
@@ -9,10 +10,10 @@ function SocialLogin() {
   const state = searchParams.get('state');
 
   const loginStatus = useSelector(currentLoginStatus);
+  const auth = useAuth();
 
-  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loginAsync({ code, state }));
+    auth.signin(code, state);
   }, []);
 
   return (

@@ -8,22 +8,22 @@ import './App.css';
 import Mathematicals from './features/mathematicals/index';
 import Login from './features/login';
 import SocialLogin from './features/social/login';
-import ProvideAuth from './features/auth/provideAuth';
+import ProvideAuth from './features/auth/provideAuthGithub';
 import PrivateRoute from './features/auth/privateRoute';
-import AuthButton from './features/auth/authButton';
 import ResponsiveAppBar from './features/appbar/appbar';
 import Home from './features/home';
+import Logout from './features/auth/logout';
 
 function App() {
   return (
     <div className="App">
-      <ResponsiveAppBar />
       <ProvideAuth>
+        <ResponsiveAppBar />
         <BrowserRouter>
           <div>
-            <AuthButton />
             <Routes>
               <Route path="home" element={<Home />} />
+              <Route path="logout" element={<Logout />} />
               <Route path="login" element={<Login />} />
               <Route path="login/social" element={<SocialLogin />} />
               <Route exact path="/math" element={<PrivateRoute><Mathematicals /></PrivateRoute>} />
