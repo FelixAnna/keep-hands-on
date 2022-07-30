@@ -21,3 +21,7 @@ export function SaveResults(data) {
 export function LoginGithubUser(data) {
   return userIstance.get('/oauth2/github/login', { params: { code: data.code, state: data.state } });
 }
+
+export function SearchZdj(data) {
+  return userIstance.get('/zdj/search', { params: { code: data.code, state: data.state } });
+}

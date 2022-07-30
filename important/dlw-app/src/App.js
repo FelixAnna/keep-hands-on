@@ -11,6 +11,7 @@ import Login from './features/login';
 import GithubLogin from './features/login/oauth2/github';
 import Mathematicals from './features/mathematicals/index';
 import PrivateRoute from './features/auth/privateRoute';
+import ZdjSearch from './features/zdj';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="logout" element={<Logout />} />
           <Route path="login" element={<Login />} />
           <Route path="login/github" element={<GithubLogin />} />
+          <Route path="zdj" element={<ZdjSearch />} />
           <Route exact path="/math" element={<PrivateRoute><Mathematicals /></PrivateRoute>} />
         </Routes>
       </div>
