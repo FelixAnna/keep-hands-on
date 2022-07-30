@@ -19,7 +19,7 @@ function Logout() {
 
   return loginStatus ? (
     <p>
-      Log you out ...
+      Logging you out ...
     </p>
   ) : (
     <p>You are not logged in.</p>

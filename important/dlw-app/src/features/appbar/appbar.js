@@ -5,7 +5,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import AdbIcon from '@mui/icons-material/Adb';
-import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 import ResponsiveUserSettings from './settings';
 import ResponsiveTopMenu from './topmenu';
 import ResponsiveLeftMenu from './leftmenu';
@@ -56,7 +57,16 @@ function ResponsiveAppBar() {
             DLW
           </Typography>
           <ResponsiveTopMenu />
-          { loginStatus ? <ResponsiveUserSettings /> : (<Link href="/login" color="inherit">Login</Link>) }
+          { loginStatus ? <ResponsiveUserSettings /> : (
+            <Button
+              key="/login"
+              component={Link}
+              to="/login"
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Login
+            </Button>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

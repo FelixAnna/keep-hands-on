@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
@@ -50,7 +51,13 @@ function ResponsiveLeftMenu() {
       >
         {pages.map((page) => (
           <MenuItem key={page.Path} onClick={handleCloseNavMenu}>
-            <Link to={page.Path}>{page.Text}</Link>
+            <Typography
+              textAlign="center"
+              component={Link}
+              to={page.Path}
+            >
+              {page.Text}
+            </Typography>
           </MenuItem>
         ))}
       </Menu>
