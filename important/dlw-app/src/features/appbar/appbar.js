@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import ResponsiveUserSettings from './settings';
 import ResponsiveTopMenu from './topmenu';
 import ResponsiveLeftMenu from './leftmenu';
-import { currentLoginStatus } from '../social/reducer';
+import { currentLoginStatus } from '../login/reducer';
 
 function ResponsiveAppBar() {
   const loginStatus = useSelector(currentLoginStatus);

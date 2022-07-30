@@ -14,15 +14,15 @@ const initialState = {
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 export const loginAsync = createAsyncThunk(
-  'social/Login',
+  'auth/Login',
   async (params) => {
     const response = await LoginGithubUser(params);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   },
 );
-export const socialSlice = createSlice({
-  name: 'social',
+export const authSlice = createSlice({
+  name: 'auth',
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
@@ -54,9 +54,9 @@ export const socialSlice = createSlice({
   },
 });
 
-export const { logout } = socialSlice.actions;
-export const currentLoginStatus = (state) => state.social.isAuthenticated;
-export const currentUser = (state) => state.social.User;
-export const currentStatus = (state) => state.social.Status;
+export const { logout } = authSlice.actions;
+export const currentLoginStatus = (state) => state.auth.isAuthenticated;
+export const currentUser = (state) => state.auth.User;
+export const currentStatus = (state) => state.auth.Status;
 
-export default socialSlice.reducer;
+export default authSlice.reducer;

@@ -4,9 +4,9 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginAsync } from './reducer';
+import { loginAsync } from '../reducer';
 
-function SocialLogin() {
+function GithubLogin() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
   const state = searchParams.get('state');
@@ -31,4 +31,4 @@ function SocialLogin() {
   );
 }
 
-export default SocialLogin;
+export default GithubLogin;

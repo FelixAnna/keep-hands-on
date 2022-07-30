@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { currentLoginStatus } from '../social/reducer';
+import { currentLoginStatus } from '../login/reducer';
 
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
