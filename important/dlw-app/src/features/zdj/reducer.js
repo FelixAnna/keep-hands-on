@@ -37,6 +37,9 @@ export const zdjSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
+    saveCriteria(state, action) {
+      state.Criteria = action.payload;
+    },
     clearAll(state) {
       state.Criteria = initialState.Criteria;
       state.ZdjItems = [];
@@ -57,7 +60,7 @@ export const zdjSlice = createSlice({
   },
 });
 
-export const { clearAll } = zdjSlice.actions;
+export const { saveCriteria, clearAll } = zdjSlice.actions;
 export const currentCriteria = (state) => state.zdj.Criteria;
 export const currentItems = (state) => state.zdj.ZdjItems;
 

@@ -1,59 +1,36 @@
 import * as React from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
-import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { DistrictCategory } from '../const';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 export default function MultipleSelectCheckmarks() {
-  const [districts, setDistricts] = React.useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setDistricts(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
-
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">District</InputLabel>
-        <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
-          multiple
-          value={districts}
-          onChange={handleChange}
-          input={<OutlinedInput label="District" />}
-          renderValue={(selected) => selected.join(', ')}
-          MenuProps={MenuProps}
-        >
-          {DistrictCategory.map((item) => (
-            <MenuItem key={item.key} value={item.text}>
-              <Checkbox checked={districts.indexOf(item.text) > -1} />
-              <ListItemText primary={item.text} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <Autocomplete
+      multiple
+      id="checkboxes-tags-demo"
+      options={DistrictCategory}
+      disableCloseOnSelect
+      getOptionLabel={(option) => option.text}
+      renderOption={(props, option, { selected }) => (
+        <li {...props}>
+          <Checkbox
+            icon={icon}
+            checkedIcon={checkedIcon}
+            style={{ marginRight: 8 }}
+            checked={selected}
+          />
+          {option.text}
+        </li>
+      )}
+      style={{ width: 380 }}
+      renderInput={(params) => (
+        <TextField {...params} label="行政区" placeholder="请选择" />
+      )}
+    />
   );
 }

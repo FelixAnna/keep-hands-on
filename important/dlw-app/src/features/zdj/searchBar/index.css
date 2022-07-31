@@ -1,5 +1,4 @@
 .form-style{
-	max-width: 500px;
 	padding: 20px 12px 10px 20px;
 	font: 13px Arial, Helvetica, sans-serif;
 }
@@ -10,10 +9,14 @@
 	margin-bottom: 20px;
 	font-size: 15px;
 	padding-bottom: 3px;
+	width: auto;
 }
 .form-style div{
-	display: block;
+	display: flex;
 	margin: 0px 0px 15px 0px;
+}
+.form-style div div{
+	padding: 0px 5px 0 0;
 }
 .form-style div > span{
 	width: 100px;
@@ -27,15 +30,17 @@
 }
 .form-style .number-range-field{
 	width: 80px;
+	height: 38px;
 	text-align: center;
 }
+
 .form-style input.input-field, .form-style .select-field{
 	width: 58%;	
 }
 .form-style input.input-field, 
 .form-style .number-range-field, 
 .form-style .textarea-field, 
- .form-style .select-field{
+.form-style .select-field{
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -61,8 +66,10 @@
 }
 .form-style input[type=submit],
 .form-style input[type=button]{
+	height: 38px;
 	border: none;
 	padding: 8px 15px 8px 15px;
+	margin-left: 5px;
 	background: #0099ff;
 	color: #fff;
 	box-shadow: 1px 1px 4px #DADADA;

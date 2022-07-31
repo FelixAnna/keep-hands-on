@@ -1,8 +1,10 @@
 import './index.css';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
 import MultipleSelectCheckmarks from './select';
-import { loadAsync, clearAll } from '../reducer';
+import { saveCriteria, clearAll } from '../reducer';
 
 const defaultCriteria = {
   Criteria: {
@@ -23,26 +25,17 @@ function SearchBar() {
   const dispatch = useDispatch();
   const [criteria, updateCriteria] = useState(defaultCriteria);
 
-  const handleChange = (event, type) => {
-    const value = Number(event.target.value);
-    switch (type) {
-      case 0:
-        updateCriteria({ ...criteria, Category: value });
-        break;
-      case 1:
-        updateCriteria({ ...criteria, Min: value });
-        break;
-      default:
-        break;
-    }
+  const handleChange = (prop) => (event) => {
+    updateCriteria({ ...criteria, [prop]: event.target.value });
   };
+
   const getCriteria = () => {
     const current = {
-      Distrct: criteria.Min,
-      Keywords: criteria.Max,
+      Distrct: criteria.Distrct,
+      Keywords: criteria.Keywords,
 
-      MinPrice: criteria.Quantity,
-      MaxPrice: criteria.Quantity,
+      MinPrice: criteria.MinPrice,
+      MaxPrice: criteria.MaxPrice,
 
       SortKey: criteria.SortKey,
 
@@ -60,17 +53,50 @@ function SearchBar() {
         <div className="form-style-heading">Search</div>
         <div>
           <div>
-            <span>Distrct:</span>
             <MultipleSelectCheckmarks />
           </div>
           <div>
-            <span>Price:</span>
-            <input className="number-range-field" type="number" value={criteria.Min} onChange={(e) => handleChange(e, 1)} />
-            -
-            <input className="number-range-field" type="number" value={criteria.Max} onChange={(e) => handleChange(e, 2)} />
+            <TextField
+              label="最低价"
+              id="outlined-adornment-max"
+              sx={{ m: 1, width: '25ch' }}
+              value={criteria.MinPrice}
+              onChange={handleChange('MinPrice')}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">RMB</InputAdornment>,
+                inputMode: 'numeric',
+                pattern: '[0-9]*',
+              }}
+            />
           </div>
           <div>
-            <input type="submit" value="加入队列" onClick={() => dispatch(loadAsync(getCriteria()))} />
+            <TextField
+              label="最高价"
+              id="outlined-adornment-max"
+              sx={{ m: 1, width: '25ch' }}
+              value={criteria.MaxPrice}
+              onChange={handleChange('MaxPrice')}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">RMB</InputAdornment>,
+                inputMode: 'numeric',
+                pattern: '[0-9]*',
+              }}
+            />
+          </div>
+          <div>
+            <TextField
+              label="关键字"
+              id="outlined-adornment-keywords"
+              sx={{ m: 1, width: '25ch' }}
+              value={criteria.Keywords}
+              onChange={handleChange('Keywords')}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">RMB</InputAdornment>,
+              }}
+            />
+          </div>
+          <div>
+            <input type="submit" value="加入队列" onClick={() => dispatch(saveCriteria(getCriteria()))} />
             <input type="button" value="清除所有" onClick={() => dispatch(clearAll())} />
           </div>
         </div>
