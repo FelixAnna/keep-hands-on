@@ -48,7 +48,7 @@ export default function CustomizedTables() {
           <TableHead>
             <TableRow>
               <StyledTableCell>Id</StyledTableCell>
-              <StyledTableCell align="right">Distrct</StyledTableCell>
+              <StyledTableCell align="right">District</StyledTableCell>
               <StyledTableCell align="right">Street</StyledTableCell>
               <StyledTableCell align="right">Community</StyledTableCell>
               <StyledTableCell align="right">Price</StyledTableCell>
