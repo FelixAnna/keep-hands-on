@@ -23,5 +23,5 @@ export function LoginGithubUser(data) {
 }
 
 export function SearchZdj(data) {
-  return userIstance.get('/zdj/search', { params: { code: data.code, state: data.state } });
+  return instance.post('/zdj/search', data);
 }

@@ -43,8 +43,16 @@ function SearchBar() {
     dispatch(clearAll());
   };
   const search = () => {
-    const criteria2 = { ...criteria, Districts: district };
-    dispatch(saveCriteria(criteria2));
+    const payload = {
+      Districts: district,
+      Keywords: criteria.Keywords,
+      MinPrice: Number(criteria.MinPrice),
+      MaxPrice: Number(criteria.MaxPrice),
+      SortKey: '',
+      Page: 1,
+      Size: 10,
+    };
+    dispatch(saveCriteria(payload));
   };
 
   // Distrct/Street/Community/MinPrice/MaxPrice/Version/SortKey/Page/Size

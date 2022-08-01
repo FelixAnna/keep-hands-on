@@ -55,7 +55,7 @@ export const zdjSlice = createSlice({
       .addCase(loadAsync.fulfilled, (state, action) => {
         const items = action.payload;
         state.status = 'idle';
-        state.Questions = items;
+        state.ZdjItems = items;
       });
   },
 });
