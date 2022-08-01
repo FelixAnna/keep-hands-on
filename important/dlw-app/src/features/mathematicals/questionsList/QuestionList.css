@@ -1,4 +1,4 @@
-.form-style-right{
+.question-list-style-right{
 	padding: 20px 12px 10px 20px;
 	font: 13px Arial, Helvetica, sans-serif;
 }
@@ -16,7 +16,7 @@
 	margin: 0px 10px 15px 0px !important;
 }
 
-.form-style-right-heading{
+.question-list-style-right-heading{
 	font-weight: bold;
 	font-style: italic;
 	border-bottom: 2px solid #ddd;
@@ -49,17 +49,17 @@
 	color:blue;
 }
 
-.form-style-right .number-range-field{
+.question-list-style-right .number-range-field{
 	width: 80px;
 	text-align: center;
 }
-.form-style-right input.input-field, .form-style-right .select-field{
+.question-list-style-right input.input-field, .question-list-style-right .select-field{
 	width: 58%;	
 }
-.form-style-right input.input-field, 
-.form-style-right .number-range-field, 
-.form-style-right .textarea-field, 
- .form-style-right .select-field{
+.question-list-style-right input.input-field, 
+.question-list-style-right .number-range-field, 
+.question-list-style-right .textarea-field, 
+ .question-list-style-right .select-field{
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -74,6 +74,6 @@
 	outline: none;
 }
 
-.form-style-right .number-range-field:focus{
+.question-list-style-right .number-range-field:focus{
 	border: 1px solid #0C0;
 }

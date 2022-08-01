@@ -29,7 +29,7 @@ function QuestionList() {
   }
 
   return (
-    <div className="form-style-right">
+    <div className="question-list-style-right">
       <div className="question-root">
         {
             questions !== undefined ? qestionList : (<div>No data</div>)

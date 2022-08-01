@@ -1,9 +1,9 @@
-.form-style{
+.math-question-style{
 	max-width: 500px;
 	padding: 20px 12px 10px 20px;
 	font: 13px Arial, Helvetica, sans-serif;
 }
-.form-style-heading{
+.math-question-style-heading{
 	font-weight: bold;
 	font-style: italic;
 	border-bottom: 2px solid #ddd;
@@ -11,31 +11,31 @@
 	font-size: 15px;
 	padding-bottom: 3px;
 }
-.form-style div{
+.math-question-style div{
 	display: block;
 	margin: 0px 0px 15px 0px;
 }
-.form-style div > span{
+.math-question-style div > span{
 	width: 100px;
 	font-weight: bold;
 	float: left;
 	padding-top: 8px;
 	padding-right: 5px;
 }
-.form-style span.required{
+.math-question-style span.required{
 	color:red;
 }
-.form-style .number-range-field{
+.math-question-style .number-range-field{
 	width: 80px;
 	text-align: center;
 }
-.form-style input.input-field, .form-style .select-field{
+.math-question-style input.input-field, .math-question-style .select-field{
 	width: 58%;	
 }
-.form-style input.input-field, 
-.form-style .number-range-field, 
-.form-style .textarea-field, 
- .form-style .select-field{
+.math-question-style input.input-field, 
+.math-question-style .number-range-field, 
+.math-question-style .textarea-field, 
+ .math-question-style .select-field{
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -49,18 +49,18 @@
 	padding: 7px;
 	outline: none;
 }
-.form-style .input-field:focus, 
-.form-style .number-range-field:focus, 
-.form-style .textarea-field:focus,  
-.form-style .select-field:focus{
+.math-question-style .input-field:focus, 
+.math-question-style .number-range-field:focus, 
+.math-question-style .textarea-field:focus,  
+.math-question-style .select-field:focus{
 	border: 1px solid #0C0;
 }
-.form-style .textarea-field{
+.math-question-style .textarea-field{
 	height:100px;
 	width: 55%;
 }
-.form-style input[type=submit],
-.form-style input[type=button]{
+.math-question-style input[type=submit],
+.math-question-style input[type=button]{
 	border: none;
 	padding: 8px 15px 8px 15px;
 	background: #0099ff;
@@ -72,8 +72,8 @@
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 }
-.form-style input[type=submit]:hover,
-.form-style input[type=button]:hover{
+.math-question-style input[type=submit]:hover,
+.math-question-style input[type=button]:hover{
 	background: #00eac3;
 	color: #fff;
 }

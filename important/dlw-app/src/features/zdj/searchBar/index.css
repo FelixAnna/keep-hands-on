@@ -1,8 +1,8 @@
-.form-style{
+.zdj-style{
 	padding: 20px 12px 10px 20px;
 	font: 13px Arial, Helvetica, sans-serif;
 }
-.form-style-heading{
+.zdj-style-heading{
 	font-weight: bold;
 	font-style: italic;
 	border-bottom: 2px solid #ddd;
@@ -11,65 +11,27 @@
 	padding-bottom: 3px;
 	width: auto;
 }
-.form-style div{
-	display: flex;
-	margin: 0px 0px 15px 0px;
-}
-.form-style div div{
-	padding: 0px 5px 0 0;
-}
-.form-style div > span{
-	width: 100px;
-	font-weight: bold;
-	float: left;
-	padding-top: 8px;
-	padding-right: 5px;
-}
-.form-style span.required{
-	color:red;
-}
-.form-style .number-range-field{
-	width: 80px;
-	height: 38px;
-	text-align: center;
-}
 
-.form-style input.input-field, .form-style .select-field{
-	width: 58%;	
+.zdj-style div{
+	display: flex;
 }
-.form-style input.input-field, 
-.form-style .number-range-field, 
-.form-style .textarea-field, 
-.form-style .select-field{
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	border: 1px solid #C2C2C2;
-	box-shadow: 1px 1px 4px #EBEBEB;
-	-moz-box-shadow: 1px 1px 4px #EBEBEB;
-	-webkit-box-shadow: 1px 1px 4px #EBEBEB;
-	border-radius: 3px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	padding: 7px;
-	outline: none;
-}
-.form-style .input-field:focus, 
-.form-style .number-range-field:focus, 
-.form-style .textarea-field:focus,  
-.form-style .select-field:focus{
+.zdj-style .input-field:focus, 
+.zdj-style .number-range-field:focus, 
+.zdj-style .textarea-field:focus,  
+.zdj-style .select-field:focus{
 	border: 1px solid #0C0;
 }
-.form-style .textarea-field{
+.zdj-style .textarea-field{
 	height:100px;
 	width: 55%;
 }
-.form-style input[type=submit],
-.form-style input[type=button]{
+.zdj-style input[type=submit],
+.zdj-style input[type=button]{
 	height: 38px;
 	border: none;
 	padding: 8px 15px 8px 15px;
 	margin-left: 5px;
+	margin-top: 16px;
 	background: #0099ff;
 	color: #fff;
 	box-shadow: 1px 1px 4px #DADADA;
@@ -79,8 +41,8 @@
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 }
-.form-style input[type=submit]:hover,
-.form-style input[type=button]:hover{
+.zdj-style input[type=submit]:hover,
+.zdj-style input[type=button]:hover{
 	background: #00eac3;
 	color: #fff;
 }

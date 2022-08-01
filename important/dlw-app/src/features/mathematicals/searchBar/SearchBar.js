@@ -84,8 +84,8 @@ function SearchBar() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <div className="form-style">
-        <div className="form-style-heading">快速配置</div>
+      <div className="math-question-style">
+        <div className="math-question-style-heading">快速配置</div>
         <div>
           <div>100以内</div>
           <div>
@@ -133,8 +133,8 @@ function SearchBar() {
           </div>
         </div>
       </div>
-      <div className="form-style">
-        <div className="form-style-heading">配置题目生成模板</div>
+      <div className="math-question-style">
+        <div className="math-question-style-heading">配置题目生成模板</div>
         <div>
           <div>
             <span>算术类型:</span>

@@ -7,63 +7,67 @@ import MultipleSelectCheckmarks from './select';
 import { saveCriteria, clearAll } from '../reducer';
 
 const defaultCriteria = {
-  Criteria: {
-    Distrct: '',
-    Keywords: '',
+  Districts: [],
+  Keywords: '',
 
-    MinPrice: 0,
-    MaxPrice: 0,
+  MinPrice: '',
+  MaxPrice: '',
 
-    SortKey: '',
+  SortKey: '',
 
-    Page: 1,
-    Size: 10,
-  },
-  ZdjItems: [],
+  Page: 1,
+  Size: 10,
 };
+
 function SearchBar() {
   const dispatch = useDispatch();
   const [criteria, updateCriteria] = useState(defaultCriteria);
+  const [district, updateDistrict] = useState([]);
 
   const handleChange = (prop) => (event) => {
     updateCriteria({ ...criteria, [prop]: event.target.value });
   };
 
-  const getCriteria = () => {
-    const current = {
-      Distrct: criteria.Distrct,
-      Keywords: criteria.Keywords,
-
-      MinPrice: criteria.MinPrice,
-      MaxPrice: criteria.MaxPrice,
-
-      SortKey: criteria.SortKey,
-
-      Page: criteria.Page,
-      Size: criteria.Size,
-    };
-
-    return current;
+  const handleDistrictChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    updateDistrict(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+  const reset = () => {
+    updateCriteria({ ...defaultCriteria });
+    updateDistrict([]);
+    dispatch(clearAll());
+  };
+  const search = () => {
+    const criteria2 = { ...criteria, Districts: district };
+    dispatch(saveCriteria(criteria2));
   };
 
   // Distrct/Street/Community/MinPrice/MaxPrice/Version/SortKey/Page/Size
   return (
     <div style={{ display: 'flex' }}>
-      <div className="form-style">
-        <div className="form-style-heading">Search</div>
+      <div className="zdj-style">
+        <div className="zdj-style-heading">Search</div>
         <div>
           <div>
-            <MultipleSelectCheckmarks />
+            <MultipleSelectCheckmarks
+              handleChange={handleDistrictChange}
+              district={district}
+            />
           </div>
           <div>
             <TextField
-              label="最低价"
+              label="最低单价"
               id="outlined-adornment-max"
-              sx={{ m: 1, width: '25ch' }}
+              sx={{ m: 1, width: '18ch' }}
               value={criteria.MinPrice}
               onChange={handleChange('MinPrice')}
               InputProps={{
-                endAdornment: <InputAdornment position="end">RMB</InputAdornment>,
+                endAdornment: <InputAdornment position="end">¥/㎡</InputAdornment>,
                 inputMode: 'numeric',
                 pattern: '[0-9]*',
               }}
@@ -71,13 +75,13 @@ function SearchBar() {
           </div>
           <div>
             <TextField
-              label="最高价"
+              label="最高单价"
               id="outlined-adornment-max"
-              sx={{ m: 1, width: '25ch' }}
+              sx={{ m: 1, width: '18ch' }}
               value={criteria.MaxPrice}
               onChange={handleChange('MaxPrice')}
               InputProps={{
-                endAdornment: <InputAdornment position="end">RMB</InputAdornment>,
+                endAdornment: <InputAdornment position="end">¥/㎡</InputAdornment>,
                 inputMode: 'numeric',
                 pattern: '[0-9]*',
               }}
@@ -87,17 +91,16 @@ function SearchBar() {
             <TextField
               label="关键字"
               id="outlined-adornment-keywords"
-              sx={{ m: 1, width: '25ch' }}
+              sx={{ m: 1, width: '20ch' }}
               value={criteria.Keywords}
               onChange={handleChange('Keywords')}
               InputProps={{
-                endAdornment: <InputAdornment position="end">RMB</InputAdornment>,
               }}
             />
           </div>
           <div>
-            <input type="submit" value="加入队列" onClick={() => dispatch(saveCriteria(getCriteria()))} />
-            <input type="button" value="清除所有" onClick={() => dispatch(clearAll())} />
+            <input type="submit" value="Search" onClick={() => search()} />
+            <input type="button" value="Clear" onClick={() => reset()} />
           </div>
         </div>
       </div>

@@ -1,36 +1,52 @@
 import * as React from 'react';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import PropTypes from 'prop-types';
 import { DistrictCategory } from '../const';
 
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
-export default function MultipleSelectCheckmarks() {
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+function MultipleSelectCheckmarks({ district, handleChange }) {
   return (
-    <Autocomplete
-      multiple
-      id="checkboxes-tags-demo"
-      options={DistrictCategory}
-      disableCloseOnSelect
-      getOptionLabel={(option) => option.text}
-      renderOption={(props, option, { selected }) => (
-        <li {...props}>
-          <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            style={{ marginRight: 8 }}
-            checked={selected}
-          />
-          {option.text}
-        </li>
-      )}
-      style={{ width: 380 }}
-      renderInput={(params) => (
-        <TextField {...params} label="行政区" placeholder="请选择" />
-      )}
-    />
+    <FormControl sx={{ m: 1, width: 300 }}>
+      <InputLabel id="district-multiple-checkbox-label">行政区</InputLabel>
+      <Select
+        labelId="district-multiple-checkbox-label"
+        id="district-multiple-checkbox"
+        multiple
+        value={district}
+        onChange={handleChange}
+        input={<OutlinedInput label="行政区" />}
+        renderValue={(selected) => selected.join(', ')}
+        MenuProps={MenuProps}
+      >
+        {DistrictCategory.map((dist) => (
+          <MenuItem key={dist.key} value={dist.text}>
+            <Checkbox checked={district.indexOf(dist.text) > -1} />
+            <ListItemText primary={dist.text} />
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }
+
+MultipleSelectCheckmarks.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  district: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+export default MultipleSelectCheckmarks;

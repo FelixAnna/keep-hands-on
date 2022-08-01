@@ -29,11 +29,11 @@ module.exports = {
         ],
       },
     ],
-    "react/jsx-props-no-spreading": [
+    'react/jsx-props-no-spreading': [
       1,
       {
-        "explicitSpread": "ignore",
-      }
+        explicitSpread: 'ignore',
+      },
     ],
     'linebreak-style': 0,
   },

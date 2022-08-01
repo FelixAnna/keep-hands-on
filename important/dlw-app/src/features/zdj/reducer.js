@@ -4,7 +4,7 @@ import { SearchZdj } from '../../api/request';
 // Distrct/Street/Community/MinPrice/MaxPrice/Version/SortKey/Page/Size
 const initialState = {
   Criteria: {
-    Distrct: '',
+    Districts: [],
     Keywords: '',
 
     MinPrice: 0,
