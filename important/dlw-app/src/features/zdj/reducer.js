@@ -40,6 +40,9 @@ export const zdjSlice = createSlice({
     saveCriteria(state, action) {
       state.Criteria = action.payload;
     },
+    loadMore(state) {
+      state.Criteria.Page += 1;
+    },
     clearAll(state) {
       state.Criteria = initialState.Criteria;
       state.ZdjItems = [];
@@ -55,12 +58,18 @@ export const zdjSlice = createSlice({
       .addCase(loadAsync.fulfilled, (state, action) => {
         const items = action.payload;
         state.status = 'idle';
-        state.ZdjItems = items;
+        const results = state.ZdjItems;
+        items.forEach((item) => {
+          if (!results.some((r) => r.Id === item.Id)) {
+            results.push(item);
+          }
+        });
+        state.ZdjItems = results;
       });
   },
 });
 
-export const { saveCriteria, clearAll } = zdjSlice.actions;
+export const { saveCriteria, clearAll, loadMore } = zdjSlice.actions;
 export const currentCriteria = (state) => state.zdj.Criteria;
 export const currentItems = (state) => state.zdj.ZdjItems;
 
