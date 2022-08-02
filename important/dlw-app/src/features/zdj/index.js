@@ -1,16 +1,20 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import LoadingButton from '@mui/lab/LoadingButton';
 import SearchBar from './searchBar';
-import CustomizedTables from './results';
-import { loadMore } from './reducer';
+import CustomizedTables from './Items';
+import { loadMore, loadingStatus } from './reducer';
 
 function ZdjSearch() {
   const dispatch = useDispatch();
+  const status = useSelector(loadingStatus);
   return (
     <>
       <SearchBar />
       <CustomizedTables />
-      <input type="button" value="Load more" onClick={() => dispatch(loadMore())} />
+      <LoadingButton loading={status !== 'idle'} loadingIndicator="Loading…" variant="outlined" onClick={() => dispatch(loadMore())}>
+        Load More
+      </LoadingButton>
     </>
   );
 }

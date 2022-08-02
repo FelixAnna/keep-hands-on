@@ -38,12 +38,17 @@ export const zdjSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     saveCriteria(state, action) {
+      state.ZdjItems = [];
       state.Criteria = action.payload;
     },
     loadMore(state) {
+      state.status = 'ready';
       state.Criteria.Page += 1;
     },
     clearAll(state) {
+      if (JSON.stringify(state.Criteria) === JSON.stringify(initialState.Criteria)) {
+        return;
+      }
       state.Criteria = initialState.Criteria;
       state.ZdjItems = [];
     },
@@ -72,5 +77,6 @@ export const zdjSlice = createSlice({
 export const { saveCriteria, clearAll, loadMore } = zdjSlice.actions;
 export const currentCriteria = (state) => state.zdj.Criteria;
 export const currentItems = (state) => state.zdj.ZdjItems;
+export const loadingStatus = (state) => state.zdj.status;
 
 export default zdjSlice.reducer;
