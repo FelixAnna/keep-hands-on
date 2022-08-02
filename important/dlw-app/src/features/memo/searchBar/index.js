@@ -38,7 +38,6 @@ function SearchBar() {
               id="date"
               label="Birthday"
               type="date"
-              defaultValue="2022-01-01"
               sx={{ width: 220 }}
               value={criteria.StartDate}
               onChange={handleChange('StartDate')}
@@ -52,7 +51,6 @@ function SearchBar() {
               id="date"
               label="Birthday"
               type="date"
-              defaultValue="2022-12-31"
               sx={{ width: 220 }}
               value={criteria.EndDate}
               onChange={handleChange('EndDate')}
