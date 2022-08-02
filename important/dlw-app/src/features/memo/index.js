@@ -5,7 +5,7 @@ import SearchBar from './searchBar';
 import CustomizedTables from './items';
 import { loadMore, loadingStatus } from './reducer';
 
-function ZdjSearch() {
+function MemoSearch() {
   const dispatch = useDispatch();
   const status = useSelector(loadingStatus);
   return (
@@ -19,4 +19,4 @@ function ZdjSearch() {
   );
 }
 
-export default ZdjSearch;
+export default MemoSearch;

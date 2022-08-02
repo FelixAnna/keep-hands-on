@@ -1,8 +1,12 @@
 /* eslint-disable linebreak-style */
 import axios from 'axios';
 
-const instance = axios.create({
+const financeInstance = axios.create({
   baseURL: 'http://localhost:8484/',
+});
+
+const memoIstance = axios.create({
+  baseURL: 'http://localhost:8282/',
 });
 
 const userIstance = axios.create({
@@ -10,12 +14,12 @@ const userIstance = axios.create({
 });
 
 export function GetProblems(params) {
-  return instance.post('/homework/math/multiple', params);
+  return financeInstance.post('/homework/math/multiple', params);
 }
 
 export function SaveResults(data) {
   const token = localStorage.getItem('token');
-  return instance.post('/homework/math/save', data, { params: { access_code: token } });
+  return financeInstance.post('/homework/math/save', data, { params: { access_code: token } });
 }
 
 export function LoginGithubUser(data) {
@@ -23,5 +27,12 @@ export function LoginGithubUser(data) {
 }
 
 export function SearchZdj(data) {
-  return instance.post('/zdj/search', data);
+  return financeInstance.post('/zdj/search', data);
+}
+
+export function SearchMemo(data) {
+  const token = localStorage.getItem('token');
+  const start = data.StartDate.length === 10 ? data.StartDate.substring(5, 7) + data.StartDate.substring(8) : '0101';
+  const end = data.EndDate.length === 10 ? data.EndDate.substring(5, 7) + data.EndDate.substring(8) : '1231';
+  return memoIstance.get('/memos/recent', { params: { start, end, access_code: token } });
 }

@@ -1,0 +1,48 @@
+.memo-style{
+	padding: 20px 12px 10px 20px;
+	font: 13px Arial, Helvetica, sans-serif;
+}
+.memo-style-heading{
+	font-weight: bold;
+	font-style: italic;
+	border-bottom: 2px solid #ddd;
+	margin-bottom: 20px;
+	font-size: 15px;
+	padding-bottom: 3px;
+	width: auto;
+}
+
+.memo-style div{
+	display: flex;
+}
+.memo-style .input-field:focus, 
+.memo-style .number-range-field:focus, 
+.memo-style .textarea-field:focus,  
+.memo-style .select-field:focus{
+	border: 1px solid #0C0;
+}
+.memo-style .textarea-field{
+	height:100px;
+	width: 55%;
+}
+.memo-style input[type=submit],
+.memo-style input[type=button]{
+	height: 38px;
+	border: none;
+	padding: 8px 15px 8px 15px;
+	margin-left: 5px;
+	margin-top: 16px;
+	background: #0099ff;
+	color: #fff;
+	box-shadow: 1px 1px 4px #DADADA;
+	-moz-box-shadow: 1px 1px 4px #DADADA;
+	-webkit-box-shadow: 1px 1px 4px #DADADA;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+.memo-style input[type=submit]:hover,
+.memo-style input[type=button]:hover{
+	background: #00eac3;
+	color: #fff;
+}
