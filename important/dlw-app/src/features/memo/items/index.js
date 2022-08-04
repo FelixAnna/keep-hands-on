@@ -56,6 +56,7 @@ export default function CustomizedTables() {
   }, [items, page, size]);
 
   const displayItems = useSelector(currentDisplayItems);
+  const start = new Date('1970-01-01');
   return (
     <div style={{ padding: 15 }}>
       <TableContainer component={Paper} sx={{ minWidth: 700, maxWidth: 1280, align: 'center' }}>
@@ -89,7 +90,7 @@ export default function CustomizedTables() {
                   ,
                   {row.Distance[1]}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.CreateTime}</StyledTableCell>
+                <StyledTableCell align="right">{(new Date(start.getTime() + row.CreateTime * 1000)).toISOString()}</StyledTableCell>
                 <StyledTableCell align="right">{row.LastModifiedTime}</StyledTableCell>
               </StyledTableRow>
             ))}
