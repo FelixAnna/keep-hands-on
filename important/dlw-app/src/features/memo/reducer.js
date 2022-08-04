@@ -41,16 +41,13 @@ export const memoSlice = createSlice({
     loadMore(state) {
       state.status = 'ready';
       state.Page += 1;
+    },
+    refreshData(state) {
       state.DisplayedItems = state.MemoItems.slice(0, state.Size * state.Page);
+      state.status = 'idle';
     },
     clearAll(state) {
-      if (JSON.stringify(state.Criteria) === JSON.stringify(initialState.Criteria)) {
-        return;
-      }
-
-      state.DisplayedItems = initialState.DisplayedItems;
       state.Criteria = initialState.Criteria;
-      state.MemoItems = initialState.MemoItems;
       state.Page = initialState.Page;
       state.Size = initialState.Size;
     },
@@ -66,14 +63,23 @@ export const memoSlice = createSlice({
         const items = action.payload;
         state.status = 'idle';
         state.MemoItems = items;
-        state.DisplayedItems = state.MemoItems.slice(0, state.Size * state.Page);
       });
   },
 });
 
-export const { saveCriteria, clearAll, loadMore } = memoSlice.actions;
+export const {
+  saveCriteria,
+  clearAll,
+  loadMore,
+  refreshData,
+} = memoSlice.actions;
 export const currentCriteria = (state) => state.memo.Criteria;
-export const currentItems = (state) => state.memo.DisplayedItems;
+
+export const currentItems = (state) => state.memo.MemoItems;
+export const currentPage = (state) => state.memo.Page;
+export const currentSize = (state) => state.memo.Size;
+
+export const currentDisplayItems = (state) => state.memo.DisplayedItems;
 export const loadingStatus = (state) => state.memo.status;
 
 export default memoSlice.reducer;

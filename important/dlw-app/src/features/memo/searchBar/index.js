@@ -17,7 +17,6 @@ function SearchBar() {
   };
 
   const reset = () => {
-    updateCriteria({ ...defaultCriteria });
     dispatch(clearAll());
   };
   const search = () => {
@@ -61,7 +60,7 @@ function SearchBar() {
           </div>
           <div>
             <input type="submit" value="Search" onClick={() => search()} />
-            <input type="button" value="Clear" onClick={() => reset()} />
+            <input type="button" value="Reset" onClick={() => reset()} />
           </div>
         </div>
       </div>

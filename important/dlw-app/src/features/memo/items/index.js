@@ -8,7 +8,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { currentCriteria, currentItems, loadAsync } from '../reducer';
+import {
+  currentCriteria,
+  currentPage,
+  currentSize,
+  currentItems,
+  currentDisplayItems,
+  refreshData,
+  loadAsync,
+} from '../reducer';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,7 +40,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function CustomizedTables() {
   const criteria = useSelector(currentCriteria);
-  const items = useSelector(currentItems);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadAsync(criteria))
@@ -41,6 +48,14 @@ export default function CustomizedTables() {
       });
   }, [criteria]);
 
+  const items = useSelector(currentItems);
+  const page = useSelector(currentPage);
+  const size = useSelector(currentSize);
+  useEffect(() => {
+    dispatch(refreshData());
+  }, [items, page, size]);
+
+  const displayItems = useSelector(currentDisplayItems);
   return (
     <div style={{ padding: 15 }}>
       <TableContainer component={Paper} sx={{ minWidth: 700, maxWidth: 1280, align: 'center' }}>
@@ -59,7 +74,7 @@ export default function CustomizedTables() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {items.map((row) => (
+            {displayItems.map((row) => (
               <StyledTableRow key={row.Id}>
                 <StyledTableCell component="th" scope="row">
                   {row.Id}
@@ -67,9 +82,13 @@ export default function CustomizedTables() {
                 <StyledTableCell align="right">{row.Subject}</StyledTableCell>
                 <StyledTableCell align="right">{row.Description}</StyledTableCell>
                 <StyledTableCell align="right">{row.MonthDay}</StyledTableCell>
-                <StyledTableCell align="right">{row.StartYear}</StyledTableCell>
+                <StyledTableCell align="right">{row.StartYear > 0 ? row.StartYear : '/' }</StyledTableCell>
                 <StyledTableCell align="right">{row.Lunar}</StyledTableCell>
-                <StyledTableCell align="right">{row.Distance}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {row.Distance[0]}
+                  ,
+                  {row.Distance[1]}
+                </StyledTableCell>
                 <StyledTableCell align="right">{row.CreateTime}</StyledTableCell>
                 <StyledTableCell align="right">{row.LastModifiedTime}</StyledTableCell>
               </StyledTableRow>
