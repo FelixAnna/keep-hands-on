@@ -7,7 +7,12 @@ const initialState = {
     StartDate: '2022-01-01',
     EndDate: '2022-12-31',
   },
+
+  Page: 1,
+  Size: 2,
+
   MemoItems: [],
+  DisplayedItems: [],
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -35,14 +40,19 @@ export const memoSlice = createSlice({
     },
     loadMore(state) {
       state.status = 'ready';
-      state.Criteria.Page += 1;
+      state.Page += 1;
+      state.DisplayedItems = state.MemoItems.slice(0, state.Size * state.Page);
     },
     clearAll(state) {
       if (JSON.stringify(state.Criteria) === JSON.stringify(initialState.Criteria)) {
         return;
       }
+
+      state.DisplayedItems = initialState.DisplayedItems;
       state.Criteria = initialState.Criteria;
-      state.MemoItems = [];
+      state.MemoItems = initialState.MemoItems;
+      state.Page = initialState.Page;
+      state.Size = initialState.Size;
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -55,20 +65,15 @@ export const memoSlice = createSlice({
       .addCase(loadAsync.fulfilled, (state, action) => {
         const items = action.payload;
         state.status = 'idle';
-        const results = state.MemoItems;
-        items.forEach((item) => {
-          if (!results.some((r) => r.Id === item.Id)) {
-            results.push(item);
-          }
-        });
-        state.MemoItems = results;
+        state.MemoItems = items;
+        state.DisplayedItems = state.MemoItems.slice(0, state.Size * state.Page);
       });
   },
 });
 
 export const { saveCriteria, clearAll, loadMore } = memoSlice.actions;
 export const currentCriteria = (state) => state.memo.Criteria;
-export const currentItems = (state) => state.memo.MemoItems;
+export const currentItems = (state) => state.memo.DisplayedItems;
 export const loadingStatus = (state) => state.memo.status;
 
 export default memoSlice.reducer;
