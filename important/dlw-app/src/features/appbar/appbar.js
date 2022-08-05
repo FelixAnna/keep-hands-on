@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -10,9 +10,14 @@ import { Link } from 'react-router-dom';
 import ResponsiveUserSettings from './settings';
 import ResponsiveTopMenu from './topmenu';
 import ResponsiveLeftMenu from './leftmenu';
-import { currentLoginStatus } from '../login/reducer';
+import { currentLoginStatus, reloadLogin } from '../login/reducer';
 
 function ResponsiveAppBar() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(reloadLogin());
+  }, []);
+
   const loginStatus = useSelector(currentLoginStatus);
   return (
     <AppBar position="static">

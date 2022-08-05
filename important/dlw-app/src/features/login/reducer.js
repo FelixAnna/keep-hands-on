@@ -30,8 +30,20 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.User = {};
       localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      localStorage.removeItem('isAuthenticated');
+    },
+    reloadLogin(state) {
+      if (state.isAuthenticated) {
+        return;
+      }
+
+      const token = localStorage.getItem('token');
+      if (token === undefined) {
+        return;
+      }
+
+      const decoded = jwt(token);
+      state.User = { Email: decoded.email, UserId: decoded.userId };
+      state.isAuthenticated = true;
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -48,13 +60,11 @@ export const authSlice = createSlice({
         state.User = { Email: decoded.email, UserId: decoded.userId };
         state.isAuthenticated = true;
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(state.User));
-        localStorage.setItem('isAuthenticated', true);
       });
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, reloadLogin } = authSlice.actions;
 export const currentLoginStatus = (state) => state.auth.isAuthenticated;
 export const currentUser = (state) => state.auth.User;
 export const currentStatus = (state) => state.auth.Status;
