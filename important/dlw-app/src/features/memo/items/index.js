@@ -8,6 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   currentCriteria,
   currentPage,
@@ -16,6 +18,7 @@ import {
   currentDisplayItems,
   refreshData,
   loadAsync,
+  deleteAsync,
 } from '../reducer';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -110,7 +113,17 @@ export default function CustomizedTables() {
                 </StyledTableCell>
                 <StyledTableCell align="right">{formatDateTime(row.CreateTime)}</StyledTableCell>
                 <StyledTableCell align="right">{formatDateTime(row.LastModifiedTime)}</StyledTableCell>
-                <StyledTableCell align="right">xx</StyledTableCell>
+                <StyledTableCell align="right">
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      console.log(row.Id);
+                      dispatch(deleteAsync({ id: row.Id }));
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

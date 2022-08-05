@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { SearchMemo } from '../../api/request';
+import { SearchMemo, DeleteMemo } from '../../api/request';
 
 // Distrct/Street/Community/MinPrice/MaxPrice/Version/SortKey/Page/Size
 const initialState = {
@@ -26,6 +26,15 @@ export const loadAsync = createAsyncThunk(
     const response = await SearchMemo(criteria);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
+  },
+);
+
+export const deleteAsync = createAsyncThunk(
+  'memo/Delete',
+  async (data) => {
+    await DeleteMemo(data);
+    // The value we return becomes the `fulfilled` action payload
+    return data;
   },
 );
 
@@ -63,6 +72,13 @@ export const memoSlice = createSlice({
         const items = action.payload;
         state.status = 'idle';
         state.MemoItems = items;
+      })
+      .addCase(deleteAsync.pending, (state) => {
+        state.status = 'deleting';
+      })
+      .addCase(deleteAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.MemoItems = state.MemoItems.filter((x) => x.Id !== action.payload.id);
       });
   },
 });

@@ -22,6 +22,11 @@ export function SearchZdj(data) {
   return instance.post('/finance/zdj/search', data);
 }
 
+export function DeleteMemo(data) {
+  const token = localStorage.getItem('token');
+  return instance.delete(`/memo/memos/${data.id}`, { params: { access_code: token } });
+}
+
 export function SearchMemo(data) {
   const token = localStorage.getItem('token');
   const start = data.StartDate.length === 10 ? data.StartDate.substring(5, 7) + data.StartDate.substring(8) : '0101';
