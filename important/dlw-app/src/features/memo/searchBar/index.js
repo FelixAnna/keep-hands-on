@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import { saveCriteria, clearAll } from '../reducer';
+import CreateNewItemDialogs from './add';
 
 const defaultCriteria = {
   StartDate: '2022-01-01',
@@ -61,6 +62,9 @@ function SearchBar() {
           <div>
             <input type="submit" value="Search" onClick={() => search()} />
             <input type="button" value="Reset" onClick={() => reset()} />
+          </div>
+          <div className="memo-add-new">
+            <CreateNewItemDialogs />
           </div>
         </div>
       </div>

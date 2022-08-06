@@ -1,6 +1,7 @@
 .memo-style{
 	padding: 20px 12px 10px 20px;
 	font: 13px Arial, Helvetica, sans-serif;
+	width: 800px;
 }
 .memo-style-heading{
 	font-weight: bold;
@@ -13,7 +14,7 @@
 }
 
 .memo-style div{
-	display: flex;
+	display: inline-flex;
 }
 .memo-style .input-field:focus, 
 .memo-style .number-range-field:focus, 
@@ -45,4 +46,8 @@
 .memo-style input[type=button]:hover{
 	background: #00eac3;
 	color: #fff;
+}
+.memo-add-new{
+	padding-left: 100px;
+	border-radius: 15px;
 }
