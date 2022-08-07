@@ -83,7 +83,7 @@ export default function CreateNewItemDialogs() {
           dividers
         >
           <Typography gutterBottom>
-            <TextField fullWidth label="Subject" id="subject" />
+            <TextField fullWidth label="Subject" id="subject" required />
           </Typography>
           <Typography gutterBottom>
             <TextField
@@ -95,7 +95,7 @@ export default function CreateNewItemDialogs() {
                 width: 500,
                 maxWidth: '100%',
               }}
-              defaultValue="Description"
+              required
             />
           </Typography>
           <Typography gutterBottom>
@@ -103,6 +103,7 @@ export default function CreateNewItemDialogs() {
               id="monthDay"
               label="MonthDay"
               type="number"
+              required
               InputLabelProps={{
                 shrink: true,
               }}
@@ -125,6 +126,7 @@ export default function CreateNewItemDialogs() {
                 labelId="lunar-select"
                 id="lunar-select"
                 label="Lunar"
+                defaultValue={0}
               >
                 <MenuItem value={0}>Georgian</MenuItem>
                 <MenuItem value={1}>Lunar</MenuItem>

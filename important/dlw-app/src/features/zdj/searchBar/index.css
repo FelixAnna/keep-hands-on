@@ -1,6 +1,7 @@
 .zdj-style{
 	padding: 20px 12px 10px 20px;
 	font: 13px Arial, Helvetica, sans-serif;
+	width: 100%;
 }
 .zdj-style-heading{
 	font-weight: bold;
@@ -9,7 +10,7 @@
 	margin-bottom: 20px;
 	font-size: 15px;
 	padding-bottom: 3px;
-	width: auto;
+	width: 100%;
 }
 
 .zdj-style div{
