@@ -9,7 +9,11 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -51,7 +55,6 @@ BootstrapDialogTitle.propTypes = {
 
 export default function CreateNewItemDialogs() {
   const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -60,8 +63,8 @@ export default function CreateNewItemDialogs() {
   };
 
   return (
-    <div>
-      <Button variant="contained" size="small" onClick={handleClickOpen} startIcon={<AddBoxIcon />}>
+    <>
+      <Button variant="contained" color="success" onClick={() => handleClickOpen()}>
         New Item
       </Button>
       <BootstrapDialog
@@ -72,11 +75,61 @@ export default function CreateNewItemDialogs() {
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
           Create New Item
         </BootstrapDialogTitle>
-        <DialogContent dividers>
+        <DialogContent
+          sx={{
+            width: 500,
+            maxWidth: '100%',
+          }}
+          dividers
+        >
           <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
+            <TextField fullWidth label="Subject" id="subject" />
+          </Typography>
+          <Typography gutterBottom>
+            <TextField
+              id="description"
+              label="Description"
+              multiline
+              rows={4}
+              sx={{
+                width: 500,
+                maxWidth: '100%',
+              }}
+              defaultValue="Description"
+            />
+          </Typography>
+          <Typography gutterBottom>
+            <TextField
+              id="monthDay"
+              label="MonthDay"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Typography>
+          <Typography gutterBottom>
+            <TextField
+              id="startYear"
+              label="StartYear"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Typography>
+          <Typography gutterBottom>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Lunar</InputLabel>
+              <Select
+                labelId="lunar-select"
+                id="lunar-select"
+                label="Lunar"
+              >
+                <MenuItem value={0}>Georgian</MenuItem>
+                <MenuItem value={1}>Lunar</MenuItem>
+              </Select>
+            </FormControl>
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -85,6 +138,6 @@ export default function CreateNewItemDialogs() {
           </Button>
         </DialogActions>
       </BootstrapDialog>
-    </div>
+    </>
   );
 }

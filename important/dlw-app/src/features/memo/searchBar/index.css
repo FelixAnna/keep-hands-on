@@ -1,7 +1,7 @@
 .memo-style{
 	padding: 20px 12px 10px 20px;
 	font: 13px Arial, Helvetica, sans-serif;
-	width: 800px;
+	width: 100%;
 }
 .memo-style-heading{
 	font-weight: bold;
@@ -10,11 +10,13 @@
 	margin-bottom: 20px;
 	font-size: 15px;
 	padding-bottom: 3px;
-	width: auto;
+	width: 100%;
 }
 
 .memo-style div{
 	display: inline-flex;
+	width: 100%;
+	padding: 0 5px;
 }
 .memo-style .input-field:focus, 
 .memo-style .number-range-field:focus, 
@@ -41,13 +43,4 @@
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
-}
-.memo-style input[type=submit]:hover,
-.memo-style input[type=button]:hover{
-	background: #00eac3;
-	color: #fff;
-}
-.memo-add-new{
-	padding-left: 100px;
-	border-radius: 15px;
 }

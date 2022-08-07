@@ -2,6 +2,8 @@ import './index.css';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import { saveCriteria, clearAll } from '../reducer';
 import CreateNewItemDialogs from './add';
 
@@ -60,11 +62,11 @@ function SearchBar() {
             />
           </div>
           <div>
-            <input type="submit" value="Search" onClick={() => search()} />
-            <input type="button" value="Reset" onClick={() => reset()} />
-          </div>
-          <div className="memo-add-new">
-            <CreateNewItemDialogs />
+            <Stack direction="row" spacing={2}>
+              <Button variant="contained" onClick={() => search()}>Search</Button>
+              <Button variant="outlined" onClick={() => reset()}>Reset</Button>
+              <CreateNewItemDialogs />
+            </Stack>
           </div>
         </div>
       </div>
