@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -14,6 +15,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { addAsync } from '../reducer';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -53,13 +55,36 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
+const defaultMemoItem = {
+  Subject: '',
+  Description: '',
+  MonthDay: '',
+  StartYear: 2022,
+  Lunar: 0,
+};
+
 export default function CreateNewItemDialogs() {
+  const [memoItem, setMemoItem] = React.useState(defaultMemoItem);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const dispatch = useDispatch();
   const handleClose = () => {
+    dispatch(addAsync({
+      Subject: memoItem.Subject,
+      Description: memoItem.Description,
+      MonthDay: Number(memoItem.MonthDay),
+      StartYear: memoItem.StartYear,
+      Lunar: memoItem.Lunar,
+    }))
+      .then(() => {
+        setMemoItem({ ...defaultMemoItem });
+      });
     setOpen(false);
+  };
+  const handleChange = (prop) => (event) => {
+    setMemoItem({ ...memoItem, [prop]: event.target.value });
   };
 
   return (
@@ -83,7 +108,14 @@ export default function CreateNewItemDialogs() {
           dividers
         >
           <Typography gutterBottom>
-            <TextField fullWidth label="Subject" id="subject" required />
+            <TextField
+              fullWidth
+              label="Subject"
+              id="subject"
+              value={memoItem.Subject}
+              onChange={handleChange('Subject')}
+              required
+            />
           </Typography>
           <Typography gutterBottom>
             <TextField
@@ -91,6 +123,8 @@ export default function CreateNewItemDialogs() {
               label="Description"
               multiline
               rows={4}
+              value={memoItem.Description}
+              onChange={handleChange('Description')}
               sx={{
                 width: 500,
                 maxWidth: '100%',
@@ -102,7 +136,9 @@ export default function CreateNewItemDialogs() {
             <TextField
               id="monthDay"
               label="MonthDay"
-              type="number"
+              placeholder="MMdd, like: 1231"
+              value={memoItem.MonthDay}
+              onChange={handleChange('MonthDay')}
               required
               InputLabelProps={{
                 shrink: true,
@@ -113,6 +149,8 @@ export default function CreateNewItemDialogs() {
             <TextField
               id="startYear"
               label="StartYear"
+              value={memoItem.StartYear}
+              onChange={handleChange('StartYear')}
               type="number"
               InputLabelProps={{
                 shrink: true,
@@ -125,8 +163,9 @@ export default function CreateNewItemDialogs() {
               <Select
                 labelId="lunar-select"
                 id="lunar-select"
+                value={memoItem.Lunar}
+                onChange={handleChange('Lunar')}
                 label="Lunar"
-                defaultValue={0}
               >
                 <MenuItem value={0}>Georgian</MenuItem>
                 <MenuItem value={1}>Lunar</MenuItem>

@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://20.24.116.2/',
+  baseURL: 'https://localhost/',
 });
 
 export function GetProblems(params) {
@@ -25,6 +25,11 @@ export function SearchZdj(data) {
 export function DeleteMemo(data) {
   const token = localStorage.getItem('token');
   return instance.delete(`/memo/memos/${data.id}`, { params: { access_code: token } });
+}
+
+export function AddMemo(data) {
+  const token = localStorage.getItem('token');
+  return instance.put('/memo/memos/', data, { params: { access_code: token } });
 }
 
 export function SearchMemo(data) {
