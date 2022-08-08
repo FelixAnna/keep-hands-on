@@ -37,7 +37,7 @@ export const authSlice = createSlice({
       }
 
       const token = localStorage.getItem('token');
-      if (token === undefined) {
+      if (token === undefined || token === null) {
         return;
       }
 
