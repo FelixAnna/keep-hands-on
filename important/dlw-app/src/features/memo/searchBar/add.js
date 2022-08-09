@@ -76,7 +76,7 @@ export default function CreateNewItemDialogs() {
       Description: memoItem.Description,
       MonthDay: Number(memoItem.MonthDay),
       StartYear: memoItem.StartYear,
-      Lunar: memoItem.Lunar,
+      Lunar: memoItem.Lunar === 1,
     }))
       .then(() => {
         setMemoItem({ ...defaultMemoItem });

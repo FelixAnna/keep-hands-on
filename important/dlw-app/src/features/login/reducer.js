@@ -42,6 +42,11 @@ export const authSlice = createSlice({
       }
 
       const decoded = jwt(token);
+      const dateNow = new Date();
+      if (decoded.exp < dateNow.getTime() / 1000) {
+        return;
+      }
+
       state.User = { Email: decoded.email, UserId: decoded.userId };
       state.isAuthenticated = true;
     },
