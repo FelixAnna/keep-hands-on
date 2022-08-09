@@ -34,41 +34,33 @@ function SearchBar() {
     <div style={{ display: 'flex' }}>
       <div className="memo-style">
         <div className="memo-style-heading">Search</div>
-        <div>
-          <div>
-            <TextField
-              id="date"
-              label="Birthday"
-              type="date"
-              sx={{ width: 220 }}
-              value={criteria.StartDate}
-              onChange={handleChange('StartDate')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </div>
-          <div>
-            <TextField
-              id="date"
-              label="Birthday"
-              type="date"
-              sx={{ width: 220 }}
-              value={criteria.EndDate}
-              onChange={handleChange('EndDate')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </div>
-          <div>
-            <Stack direction="row" spacing={2}>
-              <Button variant="contained" onClick={() => search()}>Search</Button>
-              <Button variant="outlined" onClick={() => reset()}>Reset</Button>
-              <CreateNewItemDialogs />
-            </Stack>
-          </div>
-        </div>
+        <Stack direction="row" spacing={2}>
+          <TextField
+            id="date"
+            label="Birthday"
+            type="date"
+            sx={{ width: 220 }}
+            value={criteria.StartDate}
+            onChange={handleChange('StartDate')}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            id="date"
+            label="Birthday"
+            type="date"
+            sx={{ width: 220 }}
+            value={criteria.EndDate}
+            onChange={handleChange('EndDate')}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <Button variant="contained" onClick={() => search()}>Search</Button>
+          <Button variant="outlined" onClick={() => reset()}>Reset</Button>
+          <CreateNewItemDialogs />
+        </Stack>
       </div>
     </div>
   );

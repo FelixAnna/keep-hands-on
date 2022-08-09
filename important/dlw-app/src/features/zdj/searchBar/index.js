@@ -7,6 +7,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import MultipleSelectCheckmarks from './select';
 import { saveCriteria, clearAll } from '../reducer';
 
@@ -64,82 +66,70 @@ function SearchBar() {
     <div style={{ display: 'flex' }}>
       <div className="zdj-style">
         <div className="zdj-style-heading">Search</div>
-        <div>
-          <div>
-            <MultipleSelectCheckmarks
-              handleChange={handleDistrictChange}
-              district={district}
-            />
-          </div>
-          <div>
-            <TextField
-              label="最低单价"
-              id="outlined-adornment-max"
-              sx={{ m: 1, width: '18ch' }}
-              value={criteria.MinPrice}
-              onChange={handleChange('MinPrice')}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">¥/㎡</InputAdornment>,
-                inputMode: 'numeric',
-                pattern: '[0-9]*',
-              }}
-            />
-          </div>
-          <div>
-            <TextField
-              label="最高单价"
-              id="outlined-adornment-max"
-              sx={{ m: 1, width: '18ch' }}
-              value={criteria.MaxPrice}
-              onChange={handleChange('MaxPrice')}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">¥/㎡</InputAdornment>,
-                inputMode: 'numeric',
-                pattern: '[0-9]*',
-              }}
-            />
-          </div>
-          <div>
-            <TextField
-              label="关键字"
-              id="outlined-adornment-keywords"
-              sx={{ m: 1, width: '20ch' }}
-              value={criteria.Keywords}
-              onChange={handleChange('Keywords')}
-              InputProps={{
-              }}
-            />
-          </div>
-          <div>
-            <FormControl sx={{ m: 1, minWidth: 150 }}>
-              <InputLabel id="demo-simple-select-autowidth-label">排序</InputLabel>
-              <Select
-                labelId="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                value={criteria.SortKey}
-                onChange={handleChange('SortKey')}
-                autoWidth
-                label="排序"
-              >
-                <MenuItem value="id">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="price_asc">单价升序</MenuItem>
-                <MenuItem value="price_desc">单价降序</MenuItem>
-                <MenuItem value="district_asc">行政区升序</MenuItem>
-                <MenuItem value="district_desc">行政区降序</MenuItem>
-                <MenuItem value="street_asc">街道升序</MenuItem>
-                <MenuItem value="street_desc">街道降序</MenuItem>
-                <MenuItem value="community_asc">小区升序</MenuItem>
-                <MenuItem value="community_desc">小区降序</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <div>
-            <input type="submit" value="Search" onClick={() => search()} />
-            <input type="button" value="Clear" onClick={() => reset()} />
-          </div>
-        </div>
+        <Stack direction="row" spacing={2}>
+          <MultipleSelectCheckmarks
+            handleChange={handleDistrictChange}
+            district={district}
+          />
+          <TextField
+            label="最低单价"
+            id="outlined-adornment-max"
+            sx={{ m: 1, width: '18ch' }}
+            value={criteria.MinPrice}
+            onChange={handleChange('MinPrice')}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">¥/㎡</InputAdornment>,
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+            }}
+          />
+          <TextField
+            label="最高单价"
+            id="outlined-adornment-max"
+            sx={{ m: 1, width: '18ch' }}
+            value={criteria.MaxPrice}
+            onChange={handleChange('MaxPrice')}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">¥/㎡</InputAdornment>,
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+            }}
+          />
+          <TextField
+            label="关键字"
+            id="outlined-adornment-keywords"
+            sx={{ m: 1, width: '20ch' }}
+            value={criteria.Keywords}
+            onChange={handleChange('Keywords')}
+            InputProps={{
+            }}
+          />
+          <FormControl sx={{ m: 1, minWidth: 150 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">排序</InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={criteria.SortKey}
+              onChange={handleChange('SortKey')}
+              autoWidth
+              label="排序"
+            >
+              <MenuItem value="id">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="price_asc">单价升序</MenuItem>
+              <MenuItem value="price_desc">单价降序</MenuItem>
+              <MenuItem value="district_asc">行政区升序</MenuItem>
+              <MenuItem value="district_desc">行政区降序</MenuItem>
+              <MenuItem value="street_asc">街道升序</MenuItem>
+              <MenuItem value="street_desc">街道降序</MenuItem>
+              <MenuItem value="community_asc">小区升序</MenuItem>
+              <MenuItem value="community_desc">小区降序</MenuItem>
+            </Select>
+          </FormControl>
+          <Button variant="contained" onClick={() => search()}>Search</Button>
+          <Button variant="outlined" onClick={() => reset()}>Reset</Button>
+        </Stack>
       </div>
     </div>
   );

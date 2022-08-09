@@ -12,9 +12,9 @@
 	padding-bottom: 3px;
 	width: 100%;
 }
-
-.zdj-style div{
-	display: flex;
+.zdj-style div  button{
+	height: 38px;
+	margin-top: 8px !important;
 }
 .zdj-style .input-field:focus, 
 .zdj-style .number-range-field:focus, 

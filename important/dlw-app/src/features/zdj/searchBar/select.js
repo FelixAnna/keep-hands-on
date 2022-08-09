@@ -21,7 +21,7 @@ const MenuProps = {
 };
 function MultipleSelectCheckmarks({ district, handleChange }) {
   return (
-    <FormControl sx={{ m: 1, width: 300 }}>
+    <FormControl sx={{ m: 0, width: 300 }}>
       <InputLabel id="district-multiple-checkbox-label">行政区</InputLabel>
       <Select
         labelId="district-multiple-checkbox-label"

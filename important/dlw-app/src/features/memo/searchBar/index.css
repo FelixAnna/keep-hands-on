@@ -13,10 +13,9 @@
 	width: 100%;
 }
 
-.memo-style div{
-	display: inline-flex;
-	width: 100%;
-	padding: 0 5px;
+.memo-style div  button{
+	height: 38px;
+	margin-top: 8px !important;
 }
 .memo-style .input-field:focus, 
 .memo-style .number-range-field:focus, 
