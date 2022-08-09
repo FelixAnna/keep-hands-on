@@ -10,8 +10,7 @@ export function GetProblems(params) {
 }
 
 export function SaveResults(data) {
-  const token = localStorage.getItem('token');
-  return instance.post('/finance/homework/math/save', data, { params: { access_code: token } });
+  return instance.post('/finance/homework/math/save', data);
 }
 
 export function LoginGithubUser(data) {
@@ -23,18 +22,25 @@ export function SearchZdj(data) {
 }
 
 export function DeleteMemo(data) {
-  const token = localStorage.getItem('token');
-  return instance.delete(`/memo/memos/${data.id}`, { params: { access_code: token } });
+  return instance.delete(`/memo/memos/${data.id}`);
 }
 
 export function AddMemo(data) {
-  const token = localStorage.getItem('token');
-  return instance.put('/memo/memos/', data, { params: { access_code: token } });
+  return instance.put('/memo/memos/', data);
 }
 
 export function SearchMemo(data) {
-  const token = localStorage.getItem('token');
   const start = data.StartDate.length === 10 ? data.StartDate.substring(5, 7) + data.StartDate.substring(8) : '0101';
   const end = data.EndDate.length === 10 ? data.EndDate.substring(5, 7) + data.EndDate.substring(8) : '1231';
-  return instance.get('/memo/memos/recent', { params: { start, end, access_code: token } });
+  return instance.get('/memo/memos/recent', { params: { start, end } });
 }
+
+// Request interceptors for API calls
+instance.interceptors.request.use(
+  (config) => {
+    // eslint-disable-next-line no-param-reassign
+    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    return config;
+  },
+  (error) => Promise.reject(error),
+);

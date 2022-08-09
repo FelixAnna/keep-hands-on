@@ -88,8 +88,7 @@ export default function CustomizedTables() {
               <StyledTableCell align="right">Last Date</StyledTableCell>
               <StyledTableCell align="right">Next Date</StyledTableCell>
               <StyledTableCell align="right">CreateTime</StyledTableCell>
-              <StyledTableCell align="right">LastModifiedTime</StyledTableCell>
-              <StyledTableCell align="right">Operation</StyledTableCell>
+              <StyledTableCell align="right">Operations</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -112,12 +111,10 @@ export default function CustomizedTables() {
                   &nbsp;days later
                 </StyledTableCell>
                 <StyledTableCell align="right">{formatDateTime(row.CreateTime)}</StyledTableCell>
-                <StyledTableCell align="right">{formatDateTime(row.LastModifiedTime)}</StyledTableCell>
                 <StyledTableCell align="right">
                   <IconButton
                     aria-label="delete"
                     onClick={() => {
-                      console.log(row.Id);
                       dispatch(deleteAsync({ id: row.Id }));
                     }}
                   >
