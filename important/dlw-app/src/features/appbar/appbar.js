@@ -39,7 +39,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            Daily Life App
+            Daily Life Web
           </Typography>
           <ResponsiveLeftMenu />
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
