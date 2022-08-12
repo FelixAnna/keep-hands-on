@@ -2,7 +2,7 @@ export const githubAuthOptions = {
   baseUrl: 'https://github.com/login/oauth/authorize',
   access_type: 'offline',
   response_type: 'code',
-  client_id: 'a4df124876d5001ef756',
+  client_id: process.env.REACT_APP_GITHUB_CLIENT_ID,
   scope: ['read:user', 'user:email', 'read:repo_hook'],
   redirect_uri: '',
 };
