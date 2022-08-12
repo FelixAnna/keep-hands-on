@@ -75,7 +75,7 @@ export default function CreateNewItemDialogs() {
       Subject: memoItem.Subject,
       Description: memoItem.Description,
       MonthDay: Number(memoItem.MonthDay),
-      StartYear: memoItem.StartYear,
+      StartYear: Number(memoItem.StartYear),
       Lunar: memoItem.Lunar === 1,
     }))
       .then(() => {
