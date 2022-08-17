@@ -13,6 +13,7 @@ import Mathematicals from './features/mathematicals/index';
 import PrivateRoute from './features/auth/privateRoute';
 import ZdjSearch from './features/zdj';
 import MemoSearch from './features/memo';
+import Profile from './features/login/profile';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="login/github" element={<GithubLogin />} />
           <Route path="zdj" element={<ZdjSearch />} />
+          <Route exact path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route exact path="/memo" element={<PrivateRoute><MemoSearch /></PrivateRoute>} />
           <Route exact path="/math" element={<PrivateRoute><Mathematicals /></PrivateRoute>} />
         </Routes>

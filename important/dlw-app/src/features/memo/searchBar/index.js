@@ -37,7 +37,7 @@ function SearchBar() {
         <Stack direction="row" spacing={2}>
           <TextField
             id="date"
-            label="Birthday"
+            label="Start Date"
             type="date"
             sx={{ width: 220 }}
             value={criteria.StartDate}
@@ -48,7 +48,7 @@ function SearchBar() {
           />
           <TextField
             id="date"
-            label="Birthday"
+            label="End Date"
             type="date"
             sx={{ width: 220 }}
             value={criteria.EndDate}
