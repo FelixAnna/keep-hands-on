@@ -18,10 +18,24 @@ export const MathType = [
     ],
   },
   {
-    text: '应用题',
+    text: '应用题(比数字)',
     key: 2,
     options: [
       { key: '1', text: '比a多b的数是c', value: 1 },
+    ],
+  },
+  {
+    text: '应用题(比苹果)',
+    key: 3,
+    options: [
+      { key: '2', text: '小明有a个苹果，小红比小明多b个，小红有c个苹果？', value: 1 },
+    ],
+  },
+  {
+    text: '应用题(随机)',
+    key: 4,
+    options: [
+      { key: '3', text: '哥哥身高a厘米，妹妹比哥哥矮b厘米，妹妹身高c厘米？', value: 1 },
     ],
   },
 ];

@@ -14,6 +14,10 @@ function GithubLogin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
+    if (state !== localStorage.getItem('state')) {
+      return;
+    }
+    localStorage.removeItem('state');
     dispatch(loginAsync({ code, state }))
       .then(() => {
         const from = sessionStorage.getItem('redirect_url');
