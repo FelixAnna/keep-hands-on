@@ -11,6 +11,8 @@ const initialState = {
   QuestionId: '',
 };
 
+let checkedCount = 0;
+
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
@@ -81,6 +83,7 @@ export const criteriaSlice = createSlice({
     },
 
     updateShowResult(state) {
+      checkedCount += 1;
       state.ShowResult = !state.ShowResult;
     },
 
@@ -98,6 +101,7 @@ export const criteriaSlice = createSlice({
       const score = correct / state.Questions.length;
       state.Score = score.toFixed(2) * 100;
 
+      console.log(checkedCount);
       if (score === 0) {
         return;
       }
@@ -122,7 +126,6 @@ export const criteriaSlice = createSlice({
       };
 
       // save to database
-      // console.log(results);
       SaveResults(results);
     },
   },

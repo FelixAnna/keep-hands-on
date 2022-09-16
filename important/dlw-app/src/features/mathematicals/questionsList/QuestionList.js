@@ -35,7 +35,7 @@ function QuestionList() {
             questions !== undefined ? qestionList : (<div>No data</div>)
         }
       </div>
-      <Button variant="outlined" className="buttons" onClick={() => dispatch(updateShowAnswer())}>答案</Button>
+      <Button variant="outlined" className="buttons_hidden" onClick={() => dispatch(updateShowAnswer())}>答案</Button>
       <Button variant="outlined" className="buttons" onClick={() => dispatch(updateShowResult())}>检查</Button>
       <Button variant="outlined" className="buttons" onClick={() => dispatch(submitResult())}>交卷</Button>
       <div />

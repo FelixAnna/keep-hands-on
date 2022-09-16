@@ -16,6 +16,11 @@
 	margin: 0px 10px 15px 0px !important;
 }
 
+.buttons_hidden{
+	margin: 0px 10px 15px 0px !important;
+	display: none !important;
+}
+
 .question-list-style-right-heading{
 	font-weight: bold;
 	font-style: italic;
