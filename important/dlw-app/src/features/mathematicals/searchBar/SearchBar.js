@@ -2,10 +2,15 @@ import './SearchBar.css';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Slider from '@mui/material/Slider';
 import {
   clearAll, addCriteria, addCriteriaTemplate,
 } from '../reducers/searchBar';
-import { MathCategory, MathKind, MathType } from '../const';
+import {
+  MathCategory, MathKind, MathType,
+} from '../const';
 
 const defaultCriteria = {
   Min: 0,
@@ -133,6 +138,12 @@ function SearchBar() {
           </div>
         </div>
       </div>
+      <div>
+        <div className="math-question-style-heading">快速配置</div>
+        <div>
+          <ToggleButtonsMultiple />
+        </div>
+      </div>
       <div className="math-question-style">
         <div className="math-question-style-heading">配置题目生成模板</div>
         <div>
@@ -180,6 +191,89 @@ function SearchBar() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function ToggleButtonsMultiple() {
+  const handleClick = (type, value) => {
+    console.log(type + value);
+  };
+
+  const categoryOptions = MathCategory.map((op) => (
+    <Chip label={op.text} key={op.key} onClick={() => handleClick('category', op.value)} variant="outlined" />
+  ));
+
+  const kindOptions = MathKind.map((op) => (
+    <Chip label={op.symble} key={op.key} onClick={() => handleClick('kind', op.value)} variant="outlined" />
+  ));
+
+  const typeOptions = MathType.map((op) => (
+    <Chip label={op.text} key={op.key} onClick={() => handleClick('type', op.options[0].value)} variant="outlined" />
+  ));
+
+  const ranges = [
+    {
+      value: -1000 * 1000 * 1000,
+      label: '不限',
+    },
+    {
+      value: -1000,
+      label: '-1000',
+    },
+    {
+      value: -100,
+      label: '-100',
+    },
+    {
+      value: 0,
+      label: '0',
+    },
+    {
+      value: 10,
+      label: '10',
+    },
+    {
+      value: 20,
+      label: '20',
+    },
+    {
+      value: 100,
+      label: '100',
+    },
+    {
+      value: 1000,
+      label: '1000',
+    },
+    {
+      value: 1000 * 1000 * 1000,
+      label: '不限',
+    },
+  ];
+
+  const calculateValue = (value) => 2 ** value;
+
+  return (
+    <div>
+      <Stack direction="row" spacing={1}>
+        {categoryOptions}
+      </Stack>
+      <Stack direction="row" spacing={1}>
+        {kindOptions}
+      </Stack>
+      <Stack direction="row" spacing={1}>
+        {typeOptions}
+      </Stack>
+      <Slider
+        aria-label="Always visible"
+        step={10}
+        marks={ranges}
+        scale={calculateValue}
+        min={-1000 * 1000 * 1000}
+        max={1000 * 1000 * 1000}
+        valueLabelDisplay="on"
+      />
+      <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" />
     </div>
   );
 }
