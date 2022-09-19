@@ -6,7 +6,7 @@ export const MathCategory = [
 export const MathKind = [
   {
     key: '1',
-    text: '第一个数：? + b= c ',
+    text: '第一个数: ? + b= c ',
     symble: '? + b= c',
     value: 1,
   },
@@ -55,45 +55,50 @@ export const MathType = [
   },
 ];
 
-export const RangeNumber = [
+export const IORanges = [
   {
-    key: 1,
-    text: '10 以内',
-    data: {
-      min: 0,
-      max: 10,
-    },
+    value: 0,
+    label: '不限',
+    val: -1 * 2 ** 30,
   },
   {
-    key: 2,
-    text: '20 以内',
-    data: {
-      min: 0,
-      max: 20,
-    },
+    value: 10,
+    label: '-1000',
+    val: -1000,
   },
   {
-    key: 3,
-    text: '100 以内',
-    data: {
-      min: 0,
-      max: 100,
-    },
+    value: 20,
+    label: '-100',
+    val: -100,
   },
   {
-    key: 4,
-    text: '1000 以内',
-    data: {
-      min: 0,
-      max: 100,
-    },
+    value: 30,
+    label: '0',
+    val: 0,
   },
   {
-    key: 5,
-    text: '任意数',
-    data: {
-      min: -10000000000,
-      max: 10000000000,
-    },
+    value: 40,
+    label: '10',
+    val: 10,
+  },
+  {
+    value: 50,
+    label: '20',
+    val: 20,
+  },
+  {
+    value: 60,
+    label: '100',
+    val: 100,
+  },
+  {
+    value: 70,
+    label: '1000',
+    val: 1000,
+  },
+  {
+    value: 80,
+    label: '不限',
+    val: 2 ** 30,
   },
 ];

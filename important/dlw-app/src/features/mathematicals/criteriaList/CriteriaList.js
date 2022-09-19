@@ -34,13 +34,13 @@ const columns = [
     field: 'inputRange',
     headerName: '数字范围',
     width: 100,
-    valueGetter: (params) => `${params.row.Min || ''} ${params.row.Max || ''}`,
+    valueGetter: (params) => `${params.row.Min || '0'} ~ ${params.row.Max || '0'}`,
   },
   {
     field: 'outputRange',
     headerName: '结果范围',
     width: 100,
-    valueGetter: (params) => `${params.row.Range.Min || ''} ${params.row.Range.Max || ''}`,
+    valueGetter: (params) => `${params.row.Range.Min || '0'} ~ ${params.row.Range.Max || '0'}`,
   },
   { field: 'Quantity', headerName: '题目数量', width: 70 },
   {

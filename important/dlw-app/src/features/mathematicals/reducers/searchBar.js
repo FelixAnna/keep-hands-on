@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { GetProblems, SaveResults } from '../../../api/request';
-import { MathCategory, MathKind, MathType } from '../const';
+import {
+  MathCategory, MathKind, MathType,
+  IORanges,
+} from '../const';
 
 const initialState = {
   Criterias: [],
@@ -35,7 +38,34 @@ export const criteriaSlice = createSlice({
     addCriteria(state, action) {
       state.Criterias.push(action.payload);
     },
+    addCriteriaBatch(state, action) {
+      const criteria = action.payload;
+      console.log(criteria);
 
+      const criterias = [];
+      criteria.Categories.forEach((cat) => {
+        criteria.Kind.forEach((kind) => {
+          criteria.Types.forEach((type) => {
+            const ct = {
+              Min: IORanges.find((x) => x.value === criteria.InputRange[0]).val,
+              Max: IORanges.find((x) => x.value === criteria.InputRange[1]).val,
+              Quantity: criteria.Quantity,
+              Range: {
+                Min: IORanges.find((x) => x.value === criteria.OutputRange[0]).val,
+                Max: IORanges.find((x) => x.value === criteria.OutputRange[1]).val,
+              },
+              Category: cat,
+              Kind: kind,
+              Type: type,
+            };
+
+            criterias.push(ct);
+          });
+        });
+      });
+
+      state.Criterias = criterias;
+    },
     addCriteriaTemplate(state, action) {
       const { category, quantity, max } = action.payload;
 
@@ -147,7 +177,7 @@ export const criteriaSlice = createSlice({
 
 export const {
   clearAll, addCriteria, updateShowResult, updateShowAnswer,
-  submitResult, updateAnswer, addCriteriaTemplate,
+  submitResult, updateAnswer, addCriteriaTemplate, addCriteriaBatch,
 } = criteriaSlice.actions;
 export const currentCriterias = (state) => state.criteria.Criterias;
 export const currentQuestions = (state) => state.criteria.Questions;
