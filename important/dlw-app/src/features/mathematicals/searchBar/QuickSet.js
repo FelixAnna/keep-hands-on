@@ -37,15 +37,21 @@ export default function QuickSet() {
   };
   const handleClick = (type, value) => {
     switch (type) {
-      case 'category':
-        criteria.Categories = handleAppendElement(criteria.Categories, Number(value));
+      case 'category': {
+        const categories = handleAppendElement(criteria.Categories, Number(value));
+        setCriteria({ ...criteria, Categories: categories });
         break;
-      case 'kind':
-        criteria.Kind = handleAppendElement(criteria.Kind, Number(value));
+      }
+      case 'kind': {
+        const kind = handleAppendElement(criteria.Kind, Number(value));
+        setCriteria({ ...criteria, Kind: kind });
         break;
-      case 'type':
-        criteria.Types = handleAppendElement(criteria.Types, Number(value));
+      }
+      case 'type': {
+        const types = handleAppendElement(criteria.Types, Number(value));
+        setCriteria({ ...criteria, Types: types });
         break;
+      }
       default:
         break;
     }
