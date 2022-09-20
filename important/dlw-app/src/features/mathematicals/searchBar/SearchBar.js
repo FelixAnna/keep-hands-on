@@ -1,9 +1,12 @@
 import './SearchBar.css';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import {
-  clearAll, addCriteria, addCriteriaTemplate,
+  clearAll, addCriteria,
 } from '../reducers/searchBar';
 import {
   MathCategory, MathKind, MathType,
@@ -85,111 +88,79 @@ function SearchBar() {
 
     return current;
   };
+  const [openAuto, setOpenAuto] = React.useState(false);
+  const [openManual, setOpenManual] = React.useState(false);
+
+  const handleCloseAuto = () => {
+    setOpenAuto(!openAuto);
+  };
+  const handleCloseManual = () => {
+    setOpenManual(!openManual);
+  };
 
   return (
     <div style={{ display: 'flex' }}>
-      <div className="math-question-style">
-        <div className="math-question-style-heading">快速配置</div>
-        <div>
-          <div>100以内</div>
+      <Stack direction="row" spacing={1}>
+        <Button variant="outlined" onClick={() => setOpenAuto(true)}>快速配置</Button>
+        <Button variant="outlined" onClick={() => setOpenManual(true)}>配置题目</Button>
+      </Stack>
+      <Dialog onClose={handleCloseAuto} open={openAuto}>
+        <DialogTitle>快速配置</DialogTitle>
+        <div className="math-quickset-style">
           <div>
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: -1, quantity: 2, max: 100 }))}>任意各出2道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: -1, quantity: 5, max: 100 }))}>任意各出5道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: -1, quantity: 10, max: 100 }))}>任意各出10道</Button>
-          </div>
-          <div>
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 0, quantity: 2, max: 100 }))}>加法各出2道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 0, quantity: 5, max: 100 }))}>加法各出5道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 0, quantity: 10, max: 100 }))}>加法各出10道</Button>
-          </div>
-          <div>
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 1, quantity: 2, max: 100 }))}>减法各出2道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 1, quantity: 5, max: 100 }))}>减法各出5道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 1, quantity: 10, max: 100 }))}>减法各出10道</Button>
-          </div>
-          <div>1000以内</div>
-          <div>
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: -1, quantity: 2, max: 1000 }))}>任意各出2道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: -1, quantity: 5, max: 1000 }))}>任意各出5道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: -1, quantity: 10, max: 1000 }))}>任意各出10道</Button>
-          </div>
-          <div>
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 0, quantity: 2, max: 1000 }))}>加法各出2道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 0, quantity: 5, max: 1000 }))}>加法各出5道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 0, quantity: 10, max: 1000 }))}>加法各出10道</Button>
-          </div>
-          <div>
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 1, quantity: 2, max: 1000 }))}>减法各出2道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 1, quantity: 5, max: 1000 }))}>减法各出5道</Button>
-&nbsp;
-            <Button variant="outlined" onClick={() => dispatch(addCriteriaTemplate({ category: 1, quantity: 10, max: 1000 }))}>减法各出10道</Button>
+            <QuickSet />
           </div>
         </div>
-      </div>
-      <div>
-        <div className="math-question-style-heading">快速配置</div>
-        <div>
-          <QuickSet />
-        </div>
-      </div>
-      <div className="math-question-style">
-        <div className="math-question-style-heading">配置题目生成模板</div>
-        <div>
+      </Dialog>
+      <Dialog onClose={handleCloseManual} open={openManual}>
+        <DialogTitle>配置题目</DialogTitle>
+        <div className="math-question-style">
           <div>
-            <span>算术类型:</span>
-            <select className="select-field" value={criteria.Category} onChange={(e) => handleChange(e, 0)}>
-              {MathCategory.map((op) => <option key={op.key} value={op.key}>{op.text}</option>)}
-            </select>
-          </div>
-          <div>
-            <span>数字范围:</span>
-            <input className="number-range-field" type="number" value={criteria.Min} onChange={(e) => handleChange(e, 1)} />
-            -
-            <input className="number-range-field" type="number" value={criteria.Max} onChange={(e) => handleChange(e, 2)} />
-          </div>
-          <div>
-            <span>结果范围:</span>
-            <input className="number-range-field" type="number" value={criteria.ResultMin} onChange={(e) => handleChange(e, 3)} />
-            -
-            <input className="number-range-field" type="number" value={criteria.ResultMax} onChange={(e) => handleChange(e, 4)} />
-          </div>
-          <div>
-            <span>求值类型:</span>
-            <select className="select-field" value={criteria.Kind} onChange={(e) => handleChange(e, 5)}>
-              {MathKind.map((op) => <option key={op.key} value={op.key}>{op.text}</option>)}
-            </select>
-          </div>
-          <div>
-            <span>输出格式:</span>
-            <select className="select-field" value={criteria.Type} onChange={(e) => handleChange(e, 6)}>
-              {MathType.map((gp) => (
-                <optgroup label={gp.text} key={gp.key}>
-                  {gp.options.map((op) => <option key={op.key} value={op.key}>{op.text}</option>)}
-                </optgroup>
-              ))}
-            </select>
-          </div>
-          <div>
-            <span>题目数量:</span>
-            <input className="input-field" type="number" min="1" max="1000" value={criteria.Quantity} onChange={(e) => handleChange(e, 7)} />
-          </div>
-          <div>
-            <input type="submit" value="加入队列" onClick={() => dispatch(addCriteria(getCriteria()))} />
-            <input type="button" value="清除所有" onClick={() => dispatch(clearAll())} />
+            <div>
+              <span>算术类型:</span>
+              <select className="select-field" value={criteria.Category} onChange={(e) => handleChange(e, 0)}>
+                {MathCategory.map((op) => <option key={op.key} value={op.key}>{op.text}</option>)}
+              </select>
+            </div>
+            <div>
+              <span>数字范围:</span>
+              <input className="number-range-field" type="number" value={criteria.Min} onChange={(e) => handleChange(e, 1)} />
+              -
+              <input className="number-range-field" type="number" value={criteria.Max} onChange={(e) => handleChange(e, 2)} />
+            </div>
+            <div>
+              <span>结果范围:</span>
+              <input className="number-range-field" type="number" value={criteria.ResultMin} onChange={(e) => handleChange(e, 3)} />
+              -
+              <input className="number-range-field" type="number" value={criteria.ResultMax} onChange={(e) => handleChange(e, 4)} />
+            </div>
+            <div>
+              <span>求值类型:</span>
+              <select className="select-field" value={criteria.Kind} onChange={(e) => handleChange(e, 5)}>
+                {MathKind.map((op) => <option key={op.key} value={op.key}>{op.text}</option>)}
+              </select>
+            </div>
+            <div>
+              <span>输出格式:</span>
+              <select className="select-field" value={criteria.Type} onChange={(e) => handleChange(e, 6)}>
+                {MathType.map((gp) => (
+                  <optgroup label={gp.text} key={gp.key}>
+                    {gp.options.map((op) => <option key={op.key} value={op.key}>{op.text}</option>)}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
+            <div>
+              <span>题目数量:</span>
+              <input className="input-field" type="number" min="1" max="1000" value={criteria.Quantity} onChange={(e) => handleChange(e, 7)} />
+            </div>
+            <div>
+              <input type="submit" value="加入队列" onClick={() => dispatch(addCriteria(getCriteria()))} />
+              <input type="button" value="清除所有" onClick={() => dispatch(clearAll())} />
+            </div>
           </div>
         </div>
-      </div>
+      </Dialog>
     </div>
   );
 }

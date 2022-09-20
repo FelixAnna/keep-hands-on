@@ -33,13 +33,13 @@ const columns = [
   {
     field: 'inputRange',
     headerName: '数字范围',
-    width: 100,
+    width: 130,
     valueGetter: (params) => `${params.row.Min || '0'} ~ ${params.row.Max || '0'}`,
   },
   {
     field: 'outputRange',
     headerName: '结果范围',
-    width: 100,
+    width: 130,
     valueGetter: (params) => `${params.row.Range.Min || '0'} ~ ${params.row.Range.Max || '0'}`,
   },
   { field: 'Quantity', headerName: '题目数量', width: 70 },
@@ -52,13 +52,13 @@ const columns = [
   {
     field: 'Kind',
     headerName: '求值类型',
-    width: 150,
+    width: 180,
     valueGetter: (params) => `${convertToText(params.row.Kind, 'Kind')}`,
   },
   {
     field: 'Type',
     headerName: '输出格式',
-    width: 220,
+    width: 380,
     valueGetter: (params) => `${convertToText(params.row.Type, 'Type')}`,
   },
 ];
@@ -68,12 +68,12 @@ function CriteriaList() {
   const rows = criterias.map((q, i) => ({ id: i + 1, ...q }));
 
   return (
-    <div style={{ height: '375px', width: '100%' }}>
+    <div style={{ height: '632px', width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
         checkboxSelection
       />
     </div>

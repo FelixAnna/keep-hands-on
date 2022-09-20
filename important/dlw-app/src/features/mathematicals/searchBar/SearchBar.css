@@ -1,7 +1,10 @@
+.math-quickset-style,
 .math-question-style{
-	max-width: 500px;
-	padding: 20px 12px 10px 20px;
+	padding: 5%;
 	font: 13px Arial, Helvetica, sans-serif;
+	border-top: 1px #0099ff solid;
+	width: 560px;
+	width: 90%;
 }
 .math-question-style-heading{
 	font-weight: bold;
@@ -10,11 +13,21 @@
 	margin-bottom: 20px;
 	font-size: 15px;
 	padding-bottom: 3px;
+	text-align: left;
 }
+.math-quickset-style div{
+	margin: 0px 0px 6px 0px;
+	flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 24px;
+	flex-wrap: wrap;
+}
+
 .math-question-style div{
 	display: block;
 	margin: 0px 0px 15px 0px;
 }
+
 .math-question-style div > span{
 	width: 100px;
 	font-weight: bold;
@@ -63,6 +76,7 @@
 .math-question-style input[type=button]{
 	border: none;
 	padding: 8px 15px 8px 15px;
+	margin-right: 10px;
 	background: #0099ff;
 	color: #fff;
 	box-shadow: 1px 1px 4px #DADADA;

@@ -119,7 +119,7 @@ export default function QuickSet() {
         aria-label="Default"
         valueLabelDisplay="auto"
       />
-      <Button variant="outlined" onClick={() => dispatch(addCriteriaBatch(criteria))}>Add</Button>
+      <Button variant="outlined" onClick={() => dispatch(addCriteriaBatch(criteria))}>提交</Button>
     </div>
   );
 }
