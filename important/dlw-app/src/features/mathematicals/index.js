@@ -5,6 +5,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import { useSelector, useDispatch } from 'react-redux';
 import CriteriaList from './criteriaList/CriteriaList';
 import QuestionList from './questionsList/QuestionList';
@@ -40,9 +41,11 @@ function Mathematicals() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <SearchBar />
-          <CriteriaList />
-          <Button variant="outlined" onClick={handleGenerate}>刷新题目列表</Button>
+          <Stack direction="column" spacing={1} alignItems="center">
+            <SearchBar />
+            <CriteriaList />
+            <Button variant="outlined" onClick={handleGenerate}>刷新题目列表</Button>
+          </Stack>
         </TabPanel>
         <TabPanel value="2">
           <QuestionList />

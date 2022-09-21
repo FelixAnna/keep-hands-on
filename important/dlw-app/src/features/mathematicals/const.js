@@ -58,8 +58,8 @@ export const MathType = [
 export const IORanges = [
   {
     value: 0,
-    label: '不限',
-    val: -1 * 2 ** 30,
+    label: '-10^9',
+    val: -1e9,
   },
   {
     value: 10,
@@ -98,7 +98,7 @@ export const IORanges = [
   },
   {
     value: 80,
-    label: '不限',
-    val: 2 ** 30,
+    label: '10^9',
+    val: 1e9,
   },
 ];

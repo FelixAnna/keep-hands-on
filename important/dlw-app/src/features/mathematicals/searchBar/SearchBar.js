@@ -99,10 +99,10 @@ function SearchBar() {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
-      <Stack direction="row" spacing={1}>
+    <>
+      <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
         <Button variant="outlined" onClick={() => setOpenAuto(true)}>快速配置</Button>
-        <Button variant="outlined" onClick={() => setOpenManual(true)}>配置题目</Button>
+        <Button variant="outlined" onClick={() => setOpenManual(true)}>详细配置</Button>
       </Stack>
       <Dialog onClose={handleCloseAuto} open={openAuto}>
         <DialogTitle>快速配置</DialogTitle>
@@ -113,7 +113,7 @@ function SearchBar() {
         </div>
       </Dialog>
       <Dialog onClose={handleCloseManual} open={openManual}>
-        <DialogTitle>配置题目</DialogTitle>
+        <DialogTitle>详细配置</DialogTitle>
         <div className="math-question-style">
           <div>
             <div>
@@ -124,15 +124,19 @@ function SearchBar() {
             </div>
             <div>
               <span>数字范围:</span>
-              <input className="number-range-field" type="number" value={criteria.Min} onChange={(e) => handleChange(e, 1)} />
-              -
-              <input className="number-range-field" type="number" value={criteria.Max} onChange={(e) => handleChange(e, 2)} />
+              <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+                <input className="number-range-field" type="number" value={criteria.Min} onChange={(e) => handleChange(e, 1)} />
+                <text>~</text>
+                <input className="number-range-field" type="number" value={criteria.Max} onChange={(e) => handleChange(e, 2)} />
+              </Stack>
             </div>
             <div>
               <span>结果范围:</span>
-              <input className="number-range-field" type="number" value={criteria.ResultMin} onChange={(e) => handleChange(e, 3)} />
-              -
-              <input className="number-range-field" type="number" value={criteria.ResultMax} onChange={(e) => handleChange(e, 4)} />
+              <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+                <input className="number-range-field" type="number" value={criteria.ResultMin} onChange={(e) => handleChange(e, 3)} />
+                <text>~</text>
+                <input className="number-range-field" type="number" value={criteria.ResultMax} onChange={(e) => handleChange(e, 4)} />
+              </Stack>
             </div>
             <div>
               <span>求值类型:</span>
@@ -161,7 +165,7 @@ function SearchBar() {
           </div>
         </div>
       </Dialog>
-    </div>
+    </>
   );
 }
 
