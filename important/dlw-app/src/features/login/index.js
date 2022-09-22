@@ -38,7 +38,7 @@ function Login() {
 
   return (
     <div>
-      <div>Login Page</div>
+      <div>Log In</div>
       <div>
         <Link href={url}>Login With Github</Link>
       </div>
