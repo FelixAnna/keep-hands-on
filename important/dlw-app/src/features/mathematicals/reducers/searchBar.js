@@ -41,7 +41,7 @@ export const criteriaSlice = createSlice({
       const criteria = action.payload;
       console.log(criteria);
 
-      const criterias = [];
+      const criterias = state.Criterias;
       criteria.Categories.forEach((cat) => {
         criteria.Kind.forEach((kind) => {
           criteria.Types.forEach((type) => {

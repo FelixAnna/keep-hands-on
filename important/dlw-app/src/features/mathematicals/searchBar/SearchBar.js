@@ -103,6 +103,7 @@ function SearchBar() {
       <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
         <Button variant="outlined" onClick={() => setOpenAuto(true)}>快速配置</Button>
         <Button variant="outlined" onClick={() => setOpenManual(true)}>详细配置</Button>
+        <Button variant="outlined" onClick={() => dispatch(clearAll())}>重置</Button>
       </Stack>
       <Dialog onClose={handleCloseAuto} open={openAuto}>
         <DialogTitle>快速配置</DialogTitle>
@@ -160,7 +161,6 @@ function SearchBar() {
             </div>
             <div>
               <input type="submit" value="加入队列" onClick={() => dispatch(addCriteria(getCriteria()))} />
-              <input type="button" value="清除所有" onClick={() => dispatch(clearAll())} />
             </div>
           </div>
         </div>

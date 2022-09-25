@@ -74,7 +74,7 @@ function SearchBar() {
           <TextField
             label="最低单价"
             id="outlined-adornment-max"
-            sx={{ m: 1, width: '18ch' }}
+            sx={{ m: 1, width: '22ch' }}
             value={criteria.MinPrice}
             onChange={handleChange('MinPrice')}
             InputProps={{
@@ -86,7 +86,7 @@ function SearchBar() {
           <TextField
             label="最高单价"
             id="outlined-adornment-max"
-            sx={{ m: 1, width: '18ch' }}
+            sx={{ m: 1, width: '22ch' }}
             value={criteria.MaxPrice}
             onChange={handleChange('MaxPrice')}
             InputProps={{

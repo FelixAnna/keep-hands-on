@@ -125,7 +125,7 @@ export default function QuickSet() {
         aria-label="Default"
         valueLabelDisplay="auto"
       />
-      <Button variant="outlined" onClick={() => dispatch(addCriteriaBatch(criteria))}>提交</Button>
+      <Button variant="contained" onClick={() => dispatch(addCriteriaBatch(criteria))}>批量加入队列</Button>
     </div>
   );
 }

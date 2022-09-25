@@ -67,7 +67,8 @@ const columns = [
 function CriteriaList() {
   const criterias = useSelector(currentCriterias);
   const rows = criterias.map((q, i) => ({ id: i + 1, ...q }));
-  const height = 52 * (rows.length < 10 ? rows.length : 10) + 56 * 2;
+  const length = rows.length < 10 ? rows.length : 10;
+  const height = 52 * (length === 0 ? 1 : length) + 56 * 2;
   return (
     <Box sx={{ height: { height }, width: '100%' }}>
       <DataGrid

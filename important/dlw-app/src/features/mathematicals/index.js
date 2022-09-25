@@ -11,13 +11,14 @@ import CriteriaList from './criteriaList/CriteriaList';
 import QuestionList from './questionsList/QuestionList';
 import SearchBar from './searchBar/SearchBar';
 import {
-  loadAsync, currentCriterias,
+  loadAsync, currentCriterias, currentQuestions,
 } from './reducers/searchBar';
 
 function Mathematicals() {
   const [value, setValue] = useState('1');
   const dispatch = useDispatch();
   const criterias = useSelector(currentCriterias);
+  const questions = useSelector(currentQuestions);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -37,7 +38,7 @@ function Mathematicals() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="题目配置" value="1" />
-            <Tab label="题目列表" value="2" />
+            <Tab label="题目列表" value="2" disabled={questions === undefined || questions.length === 0} />
           </TabList>
         </Box>
         <TabPanel value="1">
