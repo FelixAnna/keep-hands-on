@@ -123,7 +123,7 @@ export const criteriaSlice = createSlice({
 
     updateAnswer(state, action) {
       const { index, answer } = action.payload;
-      state.Questions.at(index).UserAnswer = answer;
+      state.Questions[index].UserAnswer = answer;
     },
 
     submitResult(state) {
