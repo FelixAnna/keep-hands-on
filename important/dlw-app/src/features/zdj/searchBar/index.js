@@ -65,7 +65,7 @@ function SearchBar() {
   return (
     <div style={{ display: 'flex' }}>
       <div className="zdj-style">
-        <div className="zdj-style-heading">Search</div>
+        <div className="zdj-style-heading">ZDJ</div>
         <Stack direction="row" spacing={2}>
           <MultipleSelectCheckmarks
             handleChange={handleDistrictChange}
