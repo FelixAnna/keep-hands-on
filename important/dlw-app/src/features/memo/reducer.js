@@ -17,7 +17,10 @@ const initialState = {
   MemoItems: [],
   DisplayedItems: [],
 
-  LunarDate: '',
+  LunarDate: {
+    Lunar: '',
+    LunarYMD: 20000101,
+  },
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -108,13 +111,14 @@ export const memoSlice = createSlice({
       })
       .addCase(toLunarAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.LunarDate = action.payload.Lunar;
+        state.LunarDate = action.payload;
       })
       .addCase(addAsync.pending, (state) => {
         state.status = 'adding';
       })
       .addCase(addAsync.fulfilled, (state, action) => {
         state.status = 'idle';
+        console.log(action.payload);
       });
   },
 });

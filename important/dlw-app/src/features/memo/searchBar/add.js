@@ -167,8 +167,12 @@ export default function CreateNewItemDialogs() {
               onChange={handleChange('MonthDay')}
               required
             />
-            <Typography variant="overline" display="block" gutterBottom>
-              {lunarDate}
+            <Typography variant="caption" display={memoItem.Lunar === 1 ? 'block' : 'none'} gutterBottom>
+              Lunar:
+              {lunarDate.LunarYMD}
+              &#91;
+              {lunarDate.Lunar}
+              &#93;
             </Typography>
           </Stack>
         </DialogContent>
