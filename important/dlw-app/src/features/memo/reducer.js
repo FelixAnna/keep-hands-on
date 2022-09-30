@@ -12,7 +12,7 @@ const initialState = {
   },
 
   Page: 1,
-  Size: 2,
+  Size: 10,
 
   MemoItems: [],
   DisplayedItems: [],
