@@ -171,14 +171,11 @@ resource "azurerm_application_gateway" "appGW" {
       rule_sequence = 1
       condition {
         ignore_case = true
-        variable = "var_uri_path"
-        pattern ="/umbraco(.*)"
+        variable = "http_req_Cookie"  //this should be "Request Header -> Cookie"
+        pattern ="(.)*${var.admin_instance_id}(.*)"
+        negate = true
       }
 
-      response_header_configuration {
-        header_name = "Set-Cookie"
-        header_value = ""
-      }
 
       response_header_configuration {
         header_name = "Set-Cookie"
