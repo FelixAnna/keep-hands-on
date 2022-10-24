@@ -1,6 +1,7 @@
 export const MathCategory = [
   { key: '0', text: '加法', value: 0 },
   { key: '1', text: '减法', value: 1 },
+  { key: '2', text: '乘法', value: 2 },
 ];
 
 export const MathKind = [
@@ -58,8 +59,8 @@ export const MathType = [
 export const IORanges = [
   {
     value: 0,
-    label: '不限',
-    val: -1 * 2 ** 30,
+    label: '-10^9',
+    val: -1e9,
   },
   {
     value: 10,
@@ -98,7 +99,7 @@ export const IORanges = [
   },
   {
     value: 80,
-    label: '不限',
-    val: 2 ** 30,
+    label: '10^9',
+    val: 1e9,
   },
 ];

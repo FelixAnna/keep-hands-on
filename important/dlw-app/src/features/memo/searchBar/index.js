@@ -33,7 +33,7 @@ function SearchBar() {
   return (
     <div style={{ display: 'flex' }}>
       <div className="memo-style">
-        <div className="memo-style-heading">Search</div>
+        <div className="memo-style-heading">Memo Management</div>
         <Stack direction="row" spacing={2}>
           <TextField
             id="date"

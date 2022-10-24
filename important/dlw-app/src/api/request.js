@@ -14,7 +14,7 @@ export function SaveResults(data) {
 }
 
 export function LoginGithubUser(data) {
-  return instance.get('/user/oauth2/github/login', { params: { code: data.code, state: data.state } });
+  return instance.get('/user/oauth2/github/login', { params: { code: data.code } });
 }
 
 export function SearchZdj(data) {
@@ -33,6 +33,10 @@ export function SearchMemo(data) {
   const start = data.StartDate.length === 10 ? data.StartDate.substring(5, 7) + data.StartDate.substring(8) : '0101';
   const end = data.EndDate.length === 10 ? data.EndDate.substring(5, 7) + data.EndDate.substring(8) : '1231';
   return instance.get('/memo/memos/recent', { params: { start, end } });
+}
+
+export function GetLunarDate(data) {
+  return instance.get('/date/date/lunar', { params: { date: data.date } });
 }
 
 // Request interceptors for API calls

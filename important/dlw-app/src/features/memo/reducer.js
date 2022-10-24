@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { SearchMemo, DeleteMemo, AddMemo } from '../../api/request';
+import {
+  SearchMemo, DeleteMemo, AddMemo,
+  GetLunarDate,
+} from '../../api/request';
 
 // Distrct/Street/Community/MinPrice/MaxPrice/Version/SortKey/Page/Size
 const initialState = {
@@ -9,10 +12,15 @@ const initialState = {
   },
 
   Page: 1,
-  Size: 2,
+  Size: 10,
 
   MemoItems: [],
   DisplayedItems: [],
+
+  LunarDate: {
+    Lunar: '',
+    LunarYMD: 20000101,
+  },
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -35,6 +43,15 @@ export const deleteAsync = createAsyncThunk(
     await DeleteMemo(data);
     // The value we return becomes the `fulfilled` action payload
     return data;
+  },
+);
+
+export const toLunarAsync = createAsyncThunk(
+  'memo/Lunar',
+  async (data) => {
+    const response = await GetLunarDate(data);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
   },
 );
 
@@ -89,6 +106,13 @@ export const memoSlice = createSlice({
         state.status = 'idle';
         state.MemoItems = state.MemoItems.filter((x) => x.Id !== action.payload.id);
       })
+      .addCase(toLunarAsync.pending, (state) => {
+        state.status = 'checking';
+      })
+      .addCase(toLunarAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.LunarDate = action.payload;
+      })
       .addCase(addAsync.pending, (state) => {
         state.status = 'adding';
       })
@@ -110,6 +134,7 @@ export const currentCriteria = (state) => state.memo.Criteria;
 export const currentItems = (state) => state.memo.MemoItems;
 export const currentPage = (state) => state.memo.Page;
 export const currentSize = (state) => state.memo.Size;
+export const currentLunarDate = (state) => state.memo.LunarDate;
 
 export const currentDisplayItems = (state) => state.memo.DisplayedItems;
 export const loadingStatus = (state) => state.memo.status;

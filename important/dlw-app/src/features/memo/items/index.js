@@ -59,9 +59,9 @@ export default function CustomizedTables() {
   }, [items, page, size]);
 
   const displayItems = useSelector(currentDisplayItems);
-  const formatLunar = (lunar) => (lunar === true ? 'Lunar' : 'Gregorian');
   const pad2 = (n) => String(n).padStart(2, '0');
   const formatMMdd = (md) => `${pad2(Math.floor(md / 100))}-${pad2(md % 100)}`;
+  const formatLunar = (lunar, ymd) => (lunar === true ? formatMMdd(ymd % 10000) : '/');
   const start = new Date('1970-01-01');
   const formatDateTime = (seconds) => {
     if (seconds === undefined) {
@@ -82,9 +82,9 @@ export default function CustomizedTables() {
               <StyledTableCell>Id</StyledTableCell>
               <StyledTableCell align="right">Subject</StyledTableCell>
               <StyledTableCell align="right">Description</StyledTableCell>
-              <StyledTableCell align="right">MonthDay</StyledTableCell>
               <StyledTableCell align="right">StartYear</StyledTableCell>
-              <StyledTableCell align="right">Lunar</StyledTableCell>
+              <StyledTableCell align="right">MonthDay</StyledTableCell>
+              <StyledTableCell align="right">MonthDay(Lunar)</StyledTableCell>
               <StyledTableCell align="right">Last Date</StyledTableCell>
               <StyledTableCell align="right">Next Date</StyledTableCell>
               <StyledTableCell align="right">CreateTime</StyledTableCell>
@@ -99,9 +99,9 @@ export default function CustomizedTables() {
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.Subject}</StyledTableCell>
                 <StyledTableCell align="right">{row.Description}</StyledTableCell>
-                <StyledTableCell align="right">{formatMMdd(row.MonthDay)}</StyledTableCell>
                 <StyledTableCell align="right">{row.StartYear > 0 ? row.StartYear : '/' }</StyledTableCell>
-                <StyledTableCell align="right">{formatLunar(row.Lunar)}</StyledTableCell>
+                <StyledTableCell align="right">{formatMMdd(row.MonthDay)}</StyledTableCell>
+                <StyledTableCell align="right">{formatLunar(row.Lunar, row.LunarYMD)}</StyledTableCell>
                 <StyledTableCell align="right">
                   <b>{row.Distance[0] * -1}</b>
                   &nbsp;days ago

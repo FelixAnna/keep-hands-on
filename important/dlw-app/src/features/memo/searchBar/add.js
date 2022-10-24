@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -9,13 +9,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { addAsync } from '../reducer';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { addAsync, toLunarAsync, currentLunarDate } from '../reducer';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -66,6 +67,7 @@ const defaultMemoItem = {
 export default function CreateNewItemDialogs() {
   const [memoItem, setMemoItem] = React.useState(defaultMemoItem);
   const [open, setOpen] = React.useState(false);
+  const lunarDate = useSelector(currentLunarDate);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -83,6 +85,14 @@ export default function CreateNewItemDialogs() {
       });
     setOpen(false);
   };
+
+  React.useEffect(() => {
+    const date = memoItem.StartYear + memoItem.MonthDay;
+    if (memoItem.Lunar === 1 || date.length === 8) {
+      dispatch(toLunarAsync({ date }));
+    }
+  }, [memoItem.Lunar, memoItem.MonthDay, memoItem.StartYear]);
+
   const handleChange = (prop) => (event) => {
     setMemoItem({ ...memoItem, [prop]: event.target.value });
   };
@@ -107,7 +117,7 @@ export default function CreateNewItemDialogs() {
           }}
           dividers
         >
-          <Typography gutterBottom>
+          <Stack spacing={2}>
             <TextField
               fullWidth
               label="Subject"
@@ -116,8 +126,6 @@ export default function CreateNewItemDialogs() {
               onChange={handleChange('Subject')}
               required
             />
-          </Typography>
-          <Typography gutterBottom>
             <TextField
               id="description"
               label="Description"
@@ -131,33 +139,6 @@ export default function CreateNewItemDialogs() {
               }}
               required
             />
-          </Typography>
-          <Typography gutterBottom>
-            <TextField
-              id="monthDay"
-              label="MonthDay"
-              placeholder="MMdd, like: 1231"
-              value={memoItem.MonthDay}
-              onChange={handleChange('MonthDay')}
-              required
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Typography>
-          <Typography gutterBottom>
-            <TextField
-              id="startYear"
-              label="StartYear"
-              value={memoItem.StartYear}
-              onChange={handleChange('StartYear')}
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Typography>
-          <Typography gutterBottom>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Lunar</InputLabel>
               <Select
@@ -171,7 +152,29 @@ export default function CreateNewItemDialogs() {
                 <MenuItem value={1}>Lunar</MenuItem>
               </Select>
             </FormControl>
-          </Typography>
+            <TextField
+              id="startYear"
+              label="StartYear"
+              value={memoItem.StartYear}
+              onChange={handleChange('StartYear')}
+              type="number"
+            />
+            <TextField
+              id="monthDay"
+              label="MonthDay"
+              placeholder="MMdd, like: 1231"
+              value={memoItem.MonthDay}
+              onChange={handleChange('MonthDay')}
+              required
+            />
+            <Typography variant="caption" display={memoItem.Lunar === 1 ? 'block' : 'none'} gutterBottom>
+              Lunar:
+              {lunarDate.LunarYMD}
+              &#91;
+              {lunarDate.Lunar}
+              &#93;
+            </Typography>
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>

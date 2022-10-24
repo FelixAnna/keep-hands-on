@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { GetProblems, SaveResults } from '../../../api/request';
 import {
-  MathCategory, MathKind, MathType,
   IORanges,
 } from '../const';
 
@@ -42,7 +41,7 @@ export const criteriaSlice = createSlice({
       const criteria = action.payload;
       console.log(criteria);
 
-      const criterias = [];
+      const criterias = state.Criterias;
       criteria.Categories.forEach((cat) => {
         criteria.Kind.forEach((kind) => {
           criteria.Types.forEach((type) => {
@@ -60,42 +59,6 @@ export const criteriaSlice = createSlice({
             };
 
             criterias.push(ct);
-          });
-        });
-      });
-
-      state.Criterias = criterias;
-    },
-    addCriteriaTemplate(state, action) {
-      const { category, quantity, max } = action.payload;
-
-      const criterias = [];
-      MathCategory.forEach((cat) => {
-        if (category !== -1 && category !== cat.value) {
-          return;
-        }
-        MathKind.forEach((kind) => {
-          MathType.forEach((group) => {
-            group.options.forEach((type) => {
-              if (type.value === 0 && cat.value === 0) {
-                return;
-              }
-
-              const criteria = {
-                Min: 10,
-                Max: max,
-                Quantity: quantity,
-                Range: {
-                  Min: 10,
-                  Max: max,
-                },
-                Category: cat.value,
-                Kind: kind.value,
-                Type: type.value,
-              };
-
-              criterias.push(criteria);
-            });
           });
         });
       });
@@ -123,7 +86,7 @@ export const criteriaSlice = createSlice({
 
     updateAnswer(state, action) {
       const { index, answer } = action.payload;
-      state.Questions.at(index).UserAnswer = answer;
+      state.Questions[index].UserAnswer = answer;
     },
 
     submitResult(state) {
@@ -165,6 +128,11 @@ export const criteriaSlice = createSlice({
     builder
       .addCase(loadAsync.pending, (state) => {
         state.status = 'loading';
+        state.Questions = [];
+        state.ShowResult = false;
+        state.ShowAnswer = false;
+        state.Score = 0;
+        state.QuestionId = '';
       })
       .addCase(loadAsync.fulfilled, (state, action) => {
         const questions = action.payload.Questions;
@@ -177,7 +145,7 @@ export const criteriaSlice = createSlice({
 
 export const {
   clearAll, addCriteria, updateShowResult, updateShowAnswer,
-  submitResult, updateAnswer, addCriteriaTemplate, addCriteriaBatch,
+  submitResult, updateAnswer, addCriteriaBatch,
 } = criteriaSlice.actions;
 export const currentCriterias = (state) => state.criteria.Criterias;
 export const currentQuestions = (state) => state.criteria.Questions;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { MathCategory, MathKind, MathType } from '../const';
 import { currentCriterias } from '../reducers/searchBar';
@@ -66,9 +67,10 @@ const columns = [
 function CriteriaList() {
   const criterias = useSelector(currentCriterias);
   const rows = criterias.map((q, i) => ({ id: i + 1, ...q }));
-
+  const length = rows.length < 10 ? rows.length : 10;
+  const height = 52 * (length === 0 ? 1 : length) + 56 * 2;
   return (
-    <div style={{ height: '632px', width: '100%' }}>
+    <Box sx={{ height: { height }, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -76,7 +78,7 @@ function CriteriaList() {
         rowsPerPageOptions={[10]}
         checkboxSelection
       />
-    </div>
+    </Box>
   );
 }
 
