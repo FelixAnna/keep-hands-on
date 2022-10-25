@@ -9,6 +9,7 @@ import Home from './features/home';
 import Logout from './features/login/oauth2/logout';
 import Login from './features/login';
 import GithubLogin from './features/login/oauth2/github';
+import GoogleLogin from './features/login/oauth2/google';
 import Mathematicals from './features/mathematicals/index';
 import PrivateRoute from './features/auth/privateRoute';
 import ZdjSearch from './features/zdj';
@@ -25,6 +26,7 @@ function App() {
           <Route path="logout" element={<Logout />} />
           <Route path="login" element={<Login />} />
           <Route path="login/github" element={<GithubLogin />} />
+          <Route path="login/google" element={<GoogleLogin />} />
           <Route path="zdj" element={<ZdjSearch />} />
           <Route exact path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route exact path="/memo" element={<PrivateRoute><MemoSearch /></PrivateRoute>} />

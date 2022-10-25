@@ -6,7 +6,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { loginAsync } from '../reducer';
 
-function GithubLogin() {
+function GoogleLogin() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
   const state = searchParams.get('state');
@@ -18,7 +18,7 @@ function GithubLogin() {
       return;
     }
     localStorage.removeItem('state');
-    dispatch(loginAsync({ code, state, type: 'github' }))
+    dispatch(loginAsync({ code, state, type: 'google' }))
       .then(() => {
         const from = sessionStorage.getItem('redirect_url');
         sessionStorage.removeItem('redirect_url');
@@ -35,4 +35,4 @@ function GithubLogin() {
   );
 }
 
-export default GithubLogin;
+export default GoogleLogin;

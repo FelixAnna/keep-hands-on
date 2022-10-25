@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import jwt from 'jwt-decode';
-import { LoginGithubUser } from '../../api/request';
+import { LoginGithubUser, LoginGoogleUser } from '../../api/request';
 
 const initialState = {
   Status: 'initial',
@@ -16,7 +16,15 @@ const initialState = {
 export const loginAsync = createAsyncThunk(
   'auth/Login',
   async (params) => {
-    const response = await LoginGithubUser(params);
+    let response;
+    if (params.type === 'github') {
+      response = await LoginGithubUser(params);
+    }
+
+    if (params.type === 'google') {
+      response = await LoginGoogleUser(params);
+    }
+
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   },

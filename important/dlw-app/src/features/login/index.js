@@ -5,11 +5,12 @@ import {
   useLocation,
 } from 'react-router-dom';
 import Link from '@mui/material/Link';
-import getAuthorizeUrl, { githubAuthOptions } from './provider';
+import getAuthorizeUrl, { githubAuthOptions, googleAuthOptions } from './provider';
 import { currentLoginStatus } from './reducer';
 
 function Login() {
-  const [url, setUrl] = React.useState('#');
+  const [githubUrl, setGitHubUrl] = React.useState('#');
+  const [googleUrl, setGoogleUrl] = React.useState('#');
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
   sessionStorage.setItem('redirect_url', from);
@@ -32,7 +33,8 @@ function Login() {
     } else {
       const st = makeid(20);
       localStorage.setItem('state', st);
-      setUrl(getAuthorizeUrl(githubAuthOptions, st));
+      setGitHubUrl(getAuthorizeUrl(githubAuthOptions, st));
+      setGoogleUrl(getAuthorizeUrl(googleAuthOptions, st));
     }
   }, [loginStatus]);
 
@@ -40,7 +42,10 @@ function Login() {
     <div>
       <div>Log In</div>
       <div>
-        <Link href={url}>Login With Github</Link>
+        <Link href={githubUrl}>Login With Github</Link>
+      </div>
+      <div>
+        <Link href={googleUrl}>Login With Google</Link>
       </div>
     </div>
   );

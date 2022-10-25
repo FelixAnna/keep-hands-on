@@ -17,6 +17,10 @@ export function LoginGithubUser(data) {
   return instance.get('/user/oauth2/github/login', { params: { code: data.code } });
 }
 
+export function LoginGoogleUser(data) {
+  return instance.get('/user/oauth2/google/login', { params: { code: data.code } });
+}
+
 export function SearchZdj(data) {
   return instance.post('/finance/zdj/search', data);
 }
