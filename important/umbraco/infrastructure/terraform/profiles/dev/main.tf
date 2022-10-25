@@ -41,6 +41,7 @@ module "infrastructure" {
 
   # Input Variables
   rgName = "umbraco-rg2"
+  admin_instance_id = "f0e56097aef04bacd2c5fe4c7c735706187f5f757e953c33db1f5507c7c92214"
   tags = {
       Application = "umbraco"
       Group = "umbraco"

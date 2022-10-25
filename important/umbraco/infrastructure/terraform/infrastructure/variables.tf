@@ -67,7 +67,7 @@ variable "customer_record" {
 variable "admin_instance_id" {
     type = string
     description = "(optional) admin instance id for admin site"
-    default = "37935eb6fafb49a468fb68d92286356e22c8bc7a579b471826676d3dcd718252"
+    default = ""
 }
 
 variable "sslCertName" {
