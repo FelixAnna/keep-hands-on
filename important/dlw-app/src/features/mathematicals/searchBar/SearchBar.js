@@ -127,7 +127,7 @@ function SearchBar() {
               <span>数字范围:</span>
               <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
                 <input className="number-range-field" type="number" value={criteria.Min} onChange={(e) => handleChange(e, 1)} />
-                <text>~</text>
+                <span>~</span>
                 <input className="number-range-field" type="number" value={criteria.Max} onChange={(e) => handleChange(e, 2)} />
               </Stack>
             </div>
@@ -135,7 +135,7 @@ function SearchBar() {
               <span>结果范围:</span>
               <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
                 <input className="number-range-field" type="number" value={criteria.ResultMin} onChange={(e) => handleChange(e, 3)} />
-                <text>~</text>
+                <span>~</span>
                 <input className="number-range-field" type="number" value={criteria.ResultMax} onChange={(e) => handleChange(e, 4)} />
               </Stack>
             </div>
