@@ -38,7 +38,7 @@ function Mathematicals() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="题目配置" value="1" />
-            <Tab label="题目列表" value="2" disabled={questions === undefined || questions.length === 0} />
+            <Tab label="题目列表" value="2" disabled={questions === undefined || questions === null || questions.length === 0} />
           </TabList>
         </Box>
         <TabPanel value="1">
