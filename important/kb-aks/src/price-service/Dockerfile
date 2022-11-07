@@ -20,7 +20,7 @@ RUN go mod download
 COPY . ./
 
 RUN go mod tidy
-RUN go build -o /docker-finance-api
+RUN go build -o /docker-price-api
 
 ##
 ## Deploy
@@ -32,7 +32,7 @@ RUN apk update \
 
 WORKDIR /
 
-COPY --from=build /docker-finance-api /docker-finance-api
+COPY --from=build /docker-price-api /docker-price-api
 
 EXPOSE 8181
 
@@ -43,4 +43,4 @@ USER appuser
 # Tell docker that all future commands should run as the appuser user
 USER appuser
 
-ENTRYPOINT ["/docker-finance-api"]
+ENTRYPOINT ["/docker-price-api"]
