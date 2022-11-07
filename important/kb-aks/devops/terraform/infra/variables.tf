@@ -31,7 +31,7 @@ variable "ns" {
 variable "backendDNS" {
     type = string
     description = "(optional) dns record to binding to gateway ipaddress"
-    default = "api-demo.metademo.com"
+    default = "api-demo.metadlw.com"
 }
 
 variable "tags" {
