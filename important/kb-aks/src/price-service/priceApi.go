@@ -3,37 +3,37 @@ package main
 import (
 	"net/http"
 
-	"example.com/demo/product-service/di"
-	"example.com/demo/product-service/product/service"
+	"example.com/demo/price-service/di"
+	"example.com/demo/price-service/price/service"
 	"github.com/FelixAnna/web-service-dlw/common/mesh"
 	"github.com/FelixAnna/web-service-dlw/common/micro"
 	"github.com/FelixAnna/web-service-dlw/common/middleware"
 	"github.com/gin-gonic/gin"
 )
 
-const SERVER_NAME = "product-api"
+const SERVER_NAME = "price-api"
 
 func main() {
 	initialDependency()
 	router := GetGinRouter()
 
-	router.Run(":8181")
-	micro.StartApp(SERVER_NAME, ":8181", router, apiBoot.Registry.GetRegistry())
+	//router.Run(":8282")
+	micro.StartApp(SERVER_NAME, ":8282", router, apiBoot.Registry.GetRegistry())
 }
 
 type ApiBoot struct {
-	ProductService *service.ProductService
-	ErrorHandler   *middleware.ErrorHandlingMiddleware
-	Registry       *mesh.Registry
+	PriceService *service.PriceService
+	ErrorHandler *middleware.ErrorHandlingMiddleware
+	Registry     *mesh.Registry
 }
 
 var apiBoot *ApiBoot
 
 func initialDependency() {
 	apiBoot = &ApiBoot{
-		ProductService: di.InitialProductService(),
-		ErrorHandler:   di.InitialErrorMiddleware(),
-		Registry:       di.InitialRegistry(),
+		PriceService: di.InitialPriceService(),
+		ErrorHandler: di.InitialErrorMiddleware(),
+		Registry:     di.InitialRegistry(),
 	}
 }
 
@@ -52,10 +52,10 @@ func defineRoutes(router *gin.Engine) {
 		c.String(http.StatusOK, "running")
 	})
 
-	userGroupRouter := router.Group("/products")
+	userGroupRouter := router.Group("/price")
 	{
-		userGroupRouter.GET("/", apiBoot.ProductService.GetAll)
-		userGroupRouter.GET("/:id", apiBoot.ProductService.GetById)
-		userGroupRouter.GET("/slow", apiBoot.ProductService.MemoryCosty)
+		userGroupRouter.GET("/:id", apiBoot.PriceService.GetAllById)
+		userGroupRouter.GET("/:id/latest", apiBoot.PriceService.GetLatestById)
+		userGroupRouter.GET("/slow", apiBoot.PriceService.MemoryCosty)
 	}
 }
