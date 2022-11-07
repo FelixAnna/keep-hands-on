@@ -34,11 +34,12 @@ locals {
 }
 
 module "infrastructure" {
-  source = "../../infrastructure"
+  source = "../../infra"
 
   # Input Variables
   clusterName = "${local.environment_name}Cluster"
   rgName = "${local.environment_name}-rg"
+  backendDNS = "api-${local.environment_name}-demo.metademo.com"
   tags = {
       Application = "demo"
       Group = "demo"
