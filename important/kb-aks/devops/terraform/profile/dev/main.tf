@@ -39,7 +39,7 @@ module "infrastructure" {
   # Input Variables
   clusterName = "${local.environment_name}Cluster"
   rgName = "${local.environment_name}-rg"
-  backendDNS = "api-${local.environment_name}-demo.metademo.com"
+  backendDNS = "api-${local.environment_name}-demo.metadlw.com"
   tags = {
       Application = "demo"
       Group = "demo"
