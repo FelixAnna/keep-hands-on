@@ -2,7 +2,7 @@
 env=dev
 rgName=$env-rg
 ipName=nginxIp
-clusterName=$envCluster
+clusterName="${env}Cluster"
 
 ## installing basic services
 echo "installing basic services"
@@ -35,8 +35,6 @@ helm install cert-manager jetstack/cert-manager \
 
 ## deploy consul
 echo "deploy consul for service discovery and mesh"
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo update
-
-helm install my-release bitnami/consul
+cd ../components/
+sh install.sh
 # Read more about the installation in the HashiCorp Consul packaged by Bitnami Chart Github repository

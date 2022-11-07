@@ -1,7 +1,8 @@
 
-rgName=dev-rg
-clusterName=devCluster
-ns=dlwns
+env=dev
+rgName=$env-rg
+clusterName="${env}Cluster"
+ns=demons
 
 ## installing all services
 echo "removing all services"
@@ -10,7 +11,7 @@ echo "removing all services"
 az aks get-credentials --resource-group $rgName --name $clusterName
 
 ## uninstall services
-helm uninstall dlw -n $ns
+helm uninstall demo -n $ns
 helm uninstall consul -n consul
 helm uninstall cert-manager -n cert-manager
 helm uninstall ingress-nginx  -n ingress-basic
