@@ -1,0 +1,41 @@
+---
+- hosts: localhost
+  vars:
+     helm_chart_url: "https://kubernetes.github.io/ingress-nginx"
+  tasks:
+      - name: Add helm repo
+        kubernetes.core.helm_repository:
+    	    name: ingress-nginx
+    	    repo_url: "{{ helm_chart_url }}"
+
+     - name: Install Nginx Chart
+       kubernetes.core.helm:
+    	   name: ingress-nginx
+    	   namespace: ingress-basic
+    	   chart_ref: ingress-nginx/ingress-nginx
+         values:
+           controller.service.loadBalancerIP=$STATIC_IP
+           controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/healthz
+           controller.service.externalTrafficPolicy=Local
+
+     - name: Gather information about nginx-server
+       kubernetes.core.helm_info:
+    	    name: nginx-server
+    	    release_namespace: testing
+
+     - name: Install Helm Plugin
+       kubernetes.core.helm_plugin:
+    	   plugin_path: https://github.com/adamreese/helm-env
+    	   state: present
+    	   release_namespace: testing
+
+    - name: Gather Helm plugin info
+      kubernetes.core.helm_plugin_info:
+          release_namespace: testing
+      register: r
+
+    - name: Print plugin version
+      debug:
+      msg: "{{ ( r.plugin_list | selectattr('name', 'equalto', plugin_name) | list )[0].version }}"
+      vars:
+      plugin_name: "env"
