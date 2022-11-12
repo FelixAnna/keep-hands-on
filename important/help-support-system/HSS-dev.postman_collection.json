@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "4de360b3-7038-4786-b341-7bb087d80fe1",
+		"name": "HSS-dev",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11581725"
+	},
+	"item": [
+		{
+			"name": "Get UserInfo",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkRldmVsb3BtZW50IiwidHlwIjoiYXQrand0In0.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDQ4OSIsIm5iZiI6MTY2Njc2OTcxMCwiaWF0IjoxNjY2NzY5NzEwLCJleHAiOjE2NjY3NzMzMTAsImF1ZCI6IklkZW50aXR5U2VydmVyMkFQSSIsInNjb3BlIjpbIklkZW50aXR5U2VydmVyMkFQSSIsIm9wZW5pZCIsInByb2ZpbGUiXSwiYW1yIjpbInB3ZCJdLCJjbGllbnRfaWQiOiJJZGVudGl0eVNlcnZlcjIiLCJzdWIiOiJiYWMyYmU2MS03N2I1LTRkOWUtOTJjYy03YWFhOWJlNGI1YTMiLCJhdXRoX3RpbWUiOjE2NjY3Njk3MDcsImlkcCI6ImxvY2FsIiwic2lkIjoiQjkwRDk2RTA2Q0RDRDFCRjc4MEJBQTZFMEU1MzEzM0IiLCJqdGkiOiJBQjEyOTMwQzQyN0RDNjlBRTkyN0YxOERDNEFFMEY2QiJ9.JEp2MiZ-KWF9WoRCJS-hsFh-p_OHzQ8YEeL8Eu5kXKSX3Ou9ZUGwF_dYb6jfEFySwNK4EwnPepriniUqwoNty6vUkqe_eDs6FFx7iZCZkN1L09rrMD7bE7XLjka-hKncVKjt8gVMDeEtxlkrrmJ4eIwMtoVitS3K7Vltf5lliBvALcJma0IsKJK2G-y1LvWhLdPN2MM3tmY5Pa5l_lpGBYRfLCVwZ7guaMBbDQ7AU_nMpgEe_oqH-jgH3wrLVw2Ukv86FdDXkpwjSIdzpZ2q0V09ACMy_rEGTeB3DhyJAvWiWvMWj3pXlA3vIw8XBT4MYrpCMMD_R-angvTQulE7Eg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44489/connect/userinfo",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44489",
+					"path": [
+						"connect",
+						"userinfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Code",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/connect/authorize?access_type=offline&response_type=code&client_id=webclient&scope=openid+profile+HSS.IdentityServerAPI&state=plgPtSylxOeBC2PZTMxF&redirect_uri=http://localhost:3000/login/test&nonce=1666843562336",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"connect",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "access_type",
+							"value": "offline"
+						},
+						{
+							"key": "response_type",
+							"value": "code"
+						},
+						{
+							"key": "client_id",
+							"value": "webclient"
+						},
+						{
+							"key": "scope",
+							"value": "openid+profile+HSS.IdentityServerAPI"
+						},
+						{
+							"key": "state",
+							"value": "plgPtSylxOeBC2PZTMxF"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:3000/login/test"
+						},
+						{
+							"key": "nonce",
+							"value": "1666843562336"
+						},
+						{
+							"key": "code_challenge_method",
+							"value": "plain",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Token by Code",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "webclient",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "SomethingUnknown",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "1CD4F0E0DCA90173447EB5B34D68ACC81B0E33CAB09CA2C9DB1668DEF82E88AD",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:3000/login/test",
+							"type": "text"
+						},
+						{
+							"key": "code_verifier",
+							"value": " 9867432e8b5b467494bffcadcc6b4ee1444f20aaf9e9481680eb90d40966e4fdea933da33e144aefa7c44eb7855261a1",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:8443/connect/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"connect",
+						"token"
+					],
+					"query": [
+						{
+							"key": "code_challenge",
+							"value": "kYHLQviPkutH5a1A3WBoKnbE7Dx_dTT-iuCN6QGOcUE",
+							"disabled": true
+						},
+						{
+							"key": "code_challenge_method",
+							"value": "S256",
+							"disabled": true
+						},
+						{
+							"key": "response_mode",
+							"value": "query",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Token By UserName+Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "webclient2",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "SomethingUnknown",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "xiangyongyu15@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456aA@",
+							"type": "text"
+						},
+						{
+							"key": "code_verifier",
+							"value": " 9867432e8b5b467494bffcadcc6b4ee1444f20aaf9e9481680eb90d40966e4fdea933da33e144aefa7c44eb7855261a1",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:8443/connect/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
