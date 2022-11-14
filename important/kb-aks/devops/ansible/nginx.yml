@@ -1,5 +1,6 @@
 ---
-- hosts: virtualmachines
+- hosts: 127.0.0.1
+  connection: local
   vars:
      helm_chart_url: "https://kubernetes.github.io/ingress-nginx"
   tasks:
@@ -35,7 +36,7 @@
         register: r
 
       - name: Print plugin version
-        debug:
-        msg: "{{ ( r.plugin_list | selectattr('name', 'equalto', plugin_name) | list )[0].version }}"
+        ansible.builtin.debug:
+          msg: "{{ ( r.plugin_list | selectattr('name', 'equalto', plugin_name) | list )[0].version }}"
         vars:
         plugin_name: "env"
