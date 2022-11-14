@@ -39,4 +39,4 @@
         ansible.builtin.debug:
           msg: "{{ ( r.plugin_list | selectattr('name', 'equalto', plugin_name) | list )[0].version }}"
         vars:
-        plugin_name: "env"
+          plugin_name: "env"
