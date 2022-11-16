@@ -4,7 +4,7 @@ terraform {
     resource_group_name  = "configuration-rg"
     storage_account_name = "configstoragefelix"
     container_name       = "tfstate"
-    key                  = "demo.nginx.tfstate"
+    key                  = "demo-prod.nginx.tfstate"
   }
 
   required_providers {
@@ -38,7 +38,7 @@ module "infrastructure" {
 
   # Input Variables
   clusterName = "${local.environment_name}Cluster"
-  rgName = "${local.environment_name}-rg"
+  rgName = "demo-${local.environment_name}-rg"
   backendDNS = "api-${local.environment_name}-demo.metadlw.com"
   tags = {
       Application = "demo"

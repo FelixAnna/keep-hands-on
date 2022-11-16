@@ -1,6 +1,6 @@
 
-env=dev
-rgName=$env-rg
+env=$1
+rgName=demo-$env-rg
 clusterName="${env}Cluster"
 ns=demons
 

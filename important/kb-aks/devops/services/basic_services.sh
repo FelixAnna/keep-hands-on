@@ -1,6 +1,6 @@
 
-env=dev
-rgName=$env-rg
+env=$1
+rgName=demo-$env-rg
 ipName=nginxIp
 clusterName="${env}Cluster"
 
@@ -8,7 +8,7 @@ clusterName="${env}Cluster"
 echo "installing basic services"
 
 ## switch context
-az aks get-credentials --resource-group $rgName --name $clusterName
+az aks get-credentials --resource-group $rgName --name $clusterName --overwrite-existing
 
 ## deploy nginx
 nodeResourceGroup=$(az aks show -n $clusterName -g $rgName -o tsv --query "nodeResourceGroup")
@@ -24,6 +24,7 @@ helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
     --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/healthz \
     --set controller.service.externalTrafficPolicy=Local
 
+
 ## config cert-manager
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
@@ -32,6 +33,9 @@ helm install cert-manager jetstack/cert-manager \
   --namespace cert-manager  --create-namespace \
   --version v1.9.1 \
   --set installCRDs=true
+
+echo "wait for nginx controller up before install services ..."
+kubectl --namespace $NAMESPACE get services -o wide -w ingress-nginx-controller
 
 ## deploy consul
 echo "deploy consul for service discovery and mesh"

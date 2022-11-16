@@ -1,11 +1,12 @@
 ## uninstall basic 
+env=$1
 
 cd ../services
 
-sh uninstall.sh
+sh uninstall.sh $env
 
 ## destory infrastructure
 
-cd ../terraform/profile/dev
+cd ../terraform/profile/$env
 
 terraform destroy -auto-approve

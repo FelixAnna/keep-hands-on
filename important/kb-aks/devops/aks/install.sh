@@ -1,6 +1,9 @@
 ## provision infrastructure 
 
-cd ../terraform/profile/dev
+env=$1  # dev or prod
+
+cd ../terraform/profile/$env
+terraform init -reconfigure
 
 terraform apply -auto-approve
 
@@ -9,6 +12,6 @@ terraform apply -auto-approve
 
 cd ../../../services
 
-sh basic_services.sh
+sh basic_services.sh $env
 
-sh demo_services.sh
+sh demo_services.sh $env

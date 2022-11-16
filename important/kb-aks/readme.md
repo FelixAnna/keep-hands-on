@@ -26,6 +26,9 @@ python3 -m pip show ansible
 apt install git
 
 install helm: https://helm.sh/docs/intro/install/ 
+
+install azure cli:
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ## install our services
 
 ## buid CI/CD pipeline
