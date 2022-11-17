@@ -35,8 +35,11 @@ helm install cert-manager jetstack/cert-manager \
   --set installCRDs=true
 
 echo "wait for nginx controller up before install services ..."
-kubectl --namespace $NAMESPACE get services -o wide -w ingress-nginx-controller
-
+kubectl wait  --namespace $NAMESPACE \
+              --for=condition=ready pod \
+              --selector=app.kubernetes.io/component=controller \
+              --timeout=600s
+              
 ## deploy consul
 echo "deploy consul for service discovery and mesh"
 cd ../components/consul
