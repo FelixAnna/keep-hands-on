@@ -238,7 +238,7 @@ spec:
       - {{$.Values.ingress.dnsName}}
       # This assumes tls-secret exists and the SSL
       # certificate contains a CN for foo.bar.com
-      secretName: tls-secret
+      secretName: demo-tls-secret
   rules:
   - http:
       paths:

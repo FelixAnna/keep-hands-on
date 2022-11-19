@@ -30,8 +30,9 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
 helm install cert-manager jetstack/cert-manager \
-  --namespace cert-manager  --create-namespace \
-  --version v1.9.1 \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v1.10.0 \
   --set installCRDs=true
 
 echo "wait for nginx controller up before install services ..."
