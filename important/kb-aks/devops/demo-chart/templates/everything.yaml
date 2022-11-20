@@ -240,7 +240,8 @@ spec:
       # certificate contains a CN for foo.bar.com
       secretName: demo-tls-secret
   rules:
-  - http:
+  - host: {{$.Values.ingress.dnsName}}
+    http:
       paths:
       {{- range .Values.applications }}
       - path: /{{.name}}/(.*)   # for nginx only

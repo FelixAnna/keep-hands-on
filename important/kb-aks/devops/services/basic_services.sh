@@ -22,9 +22,22 @@ helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
     --namespace $NAMESPACE \
     --set controller.service.loadBalancerIP=$STATIC_IP \
     --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/healthz \
-    --set controller.service.externalTrafficPolicy=Local
+    --set controller.service.externalTrafficPolicy=Local \
+    --wait
 
+echo "wait for nginx controller up before install services ..."
+kubectl wait  --namespace $NAMESPACE \
+              --for=condition=ready pod \
+              --selector=app.kubernetes.io/component=controller \
+              --timeout=600s
 
+## deploy consul
+echo "deploy consul for service discovery ..."
+cd ../components/consul
+sh install.sh
+# Read more about the installation in the HashiCorp Consul packaged by Bitnami Chart Github repository
+
+echo "installing cert-manager ..."
 ## config cert-manager
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
@@ -33,16 +46,5 @@ helm install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
   --version v1.10.0 \
-  --set installCRDs=true
-
-echo "wait for nginx controller up before install services ..."
-kubectl wait  --namespace $NAMESPACE \
-              --for=condition=ready pod \
-              --selector=app.kubernetes.io/component=controller \
-              --timeout=600s
-              
-## deploy consul
-echo "deploy consul for service discovery and mesh"
-cd ../components/consul
-sh install.sh
-# Read more about the installation in the HashiCorp Consul packaged by Bitnami Chart Github repository
+  --set installCRDs=true \
+  --wait
