@@ -8,7 +8,7 @@ ns=demons
 echo "removing all services"
 
 ## switch context
-az aks get-credentials --resource-group $rgName --name $clusterName
+az aks get-credentials --resource-group $rgName --name $clusterName --overwrite-existing
 
 ## uninstall services
 helm uninstall demo -n $ns

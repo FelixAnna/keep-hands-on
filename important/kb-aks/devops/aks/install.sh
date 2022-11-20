@@ -2,7 +2,7 @@
 
 env=$1  # dev or prod
 
-cd ../terraform/profile/$env
+cd ./terraform/profile/$env
 terraform init -reconfigure
 
 terraform apply -auto-approve

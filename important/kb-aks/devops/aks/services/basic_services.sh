@@ -33,7 +33,7 @@ kubectl wait  --namespace $NAMESPACE \
 
 ## deploy consul
 echo "deploy consul for service discovery ..."
-cd ../components/consul
+cd ../../components/consul
 sh install.sh
 # Read more about the installation in the HashiCorp Consul packaged by Bitnami Chart Github repository
 
@@ -42,7 +42,7 @@ echo "installing cert-manager ..."
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
-helm install cert-manager jetstack/cert-manager \
+helm upgrade --install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
   --version v1.10.0 \

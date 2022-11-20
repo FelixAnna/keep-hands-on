@@ -1,7 +1,7 @@
 ## uninstall basic 
 env=$1
 
-cd ../services
+cd ./services
 
 sh uninstall.sh $env
 
