@@ -1,9 +1,10 @@
 ## uninstall basic 
-env=$1
+app=demo  # demo
+env=$1  # dev or prod
 
 cd ./services
 
-sh uninstall.sh $env
+sh uninstall.sh $app $env
 
 ## destory infrastructure
 

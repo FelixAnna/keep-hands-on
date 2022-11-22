@@ -1,5 +1,5 @@
 ## provision infrastructure 
-
+app=demo  # demo
 env=$1  # dev or prod
 
 cd ./terraform/profiles/$env
@@ -12,6 +12,6 @@ terraform apply -auto-approve
 
 cd ../../../services
 
-sh basic_services.sh $env
+sh basic_services.sh $app $env
 
-sh demo_services.sh $env
+sh main_services.sh $app $env
