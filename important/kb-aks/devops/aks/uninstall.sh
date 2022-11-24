@@ -1,5 +1,5 @@
 ## uninstall basic 
-app=demo  # demo
+app=demo  # microservice/deployment name
 env=$1  # dev or prod
 
 cd ./services
