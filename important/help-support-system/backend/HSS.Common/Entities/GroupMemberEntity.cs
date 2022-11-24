@@ -1,0 +1,14 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HSS.Common.Entities
+{
+    [Table("GroupMembers", Schema = "hss")]
+    public class GroupMemberEntity
+    {
+        public int Id { get; set; }
+        public string UserId { get; set; }
+
+        public int GroupId { get; set; }
+        public GroupEntity Group { get; set; }
+    }
+}

@@ -1,0 +1,30 @@
+﻿@model UserModel
+
+@if (string.IsNullOrEmpty(@ViewData?["token"]?.ToString()))
+{
+    @using (@Html.BeginForm("Login", "Home", FormMethod.Post))
+    {
+        <div class="container">
+            <div class="row">&nbsp;</div>
+            <div class="editor-field">
+                @Html.DisplayFor(model => model.UserName)
+                @Html.EditorFor(model => model.UserName)
+            </div>
+            <div class="editor-field">
+                @Html.DisplayFor(model => model.Password)
+                @Html.EditorFor(model => model.Password)
+            </div>
+            <div class="row">&nbsp;</div>
+            <p>
+                <input type="submit" value="Login" />
+            </p>
+        </div>
+    }
+} else {
+    <div class="container">
+        <div class="row">Token: @ViewData["token"]</div>
+        <div class="row">Token: @ViewData["user"]</div>
+    </div>
+}
+
+

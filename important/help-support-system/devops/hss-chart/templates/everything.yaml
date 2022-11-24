@@ -1,0 +1,272 @@
+# define default labels
+{{- define "hssTemplate.defaultLabel" }}
+  labels:
+    generator: helm
+    date: {{ now | htmlDate }}
+{{- end }}
+---
+# create configMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  {{- template "hssTemplate.defaultLabel" }}
+data:
+  profile: {{.Values.config.profile}}
+    
+---
+# 2. create ResourceQuota for the namespace
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: {{ .Release.Name }}-quota
+  {{- template "hssTemplate.defaultLabel" }}
+spec:
+  hard:
+    requests.cpu: {{ .Values.quota.requests.cpu | quote}}
+    requests.memory: {{ .Values.quota.requests.memory }}
+    limits.cpu: {{ .Values.quota.limits.cpu | quote}}
+    limits.memory: {{ .Values.quota.limits.memory }}
+
+---
+# 3.1 create roles for access pods
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Release.Name }}-service-role
+  {{- template "hssTemplate.defaultLabel" }}
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "patch"] # You can also use ["*"]
+  
+---
+# 3.2 create service account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $.Values.serviceAccount.name }}
+  {{- template "hssTemplate.defaultLabel" }}
+
+---
+# 3.3 bind role to the default service account in the namespace
+apiVersion: rbac.authorization.k8s.io/v1
+# This role binding allows "jane" to read pods in the "default" namespace.
+# You need to already have a Role named "pod-reader" in that namespace.
+kind: RoleBinding
+metadata:
+  name: {{ .Release.Name }}-service-role-binding
+  {{- template "hssTemplate.defaultLabel" }}
+subjects:
+# You can specify more than one "subject"
+- kind: ServiceAccount
+  #name: system:serviceaccount:{{ .Release.Name }}-dev:default # "name" is case sensitive
+  name: {{ $.Values.serviceAccount.name }}
+  #apiGroup: rbac.authorization.k8s.io
+roleRef:
+  # "roleRef" specifies the binding to a Role / ClusterRole
+  kind: Role #this must be Role or ClusterRole
+  name: {{ .Release.Name }}-service-role # this must match the name of the Role or ClusterRole you wish to bind to
+  apiGroup: rbac.authorization.k8s.io
+---
+{{- range .Values.applications }}
+# 4.1 autoscaling settings
+## need enable metric before it can be take effect (using metric server or Prometheus)
+apiVersion: autoscaling/v2  # kubectl v1.23 +
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{.name}}-scaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $.Release.Name }}-deployment-{{.name}}
+  minReplicas: {{ $.Values.replica.min}}
+  maxReplicas: {{ $.Values.replica.max}}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 70
+  ##below are custom metrics which need advanced advanced cluster monitoring setup
+  #- type: Pods
+  #  pods:
+  #    metric:
+  #      name: packets-per-second
+  #    target:
+  #      type: AverageValue
+  #      averageValue: 10
+  #- type: Object
+  #  object:
+  #    metric:
+  #      name: requests-per-second
+  #    describedObject:
+  #      apiVersion: networking.k8s.io/v1
+  #      kind: Ingress
+  #      name: {{ $.Release.Name }}-ingress
+  #    target:
+  #      type: Value
+  #      value: 10k
+---
+# 4.2 create deployment with pod spec for api service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $.Release.Name }}-deployment-{{.name}}
+  {{- template "hssTemplate.defaultLabel" }}
+spec:
+  # replicas: {{ $.Values.replica.desired}} ## remove when autoscalar set
+  selector:
+    matchLabels:
+      app: {{.name}}-api
+  template:
+    metadata:
+      labels:
+        app: {{.name}}-api
+    spec:
+      containers:
+      - name: {{.name}}-api
+        image: {{.image}}
+        ports:
+        - containerPort: {{.port}}
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: {{.port}}
+          periodSeconds: 6
+          timeoutSeconds: 2
+          failureThreshold: 3
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ $.Release.Name }}-config
+              key: profile
+        resources:
+          requests:
+            memory: {{.resources.requests.memory}}
+            cpu: {{.resources.requests.cpu | quote}}
+          limits:
+            memory: {{.resources.limits.memory}}
+            cpu: {{.resources.limits.cpu | quote}}
+        volumeMounts:
+          - mountPath: /var/run/secrets/tokens
+            name: vault-token
+      serviceAccountName: {{ $.Values.serviceAccount.name }}
+      volumes:
+      - name: vault-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: vault-token
+              expirationSeconds: 7200
+              audience: vault        
+         
+---
+# 5.1 create service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Release.Name }}-service-{{.name}}
+  {{- template "hssTemplate.defaultLabel" }}
+spec:
+  type: ClusterIP #default is ClusterIP which is only accessible inside kubernetes
+  selector:
+    app: {{.name}}-api
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{.port}}
+      targetPort: {{.port}} # can use port name reference or port number, container name is more flexible as we can change port number      
+
+---
+{{- end }}  
+
+--- 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $.Release.Name }}-ingress
+  annotations:
+    kubernetes.io/ingress.class: {{$.Values.ingress.ingressClassName}}
+    nginx.ingress.kubernetes.io/rewrite-target: /$1 # for nginx only
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
+    cert-manager.io/cluster-issuer: {{ $.Values.ingress.issuer | quote }}
+spec:
+  tls:
+    - hosts:
+      - {{$.Values.ingress.dnsIdpName}}
+      - {{$.Values.ingress.dnsName}}
+      - {{$.Values.ingress.dnsDemoName}}
+      # This assumes tls-secret exists and the SSL
+      # certificate contains a CN for foo.bar.com
+      secretName: hss-secret
+  rules:
+  - host: {{$.Values.ingress.dnsIdpName}}
+    http:
+      paths:
+      - path: /(.*)   # for nginx only
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-service-idp
+            port:
+              number: 80
+  - host: {{$.Values.ingress.dnsDemoName}}
+    http:
+      paths:
+      - path: /(.*)   # for nginx only
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-service-signalrdemo
+            port:
+              number: 80
+  - host: {{$.Values.ingress.dnsName}}
+    http:
+      paths:
+      - path: /user/(.*)   # for nginx only
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-service-user
+            port:
+              number: 80
+      - path: /hub/(.*)   # for nginx only
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-service-hub
+            port:
+              number: 80
+
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ $.Values.ingress.issuer }}
+spec:
+  acme:
+    # The ACME server URL
+    server: {{ $.Values.ingress.server }}
+    # Email address used for ACME registration
+    email: {{ $.Values.ingress.email }}
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: {{ $.Values.ingress.issuer }}
+    # Enable the HTTP-01 challenge provider
+    solvers:
+    - http01:
+        ingress:
+          class:  nginx

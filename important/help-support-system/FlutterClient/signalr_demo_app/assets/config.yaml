@@ -1,0 +1,2 @@
+hubserver: https://api-prod-hss.metadlw.com/hub/chat
+authserver: https://api-prod-hss.metadlw.com/user
