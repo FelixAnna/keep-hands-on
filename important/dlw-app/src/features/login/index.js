@@ -40,12 +40,12 @@ function Login() {
 
   return (
     <div>
-      <div>Log In</div>
+      <div>Sign In</div>
       <div>
-        <Link href={githubUrl}>Login With Github</Link>
+        <Link href={githubUrl}>Sign in With Github</Link>
       </div>
       <div>
-        <Link href={googleUrl}>Login With Google</Link>
+        <Link href={googleUrl}>Sign in With Google</Link>
       </div>
     </div>
   );
