@@ -18,7 +18,11 @@ kubectl wait --namespace ingress-nginx \
 echo "install services ..."
 cd ..
 ns=demons
-helm upgrade --install demo ./demo-chart-nossl/ --namespace $ns --create-namespace --values ./demo-chart-nossl/values_dev.yaml --wait
+helm upgrade --install demo ./demo-chart-nossl/ \
+--namespace $ns \
+--create-namespace \
+--values ./demo-chart-nossl/values_dev.yaml \
+--wait
 
 kubectl get all -n $ns
 echo "done"
