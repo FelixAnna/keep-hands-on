@@ -2,6 +2,7 @@ export const MathCategory = [
   { key: '0', text: '加法', value: 0 },
   { key: '1', text: '减法', value: 1 },
   { key: '2', text: '乘法', value: 2 },
+  { key: '3', text: '除法', value: 3 },
 ];
 
 export const MathKind = [
