@@ -1,5 +1,5 @@
 ## provision infrastructure 
-app=demo  # demo
+app=demo  # microservice/deployment name
 env=$1  # dev or prod
 
 cd ./terraform/profiles/$env

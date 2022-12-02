@@ -6,7 +6,7 @@ ipName=nginxIp
 clusterName="${env}Cluster"
 
 ## installing basic services
-echo "installing basic services"
+echo "installing basic services ..."
 
 ## switch context
 az aks get-credentials --resource-group $rgName --name $clusterName --overwrite-existing
