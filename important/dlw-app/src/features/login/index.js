@@ -5,12 +5,13 @@ import {
   useLocation,
 } from 'react-router-dom';
 import Link from '@mui/material/Link';
-import getAuthorizeUrl, { githubAuthOptions, googleAuthOptions } from './provider';
+import getAuthorizeUrl, { githubAuthOptions, googleAuthOptions, testAuthOptions } from './provider';
 import { currentLoginStatus } from './reducer';
 
 function Login() {
   const [githubUrl, setGitHubUrl] = React.useState('#');
   const [googleUrl, setGoogleUrl] = React.useState('#');
+  const [testUrl, setTestUrl] = React.useState('#');
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
   sessionStorage.setItem('redirect_url', from);
@@ -35,6 +36,7 @@ function Login() {
       localStorage.setItem('state', st);
       setGitHubUrl(getAuthorizeUrl(githubAuthOptions, st));
       setGoogleUrl(getAuthorizeUrl(googleAuthOptions, st));
+      setTestUrl(getAuthorizeUrl(testAuthOptions, st));
     }
   }, [loginStatus]);
 
@@ -46,6 +48,9 @@ function Login() {
       </div>
       <div>
         <Link href={googleUrl}>Login With Google</Link>
+      </div>
+      <div>
+        <Link href={testUrl}>Login With Test Authentication Server</Link>
       </div>
     </div>
   );

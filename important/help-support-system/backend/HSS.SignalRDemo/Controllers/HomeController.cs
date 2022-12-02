@@ -89,10 +89,17 @@ namespace HSS.SignalRDemo.Controllers
         }
 
         [Authorize]
+        public IActionResult GroupChat()
+        {
+            return View();
+        }
+
+        [Authorize]
         public IActionResult Profile()
         {
             string accessToken = HttpContext.GetTokenAsync("access_token").Result ?? "";
 
+            ViewData["id"] = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             ViewData["userName"] = (User.FindFirst(ClaimTypes.Email)?.Value);
             return View();
         }

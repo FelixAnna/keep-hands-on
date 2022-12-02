@@ -1,11 +1,9 @@
-﻿using HSS.UserApi.Contact;
-
-namespace HSS.UserApi.Users
+﻿namespace HSS.UserApi.Users
 {
     public class UserModel
     {
-        public string UserId { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
+        public string UserId { get; set; } = null!;
+        public string UserName { get; set; } = null!;
+        public string Email { get; set; } = null!;
     }
 }

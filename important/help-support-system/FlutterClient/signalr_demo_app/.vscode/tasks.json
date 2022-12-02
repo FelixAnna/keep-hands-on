@@ -1,0 +1,47 @@
+{
+    "version": "0.2.0",
+    "tasks": [
+      {
+        "label": "replace-env-stage",
+        "command": "bash",
+        "args": ["./scripts/replace-env.sh", "stage"],
+        "type": "shell"
+      },
+      {
+          "label": "replace-env-prod",
+          "command": "bash",
+          "args": ["./scripts/replace-env.sh", "prod"],
+          "type": "shell"
+      },
+      {
+        "label": "build-stage-apk",
+        "command": "flutter",
+        "args": ["build", "apk"], 
+        "type": "shell"
+      },
+      {
+        "label": "build-prod-apk",
+        "command": "flutter",
+        "args": ["build", "apk", "--release"],
+        "type": "shell"
+      },
+  
+      {
+        "label": "Build APK stage",
+        "dependsOrder": "sequence",
+        "dependsOn": ["replace-env-stage", "build-stage-apk"]
+      },
+      {
+        "label": "Build APK prod",
+        "dependsOrder": "sequence",
+        "dependsOn": ["replace-env-prod", "build-prod-apk"]
+      },
+  
+      /*{
+          "label": "open-apk-path",
+          "command": "open",
+          "args": ["build/app/outputs/flutter-apk/"],
+          "type": "shell"
+      }*/
+    ]
+  }

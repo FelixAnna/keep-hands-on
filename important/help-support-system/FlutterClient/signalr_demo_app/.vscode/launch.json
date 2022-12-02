@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "preLaunchTask": "replace-env-stage",
+            "name": "App (STAGE)",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "preLaunchTask": "replace-env-prod",
+            "name": "App (PROD)",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}

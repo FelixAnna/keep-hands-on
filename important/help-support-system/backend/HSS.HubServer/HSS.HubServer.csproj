@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HSS.Common\HSS.Common.csproj" />
+    <ProjectReference Include="..\HSS.SharedServices.Sql\HSS.SharedServices.Sql.csproj" />
+    <ProjectReference Include="..\HSS.SharedServices\HSS.SharedServices.csproj" />
   </ItemGroup>
 
 </Project>

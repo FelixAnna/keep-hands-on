@@ -1,52 +1,77 @@
-﻿using HSS.HubServer.EFCoreGen;
-using HSS.HubServer.EFCoreGen.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using HSS.SharedServices.Contacts.Services;
+using HSS.SharedServices.Messages;
+using HSS.SharedServices.Messages.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace HSS.HubServer
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class Chat : Hub
     {
-        SshDbContext _sshDbContext;
-        public Chat(SshDbContext sshDbContext)
+        private readonly IContactService contactService;
+        private readonly IMessageService messageService;
+
+        public Chat(IContactService contactService, IMessageService messageService)
         {
-            _sshDbContext = sshDbContext;
+            this.contactService = contactService;
+            this.messageService = messageService;
         }
+
         public override Task OnConnectedAsync()
         {
-            var userName = Context.User?.FindFirst(ClaimTypes.Email)?.Value;
+            var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+            var contacts = contactService.GetUserContact(userId);
+            Groups.AddToGroupAsync(Context.ConnectionId, userId);
+            foreach(var group in contacts.Contact.Groups)
+            {
+                Groups.AddToGroupAsync(Context.ConnectionId, group.GroupId.ToString());
+            }
 
-            Groups.AddToGroupAsync(Context.ConnectionId, userName);
             return base.OnConnectedAsync();
-        }
-
-        public async Task SendMessage(string toUser, string message)
-        {
-            var userName = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            await Clients.All.SendAsync("ReceiveMessage", userName, message);
         }
 
         public async Task SendToUser(string toUser, string message)
         {
-            var sender = Context.User?.FindFirst(ClaimTypes.Email)?.Value;
-            
-            await _sshDbContext.Messages.AddAsync(new Message
+            var sender = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+
+            var msg = new SaveMessageRequest
             {
-                From = sender,
-                To = toUser,
+                Sender = sender,
+                Receiver = toUser,
                 Content = message
-            });
-            _sshDbContext.SaveChanges();
+            };
+            await messageService.SaveMessageAsync(msg);
 
             await Clients.Group(toUser).SendAsync("ReceiveMessage", sender, message);
         }
 
+        public async Task SendToGroup(string toGroup, string message)
+        {
+            var sender = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+
+            var msg = new SaveMessageRequest
+            {
+                Sender = sender,
+                Receiver = toGroup,
+                Content = message
+            };
+            await messageService.SaveMessageAsync(msg);
+
+            await Clients.Group(toGroup).SendAsync("ReceiveGroupMessage", sender, toGroup, message);
+        }
+
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            _sshDbContext.Dispose();
+            var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+            var contacts = contactService.GetUserContact(userId);
+            Groups.RemoveFromGroupAsync(Context.ConnectionId, userId);
+            foreach (var group in contacts.Contact.Groups)
+            {
+                Groups.RemoveFromGroupAsync(Context.ConnectionId, group.GroupId.ToString());
+            }
+
             return base.OnDisconnectedAsync(exception);
         }
     }

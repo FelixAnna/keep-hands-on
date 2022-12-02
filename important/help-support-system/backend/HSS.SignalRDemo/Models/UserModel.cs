@@ -5,8 +5,9 @@ namespace HSS.SignalRDemo.Models
     public class UserModel
     {
         [DisplayName("User Name")]
-        public string UserName { get; set; }
+        public string UserName { get; set; } = null!;
+
         [DisplayName("Password")]
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
     }
 }

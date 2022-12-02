@@ -1,6 +1,9 @@
 ﻿using HSS.Common;
-using HSS.UserApi.Contact;
-using HSS.UserApi.Contact.Services;
+using HSS.SharedServices.Contacts.Services;
+using HSS.SharedServices.Groups.Services;
+using HSS.SharedServices.Messages;
+using HSS.SharedServices.Sql.Contact;
+using HSS.SharedServices.Sql.Messages;
 using HSS.UserApi.Users.Contracts;
 using HSS.UserApi.Users.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,14 +20,16 @@ namespace HSS.UserApi.Settings
             var connectionString = configuration["ConnectionStrings:DefaultConnection"];
             services.AddSingleton(settings);
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IContactService, ContactService>(provider => new ContactService(connectionString));
+            services.AddScoped<IGroupService, GroupService>(_ => new GroupService(connectionString));
+            services.AddScoped<IContactService, ContactService>(_ => new ContactService(connectionString));
+            services.AddScoped<IMessageService, MessageService>(_ => new MessageService(connectionString));
             return services;
         }
 
         public static IServiceCollection AddAuth(this IServiceCollection services)
         {
             // Add services to the container.
-            var settings = services.BuildServiceProvider().GetService<IdentityPlatformSettings>();
+            var settings = services.BuildServiceProvider().GetService<IdentityPlatformSettings>()!;
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

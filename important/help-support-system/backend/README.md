@@ -14,10 +14,10 @@ A Help Support System where people can chat in real time
 ## Docker build & push to azure container registry
 
 ```sh
-  az acr build -t hss-idp-api:0.2.3 -f HSS.IdentityServer/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-hub-api:0.2.3 -f HSS.HubServer/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-user-api:0.2.3 -f HSS.UserApi/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-signalrdemo-api:0.2.4 -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-idp-api:0.3.0 -f HSS.IdentityServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-hub-api:0.3.1 -f HSS.HubServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-user-api:0.3.1 -f HSS.UserApi/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-signalrdemo-api:0.3.1 -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
 ```
 
 ## Deploy & update

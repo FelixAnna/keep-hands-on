@@ -8,8 +8,8 @@ namespace HSS.Common.Entities
     {
         [Key]
         public int GroupId { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        public List<GroupMemberEntity> Members { get; set; }
+        public List<GroupMemberEntity>? Members { get; set; }
     }
 }

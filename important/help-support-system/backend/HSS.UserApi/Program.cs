@@ -1,18 +1,9 @@
 using HSS.UserApi.Settings;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Build a config object, using env vars and JSON providers.
-IConfiguration configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    .AddEnvironmentVariables()
-    .Build();
-
-
-builder.Services.AddServices(configuration);
+builder.Services.AddServices(builder.Configuration);
 builder.Services.AddAuth();
 
 builder.Services.AddControllers();

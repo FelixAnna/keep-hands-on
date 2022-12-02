@@ -1,5 +1,5 @@
-﻿using HSS.UserApi.Contact.Contracts;
-using HSS.UserApi.Contact.Services;
+﻿using HSS.SharedServices.Contacts.Contracts;
+using HSS.SharedServices.Contacts.Services;
 using HSS.UserApi.Users.Contracts;
 using HSS.UserApi.Users.Services;
 using IdentityModel;
@@ -33,7 +33,7 @@ namespace HSS.UserApi.Controllers
         [HttpGet("contact")]
         public GetContactResponse GetContacts()
         {
-           var userId = User.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.NameIdentifier).Value;
+           var userId = User.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.NameIdentifier)?.Value!;
             return contactService.GetUserContact(userId);
         }
     }

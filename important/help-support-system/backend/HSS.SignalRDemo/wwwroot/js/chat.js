@@ -6,6 +6,7 @@ const options = {
 };
 const connection = new signalR.HubConnectionBuilder()
                             .withUrl("https://localhost:7133/chat", options)
+                            //.withUrl("https://api-prod-hss.metadlw.com/hub/chat", options)
                             .configureLogging(signalR.LogLevel.Information)
                             .withAutomaticReconnect()
                             .build();
@@ -15,6 +16,10 @@ document.getElementById("sendButton").disabled = true;
 
 
 connection.on("ReceiveMessage", function (user, message) {
+    if (user != document.getElementById("userInput").value) {
+        return;
+    }
+
     const li = document.createElement("li");
     document.getElementById("messagesList").appendChild(li);
     // We can assign user-supplied strings to an element's textContent because it

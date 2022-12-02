@@ -6,9 +6,9 @@ namespace HSS.Common.Entities
     public class GroupMemberEntity
     {
         public int Id { get; set; }
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null!;
 
         public int GroupId { get; set; }
-        public GroupEntity Group { get; set; }
+        public GroupEntity Group { get; set; } = null!;
     }
 }

@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolApp", "ToolApp\ToolApp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSS.Common", "HSS.Common\HSS.Common.csproj", "{2FE4FE18-021A-4E8F-AF52-F627D5CEDCBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.SharedServices", "HSS.SharedServices\HSS.SharedServices.csproj", "{50FA79F4-25B8-4993-BAE8-BBCF759D2B60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.SharedServices.Sql", "HSS.SharedServices.Sql\HSS.SharedServices.Sql.csproj", "{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{2FE4FE18-021A-4E8F-AF52-F627D5CEDCBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FE4FE18-021A-4E8F-AF52-F627D5CEDCBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FE4FE18-021A-4E8F-AF52-F627D5CEDCBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50FA79F4-25B8-4993-BAE8-BBCF759D2B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50FA79F4-25B8-4993-BAE8-BBCF759D2B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50FA79F4-25B8-4993-BAE8-BBCF759D2B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50FA79F4-25B8-4993-BAE8-BBCF759D2B60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
