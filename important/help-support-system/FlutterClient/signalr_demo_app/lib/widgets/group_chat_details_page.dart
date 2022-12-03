@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/services/group_member_service.dart';
@@ -8,12 +6,14 @@ import '../models/chat_message.dart';
 import '../models/group_member.dart';
 import '../models/login_response.dart';
 import '../services/chart_hub_service.dart';
-import '../utils/localstorage_service.dart';
 
 class GroupChatDetailsPage extends StatefulWidget {
-  String chatId;
-  String name;
-  GroupChatDetailsPage({required this.chatId, required this.name});
+  final String chatId;
+  final String name;
+
+  final User profile;
+  GroupChatDetailsPage(
+      {required this.chatId, required this.name, required this.profile});
 
   @override
   _GroupChatDetailsPageState createState() => _GroupChatDetailsPageState();
@@ -22,8 +22,6 @@ class GroupChatDetailsPage extends StatefulWidget {
 class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
   List<ChatMessage> messages = [];
   late GroupMembers groupMembers;
-  late String currentChatId;
-  late User profile;
 
   final messageController = TextEditingController();
   final HubService hubService = Get.find<HubService>();
@@ -31,17 +29,8 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
   final GroupMemberService groupMemberService = Get.find<GroupMemberService>();
   @override
   void initState() {
-    currentChatId = widget.chatId;
-    loadProfile();
     super.initState();
     initSignalR();
-  }
-
-  loadProfile() async {
-    var profileText =
-        await LocalStorageService.get(LocalStorageService.PROFILE);
-
-    profile = User.fromJson(jsonDecode(profileText));
   }
 
   @override
@@ -208,12 +197,12 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
     messageController.text = "";
     setState(() {
       messages.add(ChatMessage(
-          sender: profile.UserName,
+          sender: widget.profile.UserId,
           messageContent: msg,
           messageType: "sender"));
     });
     await HubService.hubConnection.invoke("SendToGroup",
-        args: <Object>[currentChatId, msg]).then((value) => {});
+        args: <Object>[widget.chatId, msg]).then((value) => {});
   }
 
   void initSignalR() async {
@@ -225,10 +214,10 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
       callback: () => Get.toNamed("/login"),
     );
 
-    final msgList =
-        await messageService.getGroupMessages(currentChatId, profile.UserId);
+    final msgList = await messageService.getGroupMessages(
+        widget.chatId, widget.profile.UserId);
 
-    var gpMembers = await groupMemberService.getGroupMembersInfo(currentChatId);
+    var gpMembers = await groupMemberService.getGroupMembersInfo(widget.chatId);
     setState(() {
       messages = msgList;
       groupMembers = gpMembers;
@@ -240,7 +229,8 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
       var fromUser = parameters?.elementAt(0).toString();
       var groupId = parameters?.elementAt(1).toString();
       var msg = parameters?.elementAt(2).toString();
-      if (groupId == currentChatId) {
+
+      if (groupId == widget.chatId && fromUser != widget.profile.UserId) {
         messages.add(ChatMessage(
           sender: fromUser!,
           messageContent: msg!,

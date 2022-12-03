@@ -21,7 +21,6 @@ class GroupMemberService {
     );
     var body = jsonDecode(response.body);
 
-    var group = body['group'];
     GroupInfo groupInfo = GroupInfo.fromJson(body['group']);
 
     var membersJson = body['memebers'] as List;
@@ -29,7 +28,7 @@ class GroupMemberService {
         membersJson.map((tagJson) => MemberInfo.fromJson(tagJson)).toList();
 
     if (response.statusCode == HttpStatus.ok) {
-      return GroupMembers(members, group);
+      return GroupMembers(members, groupInfo);
     } else {
       print('error: ' + response.toString());
       throw new Exception(response.toString());

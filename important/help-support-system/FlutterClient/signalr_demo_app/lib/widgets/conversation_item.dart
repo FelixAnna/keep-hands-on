@@ -1,13 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/models/chat_member.dart';
 
+import '../models/login_response.dart';
+import '../utils/localstorage_service.dart';
 import 'chat_details_page.dart';
 import 'group_chat_details_page.dart';
 
 class ConversationItem extends StatefulWidget {
-  ChatMember member;
-  bool isMessageRead;
+  final ChatMember member;
+  final bool isMessageRead;
   ConversationItem({
     required this.member,
     required this.isMessageRead,
@@ -18,17 +22,33 @@ class ConversationItem extends StatefulWidget {
 }
 
 class _ConversationItemState extends State<ConversationItem> {
+  late final User profile;
+  loadProfile() async {
+    var profileText =
+        await LocalStorageService.get(LocalStorageService.PROFILE);
+
+    profile = User.fromJson(jsonDecode(profileText));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (widget.member.type == "user") {
           Get.to(() => ChatDetailsPage(
+                profile: profile,
                 chatId: widget.member.talkingTo,
                 name: widget.member.name,
               ));
         } else {
           Get.to(() => GroupChatDetailsPage(
+                profile: profile,
                 chatId: widget.member.talkingTo,
                 name: widget.member.name,
               ));

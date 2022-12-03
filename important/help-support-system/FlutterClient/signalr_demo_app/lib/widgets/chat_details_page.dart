@@ -1,17 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/models/login_response.dart';
 import 'package:signalr_demo_app/services/message_service.dart';
 import '../models/chat_message.dart';
 import '../services/chart_hub_service.dart';
-import '../services/localstorage_service.dart';
 
 class ChatDetailsPage extends StatefulWidget {
-  String chatId;
-  String name;
-  ChatDetailsPage({required this.chatId, required this.name});
+  final String chatId;
+  final String name;
+  final User profile;
+  ChatDetailsPage(
+      {required this.chatId, required this.name, required this.profile});
 
   @override
   _ChatDetailsPageState createState() => _ChatDetailsPageState();
@@ -20,24 +19,13 @@ class ChatDetailsPage extends StatefulWidget {
 class _ChatDetailsPageState extends State<ChatDetailsPage> {
   String message = "";
   List<ChatMessage> messages = [];
-  late User profile;
-  var currentChatId = '';
   final messageController = TextEditingController();
   final HubService hubService = Get.find<HubService>();
   final MessageService messageService = Get.find<MessageService>();
   @override
   void initState() {
-    currentChatId = widget.chatId;
-    loadProfile();
     super.initState();
     initSignalR();
-  }
-
-  loadProfile() async {
-    var profileText =
-        await LocalStorageService.get(LocalStorageService.PROFILE);
-
-    profile = User.fromJson(jsonDecode(profileText));
   }
 
   @override
@@ -202,12 +190,12 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
     messageController.text = "";
     setState(() {
       messages.add(ChatMessage(
-          sender: profile.UserName,
+          sender: widget.profile.UserName,
           messageContent: msg,
           messageType: "sender"));
     });
     await HubService.hubConnection.invoke("SendToUser",
-        args: <Object>[currentChatId, msg]).then((value) => {});
+        args: <Object>[widget.chatId, msg]).then((value) => {});
   }
 
   void initSignalR() async {
@@ -218,7 +206,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
       callback: () => Get.toNamed("/login"),
     );
     final msgList =
-        await messageService.getMessages(currentChatId, profile.UserId);
+        await messageService.getMessages(widget.chatId, widget.profile.UserId);
     setState(() {
       messages = msgList;
     });
@@ -228,8 +216,9 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
     setState(() {
       var fromUser = parameters?.elementAt(0).toString();
       var msg = parameters?.elementAt(1).toString();
-      var sender = fromUser! == currentChatId ? widget.name : profile.UserName;
-      if (fromUser == currentChatId) {
+      var sender =
+          fromUser! == widget.chatId ? widget.name : widget.profile.UserName;
+      if (fromUser == widget.chatId) {
         messages.add(ChatMessage(
           sender: sender,
           messageContent: msg!,

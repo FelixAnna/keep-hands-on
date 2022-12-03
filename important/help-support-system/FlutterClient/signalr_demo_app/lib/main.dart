@@ -25,12 +25,12 @@ Future<void> main() async {
 }
 
 class HSSApp extends StatelessWidget {
-  List<Widget> pages = [];
+  final List<Widget> pages = [];
 
-  late LoginPage loginWidget;
-  late ChatContainerPage containerWidget;
-  late ProfilePage profileWidget;
-  late HubService hubService;
+  late final LoginPage loginWidget;
+  late final ChatContainerPage containerWidget;
+  late final ProfilePage profileWidget;
+  late final HubService hubService;
 
   // This widget is the root of your application.
   @override
