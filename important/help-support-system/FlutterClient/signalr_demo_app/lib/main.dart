@@ -154,6 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 TextButton(
                                   child: Text("Logout"),
                                   onPressed: () {
+                                    Navigator.pop(ctxt);
                                     Get.find<AuthService>()
                                         .logout()
                                         .then((value) => Get.toNamed("/login"));

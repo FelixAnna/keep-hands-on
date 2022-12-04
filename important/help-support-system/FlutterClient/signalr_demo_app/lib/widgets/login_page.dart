@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/services/auth_service.dart';
 import 'package:signalr_demo_app/services/localstorage_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
   final AuthService authService;
@@ -72,7 +73,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextButton(
               onPressed: () {
-                //TODO FORGOT PASSWORD SCREEN GOES HERE
+                launchUrl(Uri.https(widget.authService.env.idpAuthority,
+                    "Identity/Account/ForgotPassword"));
               },
               child: Text(
                 'Forgot Password',
@@ -85,16 +87,23 @@ class _LoginPageState extends State<LoginPage> {
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
+                //onHover:(value) => ,
                 onPressed: () {
                   // here to login
                   widget.authService
                       .login(usernameController.text, passwordController.text)
-                      .then((value) async {
-                    await LocalStorageService.save(
-                        LocalStorageService.REMEMBER_USERNAME,
-                        usernameController.text);
-                    Get.back();
-                  });
+                      .then(
+                    (isSucceed) async {
+                      if (isSucceed) {
+                        await LocalStorageService.save(
+                            LocalStorageService.REMEMBER_USERNAME,
+                            usernameController.text);
+                        Get.back();
+                      } else {
+                        //failed action
+                      }
+                    },
+                  );
                 },
                 child: Text(
                   'Login',
@@ -105,7 +114,17 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 130,
             ),
-            Text('New User? Create Account')
+            TextButton(
+              onPressed: () {
+                launchUrl(Uri.https(widget.authService.env.idpAuthority,
+                    "Identity/Account/Register"));
+              },
+              child: Text(
+                'Create Account',
+                style: TextStyle(color: Colors.blue, fontSize: 15),
+              ),
+            ),
+            //Text('New User? Create Account')
           ],
         ),
       ),
