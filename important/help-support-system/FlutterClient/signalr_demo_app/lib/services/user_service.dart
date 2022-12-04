@@ -3,21 +3,15 @@ import 'dart:io';
 import '../config/env.dart';
 import '../models/contact.dart';
 import 'package:http/http.dart' as http;
-import '../utils/localstorage_service.dart';
 
 class UserService {
   final IAppEnv env;
-  UserService({required this.env});
+  final http.Client client;
+  UserService(this.client, {required this.env});
 
   Future<Contact> getCurrentContacts() async {
-    final response = await http.get(
-      Uri.parse(env.userApiAddress + '/api/users/contact'),
-      headers: {
-        HttpHeaders.acceptHeader: 'text/plain',
-        HttpHeaders.authorizationHeader: 'Bearer ' +
-            await LocalStorageService.get(LocalStorageService.JWT_KEY)
-      },
-    );
+    final response =
+        await client.get(Uri.parse(env.userApiAddress + '/api/users/contact'));
     var body = jsonDecode(response.body);
 
     var friendsJson = body['contact']['friends'] as List;

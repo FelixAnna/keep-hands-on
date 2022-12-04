@@ -8,16 +8,12 @@ import '../utils/localstorage_service.dart';
 
 class GroupMemberService {
   final IAppEnv env;
-  GroupMemberService({required this.env});
+  final http.Client client;
+  GroupMemberService(this.client, {required this.env});
 
   Future<GroupMembers> getGroupMembersInfo(groupId) async {
-    final response = await http.get(
+    final response = await client.get(
       Uri.parse(Uri.encodeFull(env.userApiAddress + '/api/groups/' + groupId)),
-      headers: {
-        HttpHeaders.acceptHeader: 'text/plain',
-        HttpHeaders.authorizationHeader: 'Bearer ' +
-            await LocalStorageService.get(LocalStorageService.JWT_KEY)
-      },
     );
     var body = jsonDecode(response.body);
 

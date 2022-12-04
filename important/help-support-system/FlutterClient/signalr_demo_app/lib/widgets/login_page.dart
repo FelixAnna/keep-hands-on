@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/services/auth_service.dart';
-import 'package:signalr_demo_app/services/localstorage_service.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../utils/localstorage_service.dart';
 
 class LoginPage extends StatefulWidget {
   final AuthService authService;
@@ -116,8 +117,10 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextButton(
               onPressed: () {
-                launchUrl(Uri.https(widget.authService.env.idpAuthority,
-                    "Identity/Account/Register"));
+                launchUrl(
+                    Uri.https(widget.authService.env.idpAuthority,
+                        "Identity/Account/Register"),
+                    mode: LaunchMode.externalApplication);
               },
               child: Text(
                 'Create Account',

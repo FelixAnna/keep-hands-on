@@ -8,20 +8,16 @@ import '../utils/localstorage_service.dart';
 
 class MessageService {
   final IAppEnv env;
-  MessageService({required this.env});
+  final http.Client client;
+  MessageService(this.client, {required this.env});
 
   Future<List<ChatMessage>> getMessages(from, to) async {
-    final response = await http.get(
+    final response = await client.get(
       Uri.parse(Uri.encodeFull(env.userApiAddress +
           '/api/messages/user?from=' +
           from +
           "&to=" +
           to)),
-      headers: {
-        HttpHeaders.acceptHeader: 'text/plain',
-        HttpHeaders.authorizationHeader: 'Bearer ' +
-            await LocalStorageService.get(LocalStorageService.JWT_KEY)
-      },
     );
     var body = jsonDecode(response.body);
 
@@ -43,14 +39,9 @@ class MessageService {
   }
 
   Future<List<ChatMessage>> getGroupMessages(groupId, userId) async {
-    final response = await http.get(
+    final response = await client.get(
       Uri.parse(Uri.encodeFull(
           env.userApiAddress + '/api/messages/group?groupId=' + groupId)),
-      headers: {
-        HttpHeaders.acceptHeader: 'text/plain',
-        HttpHeaders.authorizationHeader: 'Bearer ' +
-            await LocalStorageService.get(LocalStorageService.JWT_KEY)
-      },
     );
     var body = jsonDecode(response.body);
 

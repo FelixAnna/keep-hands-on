@@ -1,20 +1,19 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/models/chat_member.dart';
 
 import '../models/login_response.dart';
-import '../utils/localstorage_service.dart';
 import 'chat_details_page.dart';
 import 'group_chat_details_page.dart';
 
 class ConversationItem extends StatefulWidget {
   final ChatMember member;
   final bool isMessageRead;
+  final User profile;
   ConversationItem({
     required this.member,
     required this.isMessageRead,
+    required this.profile,
   });
 
   @override
@@ -22,18 +21,9 @@ class ConversationItem extends StatefulWidget {
 }
 
 class _ConversationItemState extends State<ConversationItem> {
-  late final User profile;
-  loadProfile() async {
-    var profileText =
-        await LocalStorageService.get(LocalStorageService.PROFILE);
-
-    profile = User.fromJson(jsonDecode(profileText));
-  }
-
   @override
   void initState() {
     super.initState();
-    loadProfile();
   }
 
   @override
@@ -42,13 +32,13 @@ class _ConversationItemState extends State<ConversationItem> {
       onTap: () {
         if (widget.member.type == "user") {
           Get.to(() => ChatDetailsPage(
-                profile: profile,
+                profile: widget.profile,
                 chatId: widget.member.talkingTo,
                 name: widget.member.name,
               ));
         } else {
           Get.to(() => GroupChatDetailsPage(
-                profile: profile,
+                profile: widget.profile,
                 chatId: widget.member.talkingTo,
                 name: widget.member.name,
               ));

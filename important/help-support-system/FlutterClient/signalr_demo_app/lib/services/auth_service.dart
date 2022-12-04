@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../config/env.dart';
-import 'localstorage_service.dart';
+import '../utils/localstorage_service.dart';
 
 class AuthService {
   final IAppEnv env;
@@ -30,8 +30,7 @@ class AuthService {
   }
 
   Future<dynamic> getToken(username, password) async {
-    Map data = {"userName": username, "password": password};
-    var body = json.encode(data);
+    var body = json.encode({"userName": username, "password": password});
     final response = await http.post(
       Uri.parse(env.userApiAddress + "/api/users/login"),
       headers: {

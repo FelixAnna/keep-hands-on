@@ -3,7 +3,7 @@ import 'package:signalr_netcore/hub_connection.dart';
 import 'package:signalr_netcore/hub_connection_builder.dart';
 import 'package:signalr_netcore/itransport.dart';
 import '../config/env.dart';
-import 'localstorage_service.dart';
+import '../utils/localstorage_service.dart';
 
 class HubService {
   static late HubConnection hubConnection;

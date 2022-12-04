@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:signalr_demo_app/models/contact.dart';
+import '../models/login_response.dart';
 import '../services/user_service.dart';
+import '../utils/localstorage_service.dart';
 import 'conversation_item.dart';
 import '../models/chat_member.dart';
 
@@ -18,6 +22,7 @@ class _ChatContainerPageState extends State<ChatContainerPage>
     with AutomaticKeepAliveClientMixin<ChatContainerPage> {
   List<ChatMember> chatGroups = [];
   List<ChatMember> chatUsers = [];
+  late final User profile;
 
   @override
   bool get wantKeepAlive => false;
@@ -26,6 +31,7 @@ class _ChatContainerPageState extends State<ChatContainerPage>
   initState() {
     super.initState();
     _init();
+    loadProfile();
   }
 
   _init() async {
@@ -62,6 +68,15 @@ class _ChatContainerPageState extends State<ChatContainerPage>
         ];
       });
     }
+  }
+
+  loadProfile() async {
+    var profileText =
+        await LocalStorageService.get(LocalStorageService.PROFILE);
+
+    setState(() {
+      profile = User.fromJson(jsonDecode(profileText));
+    });
   }
 
   @override
@@ -122,6 +137,7 @@ class _ChatContainerPageState extends State<ChatContainerPage>
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return ConversationItem(
+                  profile: profile,
                   member: chatGroups[index],
                   isMessageRead: (index == 0 || index == 3) ? true : false,
                 );
@@ -134,6 +150,7 @@ class _ChatContainerPageState extends State<ChatContainerPage>
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return ConversationItem(
+                  profile: profile,
                   member: chatUsers[index],
                   isMessageRead: (index == 0 || index == 3) ? true : false,
                 );

@@ -9,10 +9,12 @@ import 'package:signalr_demo_app/services/chart_hub_service.dart';
 import 'package:signalr_demo_app/services/group_member_service.dart';
 import 'package:signalr_demo_app/services/message_service.dart';
 import 'package:signalr_demo_app/services/user_service.dart';
+import 'package:signalr_demo_app/utils/authorized_client.dart';
 import 'package:signalr_demo_app/widgets/chat_container_page.dart';
 import 'package:signalr_demo_app/widgets/login_page.dart';
 import 'package:signalr_demo_app/widgets/profile_page.dart';
 import 'my_http_overrides.dart';
+import 'package:http/http.dart' as http;
 
 Future<void> main() async {
   HttpOverrides.global = new MyHttpOverrides();
@@ -65,11 +67,12 @@ class HSSApp extends StatelessWidget {
   }
 
   initDI(IAppEnv envService) {
+    var client = new AuthorizedClient(http.Client());
     Get.put(AuthService(env: envService));
     Get.put(HubService(env: envService));
-    Get.put(MessageService(env: envService));
-    Get.put(UserService(env: envService));
-    Get.put(GroupMemberService(env: envService));
+    Get.put(MessageService(client, env: envService));
+    Get.put(UserService(client, env: envService));
+    Get.put(GroupMemberService(client, env: envService));
   }
 
   initWidget() {

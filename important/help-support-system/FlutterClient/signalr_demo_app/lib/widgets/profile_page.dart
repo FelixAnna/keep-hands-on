@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../models/login_response.dart';
-import '../services/localstorage_service.dart';
+import '../utils/localstorage_service.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
