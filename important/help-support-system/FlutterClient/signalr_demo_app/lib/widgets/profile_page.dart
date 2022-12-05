@@ -15,7 +15,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    profile = new User(UserId: "", UserName: "", Email: "");
     _init();
     super.initState();
   }

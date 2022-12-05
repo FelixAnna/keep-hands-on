@@ -1,5 +1,4 @@
 ﻿using HSS.SharedServices.Messages;
-using HSS.UserApi.Users.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

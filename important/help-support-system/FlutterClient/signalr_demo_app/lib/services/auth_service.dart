@@ -17,7 +17,9 @@ class AuthService {
               await LocalStorageService.save(
                   LocalStorageService.JWT_KEY, response["accessToken"]),
               await LocalStorageService.save(
-                  LocalStorageService.PROFILE, jsonEncode(response["profile"]))
+                  LocalStorageService.PROFILE, jsonEncode(response["profile"])),
+              await LocalStorageService.save(
+                  LocalStorageService.REMEMBER_USERNAME, username)
             })
         .onError((error, stackTrace) => {isSucceed = false});
 

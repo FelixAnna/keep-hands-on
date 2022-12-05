@@ -4,7 +4,6 @@ import 'package:signalr_demo_app/models/group_member.dart';
 import '../config/env.dart';
 import '../models/contact.dart';
 import 'package:http/http.dart' as http;
-import '../utils/localstorage_service.dart';
 
 class GroupMemberService {
   final IAppEnv env;

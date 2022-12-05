@@ -4,7 +4,6 @@ import 'package:signalr_demo_app/models/chat_message.dart';
 import '../config/env.dart';
 import '../models/msg_dto.dart';
 import 'package:http/http.dart' as http;
-import '../utils/localstorage_service.dart';
 
 class MessageService {
   final IAppEnv env;

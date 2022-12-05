@@ -32,13 +32,11 @@ class HSSApp extends StatelessWidget {
   late final LoginPage loginWidget;
   late final ChatContainerPage containerWidget;
   late final ProfilePage profileWidget;
-  late final HubService hubService;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    IAppEnv envService = AppEnv();
-    initDI(envService);
+    initDI();
     initWidget();
     initNavBar();
 
@@ -66,8 +64,9 @@ class HSSApp extends StatelessWidget {
     );
   }
 
-  initDI(IAppEnv envService) {
+  initDI() {
     var client = new AuthorizedClient(http.Client());
+    IAppEnv envService = AppEnv();
     Get.put(AuthService(env: envService));
     Get.put(HubService(env: envService));
     Get.put(MessageService(client, env: envService));
@@ -76,9 +75,7 @@ class HSSApp extends StatelessWidget {
   }
 
   initWidget() {
-    loginWidget = LoginPage(
-      authService: Get.find<AuthService>(),
-    );
+    loginWidget = LoginPage();
     containerWidget = ChatContainerPage(
       Get.find<UserService>(),
     );
@@ -112,16 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _initSignalR();
-  }
-
-  _initSignalR() async {
-    var hubService = Get.find<HubService>();
-    await hubService.initHubConnection(
-        listeningMessage: (List<Object?>? listMessages) => {},
-        listenMethod: "ReceiveMessage");
-
-    hubService.startConnect(callback: () => Get.toNamed("/login"));
   }
 
   @override

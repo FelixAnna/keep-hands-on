@@ -1,37 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:signalr_demo_app/services/auth_service.dart';
+import 'package:signalr_demo_app/controllers/authController.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/localstorage_service.dart';
 
-class LoginPage extends StatefulWidget {
-  final AuthService authService;
-  const LoginPage({Key? key, required this.authService}) : super(key: key);
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  var usernameController;
-  final passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    _init();
-    super.initState();
-  }
-
-  _init() async {
-    var remText =
-        await LocalStorageService.get(LocalStorageService.REMEMBER_USERNAME);
-    setState(() {
-      usernameController = TextEditingController(text: remText);
-    });
-  }
-
+class LoginPage extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,30 +25,34 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                controller: usernameController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    hintText: 'Enter valid email id as abc@gmail.com'),
-              ),
+              child: GetX<AuthController>(builder: (_) {
+                print("count2 rebuild");
+                return TextField(
+                  controller: TextEditingController(text: _.UserName()),
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                      hintText: 'Enter valid email id as abc@gmail.com'),
+                );
+              }),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'Enter secure password'),
-              ),
-            ),
+                padding: const EdgeInsets.only(
+                    left: 15.0, right: 15.0, top: 15, bottom: 0),
+                //padding: EdgeInsets.symmetric(horizontal: 15),
+                child: GetX<AuthController>(builder: (_) {
+                  return TextField(
+                    controller: TextEditingController(text: _.Password()),
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                        hintText: 'Enter secure password'),
+                  );
+                })),
             TextButton(
               onPressed: () {
-                launchUrl(Uri.https(widget.authService.env.idpAuthority,
+                launchUrl(Uri.https(controller.IdpAuthority,
                     "Identity/Account/ForgotPassword"));
               },
               child: Text(
@@ -90,19 +68,10 @@ class _LoginPageState extends State<LoginPage> {
               child: TextButton(
                 //onHover:(value) => ,
                 onPressed: () {
-                  // here to login
-                  widget.authService
-                      .login(usernameController.text, passwordController.text)
-                      .then(
-                    (isSucceed) async {
-                      if (isSucceed) {
-                        await LocalStorageService.save(
-                            LocalStorageService.REMEMBER_USERNAME,
-                            usernameController.text);
-                        Get.back();
-                      } else {
-                        //failed action
-                      }
+                  controller.login(true).then(
+                    () async {
+                      Get.back();
+                      //failed action
                     },
                   );
                 },
@@ -118,8 +87,8 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               onPressed: () {
                 launchUrl(
-                    Uri.https(widget.authService.env.idpAuthority,
-                        "Identity/Account/Register"),
+                    Uri.https(
+                        controller.IdpAuthority, "Identity/Account/Register"),
                     mode: LaunchMode.inAppWebView);
               },
               child: Text(
@@ -127,7 +96,6 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(color: Colors.blue, fontSize: 15),
               ),
             ),
-            //Text('New User? Create Account')
           ],
         ),
       ),
