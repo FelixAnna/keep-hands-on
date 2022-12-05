@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:signalr_demo_app/controllers/authController.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../utils/localstorage_service.dart';
-
 class LoginPage extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
@@ -25,31 +23,26 @@ class LoginPage extends GetWidget<AuthController> {
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 15),
-              child: GetX<AuthController>(builder: (_) {
-                print("count2 rebuild");
-                return TextField(
-                  controller: TextEditingController(text: _.UserName()),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email',
-                      hintText: 'Enter valid email id as abc@gmail.com'),
-                );
-              }),
+              child: TextField(
+                controller: controller.UserNameEditor,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                    hintText: 'Enter valid email id as abc@gmail.com'),
+              ),
             ),
             Padding(
                 padding: const EdgeInsets.only(
                     left: 15.0, right: 15.0, top: 15, bottom: 0),
                 //padding: EdgeInsets.symmetric(horizontal: 15),
-                child: GetX<AuthController>(builder: (_) {
-                  return TextField(
-                    controller: TextEditingController(text: _.Password()),
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Password',
-                        hintText: 'Enter secure password'),
-                  );
-                })),
+                child: TextField(
+                  controller: controller.PasswordEditor,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                      hintText: 'Enter secure password'),
+                )),
             TextButton(
               onPressed: () {
                 launchUrl(Uri.https(controller.IdpAuthority,
@@ -67,13 +60,10 @@ class LoginPage extends GetWidget<AuthController> {
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 //onHover:(value) => ,
-                onPressed: () {
-                  controller.login(true).then(
-                    () async {
-                      Get.back();
-                      //failed action
-                    },
-                  );
+                onPressed: () async {
+                  await controller.login(true);
+                  Get.back();
+                  //failed action
                 },
                 child: Text(
                   'Login',

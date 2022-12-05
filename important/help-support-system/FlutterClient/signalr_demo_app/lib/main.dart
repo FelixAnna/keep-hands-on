@@ -13,8 +13,11 @@ import 'package:signalr_demo_app/utils/authorized_client.dart';
 import 'package:signalr_demo_app/widgets/chat_container_page.dart';
 import 'package:signalr_demo_app/widgets/login_page.dart';
 import 'package:signalr_demo_app/widgets/profile_page.dart';
+import 'controllers/authController.dart';
 import 'my_http_overrides.dart';
 import 'package:http/http.dart' as http;
+
+import 'services/auth_storage_service.dart';
 
 Future<void> main() async {
   HttpOverrides.global = new MyHttpOverrides();
@@ -67,11 +70,15 @@ class HSSApp extends StatelessWidget {
   initDI() {
     var client = new AuthorizedClient(http.Client());
     IAppEnv envService = AppEnv();
+    Get.put<IAppEnv>(envService);
     Get.put(AuthService(env: envService));
     Get.put(HubService(env: envService));
     Get.put(MessageService(client, env: envService));
     Get.put(UserService(client, env: envService));
     Get.put(GroupMemberService(client, env: envService));
+
+    Get.put(AuthStorageService());
+    Get.put(AuthController());
   }
 
   initWidget() {
@@ -83,8 +90,8 @@ class HSSApp extends StatelessWidget {
   }
 
   initNavBar() {
+    pages.add(loginWidget);
     pages.add(containerWidget);
-    pages.add(profileWidget);
     pages.add(profileWidget);
   }
 }

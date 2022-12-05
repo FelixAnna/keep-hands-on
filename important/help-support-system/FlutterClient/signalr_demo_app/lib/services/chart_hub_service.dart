@@ -10,9 +10,10 @@ class HubService {
   final IAppEnv env;
   HubService({required this.env});
 
-  initHubConnection(
-      {required Function(List<Object?>? parameters) listeningMessage,
-      required String listenMethod}) async {
+  initHubConnection({
+    required Function(List<Object?>? parameters) listeningMessage,
+    required String listenMethod,
+  }) async {
     final httpOptions = new HttpConnectionOptions(
         // logger: transportProtLogger,
         logMessageContent: true,

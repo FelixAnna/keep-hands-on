@@ -10,8 +10,8 @@ class AuthController extends GetxController {
   late User Profile;
   late String IdpAuthority;
 
-  final UserName = "".obs;
-  final Password = "".obs;
+  var UserNameEditor = TextEditingController();
+  var PasswordEditor = TextEditingController();
 
   late AuthStorageService authStorageService;
 
@@ -24,14 +24,12 @@ class AuthController extends GetxController {
   initial() async {
     authStorageService = Get.find<AuthStorageService>();
     IdpAuthority = Get.find<IAppEnv>().idpAuthority;
-    UserName.update((val) async {
-      val = await authStorageService.GetUserName();
-    });
+    UserNameEditor.text = await authStorageService.GetUserName();
   }
 
   login(bool keepUserName) async {
     await Get.find<AuthService>()
-        .getToken(UserName(), Password())
+        .getToken(UserNameEditor.text, PasswordEditor.text)
         .then((response) async => {
               Token = response["accessToken"],
               Profile = User.fromJson(response["profile"]),
