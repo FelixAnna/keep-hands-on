@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                 launchUrl(
                     Uri.https(widget.authService.env.idpAuthority,
                         "Identity/Account/Register"),
-                    mode: LaunchMode.externalApplication);
+                    mode: LaunchMode.inAppWebView);
               },
               child: Text(
                 'Create Account',
