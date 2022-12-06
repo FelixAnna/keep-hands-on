@@ -37,6 +37,7 @@ dependencies:
   dotenv: ^4.0.1
   flutter_dotenv: ^5.0.2
   get: ^4.6.5
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:

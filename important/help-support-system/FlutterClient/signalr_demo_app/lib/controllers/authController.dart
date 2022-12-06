@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/config/env.dart';
@@ -24,7 +26,27 @@ class AuthController extends GetxController {
   initial() async {
     authStorageService = Get.find<AuthStorageService>();
     IdpAuthority = Get.find<IAppEnv>().idpAuthority;
-    UserNameEditor.text = await authStorageService.GetUserName();
+
+    // load last login info
+    var loginCache = await authStorageService.GetLoginCache();
+    UserNameEditor.text = loginCache[2];
+
+    //clear storage if token expired
+    if (AuthService.IsJwtExpired(loginCache[0])) {
+      print("token expired, and will be clear");
+      await logout();
+      Token = '';
+      return;
+    }
+
+    print("token valid");
+    //if already logged in and valid, do something else
+    Token = loginCache[0];
+    Profile = User.fromJson(jsonDecode(loginCache[1]));
+  }
+
+  isLoggedIn() {
+    return Token.length > 0 && Profile.UserId != '';
   }
 
   login(bool keepUserName) async {

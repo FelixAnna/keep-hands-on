@@ -6,6 +6,11 @@ import 'package:url_launcher/url_launcher.dart';
 class LoginPage extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
+    if (controller.initialized && controller.isLoggedIn()) {
+      // Get.back();
+      print("you already logged in, to go back ...");
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -28,7 +33,7 @@ class LoginPage extends GetWidget<AuthController> {
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
-                    hintText: 'Enter valid email id as abc@gmail.com'),
+                    hintText: 'Enter valid email id as someone@example.com'),
               ),
             ),
             Padding(

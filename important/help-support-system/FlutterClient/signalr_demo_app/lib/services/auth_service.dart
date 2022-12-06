@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import '../config/env.dart';
 import '../utils/localstorage_service.dart';
 
@@ -48,5 +49,13 @@ class AuthService {
       print('error: ' + response.toString());
       throw new Exception(response.toString());
     }
+  }
+
+  static bool IsJwtExpired(String token) {
+    if (token == '') {
+      return true;
+    }
+
+    return JwtDecoder.isExpired(token);
   }
 }
