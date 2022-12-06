@@ -11,28 +11,12 @@ class AuthService {
 
   AuthService({required this.env});
 
-  Future<bool> login(username, password) async {
-    var isSucceed = true;
-    await getToken(username, password)
-        .then((response) async => {
-              await LocalStorageService.save(
-                  LocalStorageService.JWT_KEY, response["accessToken"]),
-              await LocalStorageService.save(
-                  LocalStorageService.PROFILE, jsonEncode(response["profile"])),
-              await LocalStorageService.save(
-                  LocalStorageService.REMEMBER_USERNAME, username)
-            })
-        .onError((error, stackTrace) => {isSucceed = false});
-
-    return isSucceed;
-  }
-
   Future<void> logout() async {
     await LocalStorageService.save(LocalStorageService.JWT_KEY, '');
     await LocalStorageService.save(LocalStorageService.PROFILE, '');
   }
 
-  Future<dynamic> getToken(username, password) async {
+  Future<dynamic> login(username, password) async {
     var body = json.encode({"userName": username, "password": password});
     final response = await http.post(
       Uri.parse(env.userApiAddress + "/api/users/login"),

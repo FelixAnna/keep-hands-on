@@ -44,7 +44,7 @@ namespace HSS.HubServer
             };
             await messageService.SaveMessageAsync(msg);
 
-            await Clients.Group(toUser).SendAsync("ReceiveMessage", sender, message);
+            await Clients.Group(toUser).SendAsync("ReceiveMessage", sender, toUser, message);
         }
 
         public async Task SendToGroup(string toGroup, string message)

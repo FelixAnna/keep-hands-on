@@ -20,7 +20,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   String message = "";
   List<ChatMessage> messages = [];
   final messageController = TextEditingController();
-  final HubService hubService = Get.find<HubService>();
+  final ChatHubService hubService = Get.find<ChatHubService>();
   final MessageService messageService = Get.find<MessageService>();
   @override
   void initState() {
@@ -194,7 +194,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
           messageContent: msg,
           messageType: "sender"));
     });
-    await HubService.hubConnection.invoke("SendToUser",
+    await ChatHubService.hubConnection.invoke("SendToUser",
         args: <Object>[widget.chatId, msg]).then((value) => {});
   }
 

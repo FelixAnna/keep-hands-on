@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/config/env.dart';
+import 'package:signalr_demo_app/controllers/chatContainerController.dart';
 import 'package:signalr_demo_app/services/auth_service.dart';
 import 'package:signalr_demo_app/services/chart_hub_service.dart';
 import 'package:signalr_demo_app/services/group_member_service.dart';
+import 'package:signalr_demo_app/services/hub_service.dart';
 import 'package:signalr_demo_app/services/message_service.dart';
 import 'package:signalr_demo_app/services/user_service.dart';
 import 'package:signalr_demo_app/utils/authorized_client.dart';
@@ -72,20 +74,20 @@ class HSSApp extends StatelessWidget {
     IAppEnv envService = AppEnv();
     Get.put<IAppEnv>(envService);
     Get.put(AuthService(env: envService));
-    Get.put(HubService(env: envService));
+    Get.put(ChatHubService(env: envService));
     Get.put(MessageService(client, env: envService));
     Get.put(UserService(client, env: envService));
     Get.put(GroupMemberService(client, env: envService));
 
     Get.put(AuthStorageService());
     Get.put(AuthController());
+    Get.put(HubService(env: envService));
+    Get.put(ChatContainerController());
   }
 
   initWidget() {
     loginWidget = LoginPage();
-    containerWidget = ChatContainerPage(
-      Get.find<UserService>(),
-    );
+    containerWidget = ChatContainerPage();
     profileWidget = ProfilePage();
   }
 

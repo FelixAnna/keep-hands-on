@@ -24,7 +24,7 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
   late GroupMembers groupMembers;
 
   final messageController = TextEditingController();
-  final HubService hubService = Get.find<HubService>();
+  final ChatHubService hubService = Get.find<ChatHubService>();
   final MessageService messageService = Get.find<MessageService>();
   final GroupMemberService groupMemberService = Get.find<GroupMemberService>();
   @override
@@ -201,7 +201,7 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
           messageContent: msg,
           messageType: "sender"));
     });
-    await HubService.hubConnection.invoke("SendToGroup",
+    await ChatHubService.hubConnection.invoke("SendToGroup",
         args: <Object>[widget.chatId, msg]).then((value) => {});
   }
 

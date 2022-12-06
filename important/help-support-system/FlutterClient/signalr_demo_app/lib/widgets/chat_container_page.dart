@@ -1,88 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:signalr_demo_app/models/chat_member.dart';
 import 'package:signalr_demo_app/models/contact.dart';
-import '../models/login_response.dart';
-import '../services/user_service.dart';
-import '../utils/localstorage_service.dart';
+import '../controllers/chatContainerController.dart';
 import 'conversation_item.dart';
-import '../models/chat_member.dart';
+import 'package:get/get.dart';
 
-class ChatContainerPage extends StatefulWidget {
-  final UserService userService;
-  const ChatContainerPage(
-    this.userService,
-  );
-
-  @override
-  _ChatContainerPageState createState() => _ChatContainerPageState();
-}
-
-class _ChatContainerPageState extends State<ChatContainerPage>
-    with AutomaticKeepAliveClientMixin<ChatContainerPage> {
-  List<ChatMember> chatGroups = [];
-  List<ChatMember> chatUsers = [];
-  late final User profile;
-
-  @override
-  bool get wantKeepAlive => false;
-
-  @override
-  initState() {
-    super.initState();
-    _init();
-    loadProfile();
-  }
-
-  _init() async {
-    final contact = await widget.userService.getCurrentContacts();
-
-    for (GroupInfo item in contact.Groups) {
-      setState(() {
-        chatGroups = [
-          ...chatGroups,
-          new ChatMember(
-              talkingTo: item.GroupId,
-              name: item.Name,
-              type: "group",
-              messageText: "Hello Everyone",
-              imageURL:
-                  "https://thumbs.dreamstime.com/z/little-cats-20284533.jpg",
-              time: "Now")
-        ];
-      });
-    }
-
-    for (MemberInfo item in contact.Friends) {
-      setState(() {
-        chatUsers = [
-          ...chatUsers,
-          new ChatMember(
-              talkingTo: item.UserId,
-              name: item.UserName,
-              type: "user",
-              messageText: "Good morning",
-              imageURL:
-                  "https://cdn.pixabay.com/photo/2015/11/16/14/43/cat-1045782__340.jpg",
-              time: "Now")
-        ];
-      });
-    }
-  }
-
-  loadProfile() async {
-    var profileText =
-        await LocalStorageService.get(LocalStorageService.PROFILE);
-
-    setState(() {
-      profile = User.fromJson(jsonDecode(profileText));
-    });
-  }
-
+class ChatContainerPage extends GetWidget<ChatContainerController> {
   @override
   Widget build(BuildContext context) {
-    //Notice the super-call here.
-    super.build(context);
     return Scaffold(
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -131,27 +56,29 @@ class _ChatContainerPageState extends State<ChatContainerPage>
               ),
             ),
             ListView.builder(
-              itemCount: chatGroups.length,
+              itemCount: controller.contact.Groups.length,
               shrinkWrap: true,
               padding: EdgeInsets.only(top: 16),
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return ConversationItem(
-                  profile: profile,
-                  member: chatGroups[index],
+                  profile: controller.Profile,
+                  member:
+                      getChatMemberFromGroup(controller.contact.Groups[index]),
                   isMessageRead: (index == 0 || index == 3) ? true : false,
                 );
               },
             ),
             ListView.builder(
-              itemCount: chatUsers.length,
+              itemCount: controller.contact.Friends.length,
               shrinkWrap: true,
               padding: EdgeInsets.only(top: 16),
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return ConversationItem(
-                  profile: profile,
-                  member: chatUsers[index],
+                  profile: controller.Profile,
+                  member:
+                      getChatMemberFromUser(controller.contact.Friends[index]),
                   isMessageRead: (index == 0 || index == 3) ? true : false,
                 );
               },
@@ -159,6 +86,35 @@ class _ChatContainerPageState extends State<ChatContainerPage>
           ],
         ),
       ),
+    );
+  }
+
+  getChatMemberFromUser(MemberInfo info) {
+    var chatId = info.UserId;
+    var summary = controller.getChatSummary(chatId);
+    return ChatMember(
+      talkingTo: chatId,
+      name: info.UserName,
+      messageText: summary.LatestMsge,
+      imageURL:
+          "https://cdn.pixabay.com/photo/2015/11/16/14/43/cat-1045782__340.jpg",
+      unread: summary.UnreadCount,
+      time: summary.Time.toString(),
+      type: "user",
+    );
+  }
+
+  getChatMemberFromGroup(GroupInfo info) {
+    var chatId = info.GroupId;
+    var summary = controller.getChatSummary(chatId);
+    return ChatMember(
+      talkingTo: chatId,
+      name: info.Name,
+      messageText: summary.LatestMsge,
+      imageURL: "https://thumbs.dreamstime.com/z/little-cats-20284533.jpg",
+      unread: summary.UnreadCount,
+      time: summary.Time.toString(),
+      type: "group",
     );
   }
 }

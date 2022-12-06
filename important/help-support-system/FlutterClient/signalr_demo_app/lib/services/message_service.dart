@@ -60,4 +60,46 @@ class MessageService {
       throw new Exception(response.toString());
     }
   }
+
+  Future<List<MsgDto>> loadUserMessages(targetId) async {
+    final response = await client.get(
+      Uri.parse(Uri.encodeFull(
+          env.userApiAddress + '/api/messages/user?target=' + targetId)),
+    );
+    var body = jsonDecode(response.body);
+
+    var messages = body as List;
+    List<MsgDto> msgList = messages.map((tagJson) {
+      final item = MsgDto.fromJson(tagJson);
+      return item;
+    }).toList();
+
+    if (response.statusCode == HttpStatus.ok) {
+      return msgList;
+    } else {
+      print('error: ' + response.toString());
+      throw new Exception(response.toString());
+    }
+  }
+
+  Future<List<MsgDto>> loadGroupMessages(groupId) async {
+    final response = await client.get(
+      Uri.parse(Uri.encodeFull(
+          env.userApiAddress + '/api/messages/group?groupId=' + groupId)),
+    );
+    var body = jsonDecode(response.body);
+
+    var messages = body as List;
+    List<MsgDto> msgList = messages.map((tagJson) {
+      final item = MsgDto.fromJson(tagJson);
+      return item;
+    }).toList();
+
+    if (response.statusCode == HttpStatus.ok) {
+      return msgList;
+    } else {
+      print('error: ' + response.toString());
+      throw new Exception(response.toString());
+    }
+  }
 }

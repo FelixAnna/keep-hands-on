@@ -51,7 +51,7 @@ class AuthController extends GetxController {
 
   login(bool keepUserName) async {
     await Get.find<AuthService>()
-        .getToken(UserNameEditor.text, PasswordEditor.text)
+        .login(UserNameEditor.text, PasswordEditor.text)
         .then((response) async => {
               Token = response["accessToken"],
               Profile = User.fromJson(response["profile"]),

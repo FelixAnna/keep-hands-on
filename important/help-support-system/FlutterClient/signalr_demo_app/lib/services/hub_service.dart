@@ -5,15 +5,12 @@ import 'package:signalr_netcore/itransport.dart';
 import '../config/env.dart';
 import '../utils/localstorage_service.dart';
 
-class ChatHubService {
+class HubService {
   static late HubConnection hubConnection;
   final IAppEnv env;
-  ChatHubService({required this.env});
+  HubService({required this.env});
 
-  initHubConnection({
-    required Function(List<Object?>? parameters) listeningMessage,
-    required String listenMethod,
-  }) async {
+  initial() async {
     final httpOptions = new HttpConnectionOptions(
         // logger: transportProtLogger,
         logMessageContent: true,
@@ -26,17 +23,25 @@ class ChatHubService {
         .withAutomaticReconnect()
         .build();
     hubConnection.onclose(({Exception? error}) => print("Connection Closed"));
+  }
+
+  subscribe({
+    required Function(List<Object?>? parameters) listeningMessage,
+    required String listenMethod,
+  }) {
     hubConnection.on(listenMethod, listeningMessage);
   }
 
-  startConnect({Function? callback}) async {
+  start({Function? callback}) async {
     if (hubConnection.state == HubConnectionState.Disconnected) {
       // once error go to login
       await hubConnection.start()?.catchError((onError) {
         callback?.call();
       });
-    } else {
-      await hubConnection.stop();
     }
+  }
+
+  stop() async {
+    await hubConnection.stop();
   }
 }
