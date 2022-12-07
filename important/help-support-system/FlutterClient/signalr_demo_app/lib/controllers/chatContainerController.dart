@@ -11,9 +11,9 @@ import '../services/hub_service.dart';
 import '../services/message_service.dart';
 
 class ChatContainerController extends GetxController {
-  late User Profile;
-  late Contact contact;
-  late List<ChatMessages> ChatMsgs;
+  late User Profile = User(UserId: "", UserName: "", Email: "");
+  late Contact UserContact = Contact("", [], []);
+  late List<ChatMessages> ChatMsgs = [];
 
   late HubService hubService;
   late UserService userService;
@@ -23,11 +23,16 @@ class ChatContainerController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await initial();
   }
 
   initial() async {
-    var loginCache = authStoreService.GetLoginCache();
+    authStoreService = Get.find<AuthStorageService>();
+    var loginCache = await authStoreService.GetLoginCache();
+    if (loginCache[0] == "") {
+      Get.toNamed("/login");
+      return;
+    }
+
     Profile = User.fromJson(jsonDecode(loginCache[1]));
 
     hubService = Get.find<HubService>();
@@ -47,27 +52,45 @@ class ChatContainerController extends GetxController {
 
     //load contact
     userService = Get.find<UserService>();
-    contact = await userService.getCurrentContacts();
+    UserContact = await userService.getCurrentContacts();
 
     //load history messages for each contact
     msgService = Get.find<MessageService>();
-    for (var user in contact.Friends) {
+    for (var user in UserContact.Friends) {
       var messages = await msgService.loadUserMessages(user.UserId);
+      var last = messages.length > 0
+          ? messages.last
+          : MsgDto(
+              Id: -1,
+              From: '',
+              To: '',
+              Content: '',
+              MsgTime: DateTime.now(),
+            );
       ChatMsgs.add(ChatMessages(
           ChatId: user.UserId,
-          LatestMsge: messages.last.Content,
+          LatestMsge: last.Content,
           UnreadCount: messages.length, //TODO: how to get the unread count
-          Time: messages.last.MsgTime,
+          Time: last.MsgTime,
           Messages: messages));
     }
 
-    for (var group in contact.Groups) {
+    for (var group in UserContact.Groups) {
       var messages = await msgService.loadGroupMessages(group.GroupId);
+      var last = messages.length > 0
+          ? messages.last
+          : MsgDto(
+              Id: -1,
+              From: '',
+              To: '',
+              Content: '',
+              MsgTime: DateTime.now(),
+            );
       ChatMsgs.add(ChatMessages(
           ChatId: group.GroupId,
-          LatestMsge: messages.last.Content,
+          LatestMsge: last.Content,
           UnreadCount: messages.length, //TODO: how to get the unread count
-          Time: messages.last.MsgTime,
+          Time: last.MsgTime,
           Messages: messages));
     }
   }

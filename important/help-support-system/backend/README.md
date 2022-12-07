@@ -47,6 +47,7 @@ dotnet run --project ./HSS.IdentityServer/HSS.IdentityServer.csproj &
 dotnet run --project ./HSS.HubServer/HSS.HubServer.csproj &
 dotnet run --project ./HSS.SignalRDemo/HSS.SignalRDemo.csproj &
 dotnet run --project ./HSS.UserApi/HSS.UserApi.csproj &
+jobs -p
 ```
 After that, you need to open the below URL in a browser: **https://localhost:7283**, so the IDP service starts working
 

@@ -56,29 +56,29 @@ class ChatContainerPage extends GetWidget<ChatContainerController> {
               ),
             ),
             ListView.builder(
-              itemCount: controller.contact.Groups.length,
+              itemCount: controller.UserContact.Groups.length,
               shrinkWrap: true,
               padding: EdgeInsets.only(top: 16),
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return ConversationItem(
                   profile: controller.Profile,
-                  member:
-                      getChatMemberFromGroup(controller.contact.Groups[index]),
+                  member: getChatMemberFromGroup(
+                      controller.UserContact.Groups[index]),
                   isMessageRead: (index == 0 || index == 3) ? true : false,
                 );
               },
             ),
             ListView.builder(
-              itemCount: controller.contact.Friends.length,
+              itemCount: controller.UserContact.Friends.length,
               shrinkWrap: true,
               padding: EdgeInsets.only(top: 16),
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return ConversationItem(
                   profile: controller.Profile,
-                  member:
-                      getChatMemberFromUser(controller.contact.Friends[index]),
+                  member: getChatMemberFromUser(
+                      controller.UserContact.Friends[index]),
                   isMessageRead: (index == 0 || index == 3) ? true : false,
                 );
               },

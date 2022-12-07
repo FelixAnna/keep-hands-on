@@ -8,9 +8,9 @@ import 'package:signalr_demo_app/services/auth_service.dart';
 import '../services/auth_storage_service.dart';
 
 class AuthController extends GetxController {
-  late String Token;
-  late User Profile;
-  late String IdpAuthority;
+  late String Token = '';
+  late User Profile = User(UserId: '', UserName: '', Email: '');
+  late String IdpAuthority = '';
 
   var UserNameEditor = TextEditingController();
   var PasswordEditor = TextEditingController();
@@ -19,8 +19,8 @@ class AuthController extends GetxController {
 
   @override
   void onInit() async {
-    super.onInit();
     await initial();
+    super.onInit();
   }
 
   initial() async {
@@ -46,7 +46,7 @@ class AuthController extends GetxController {
   }
 
   isLoggedIn() {
-    return Token.length > 0 && Profile.UserId != '';
+    return Token != '' && Profile.UserId != '';
   }
 
   login(bool keepUserName) async {

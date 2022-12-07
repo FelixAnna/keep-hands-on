@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:signalr_demo_app/controllers/authController.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../controllers/chatContainerController.dart';
+
 class LoginPage extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,7 @@ class LoginPage extends GetWidget<AuthController> {
                 //onHover:(value) => ,
                 onPressed: () async {
                   await controller.login(true);
+                  await Get.find<ChatContainerController>().initial();
                   Get.back();
                   //failed action
                 },
