@@ -1,9 +1,11 @@
+using HSS.Common.Extensions;
 using HSS.UserApi.Settings;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServices(builder.Configuration);
+builder.Services.AddConsulConfig(builder.Configuration);
 builder.Services.AddAuth();
 
 builder.Services.AddControllers();
@@ -50,5 +52,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime));
 
 app.Run();

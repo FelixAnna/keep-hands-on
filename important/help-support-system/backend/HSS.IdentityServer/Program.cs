@@ -1,3 +1,4 @@
+using HSS.Common.Extensions;
 using HSS.IdentityServer.Data;
 using HSS.IdentityServer.IdentityConfigurations;
 using HSS.IdentityServer.Models;
@@ -23,6 +24,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
         options.SignIn.RequireConfirmedEmail = false;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddConsulConfig(builder.Configuration);
 
 builder.Services.AddIdentityServer()
     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(op =>
@@ -100,5 +103,7 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.MapFallbackToFile("index.html");
+
+app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime));
 
 app.Run();

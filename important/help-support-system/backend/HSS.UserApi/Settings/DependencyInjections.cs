@@ -17,8 +17,8 @@ namespace HSS.UserApi.Settings
             // Get values from the config given their key and their target type.
             IdentityPlatformSettings settings = configuration.GetRequiredSection("IdentityPlatformSettings").Get<IdentityPlatformSettings>();
 
-            var connectionString = configuration["ConnectionStrings:DefaultConnection"];
-            services.AddSingleton(settings);
+            var connectionString = configuration["ConnectionStrings:DefaultConnection"]!;
+            services.AddSingleton(settings); 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>(_ => new GroupService(connectionString));
             services.AddScoped<IContactService, ContactService>(_ => new ContactService(connectionString));

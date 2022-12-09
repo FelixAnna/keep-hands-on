@@ -1,4 +1,5 @@
 using HSS.Common;
+using HSS.Common.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Security.Claims;
@@ -40,6 +41,7 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddSingleton(settings);
+builder.Services.AddConsulConfig(builder.Configuration);
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization(options =>
 {
@@ -82,5 +84,7 @@ app.Map("/status", () => "hello");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime));
 
 app.Run();

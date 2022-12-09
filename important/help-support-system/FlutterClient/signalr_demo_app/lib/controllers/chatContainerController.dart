@@ -23,6 +23,7 @@ class ChatContainerController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    await initial();
   }
 
   initial() async {

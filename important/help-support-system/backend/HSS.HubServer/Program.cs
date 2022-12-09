@@ -1,9 +1,11 @@
+using HSS.Common.Extensions;
 using HSS.HubServer;
 using HSS.HubServer.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServices(builder.Configuration);
+builder.Services.AddConsulConfig(builder.Configuration);
 builder.Services.AddAuth();
 
 // Add services to the container.
@@ -43,5 +45,7 @@ app.MapRazorPages();
 app.MapHub<Chat>("/chat");
 
 app.Map("/status", () => "hello");
+
+app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime));
 
 app.Run();

@@ -101,3 +101,11 @@ sh hss_services.sh prod ## prod/dev
 #### local deployment
 
 There is another folder "./hss-chart" which is for deploying to a local kind cluster, it doesn't depend on cert-manager, and consul.
+
+#### Docker build & push to azure container registry
+```
+  az acr build -t hss-idp-api:0.3.0 -f HSS.IdentityServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-hub-api:0.3.1 -f HSS.HubServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-user-api:0.3.1 -f HSS.UserApi/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-signalrdemo-api:0.3.1 -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
+ ```

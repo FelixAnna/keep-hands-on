@@ -19,8 +19,8 @@ class AuthController extends GetxController {
 
   @override
   void onInit() async {
-    await initial();
     super.onInit();
+    await initial();
   }
 
   initial() async {
