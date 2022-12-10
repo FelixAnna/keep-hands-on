@@ -47,6 +47,7 @@ dotnet run --project ./HSS.IdentityServer/HSS.IdentityServer.csproj &
 dotnet run --project ./HSS.HubServer/HSS.HubServer.csproj &
 dotnet run --project ./HSS.SignalRDemo/HSS.SignalRDemo.csproj &
 dotnet run --project ./HSS.UserApi/HSS.UserApi.csproj &
+dotnet run --project ./HSS.MessageApi/HSS.MessageApi.csproj &
 jobs -p
 ```
 After that, you need to open the below URL in a browser: **https://localhost:7283**, so the IDP service starts working
@@ -104,8 +105,15 @@ There is another folder "./hss-chart" which is for deploying to a local kind clu
 
 #### Docker build & push to azure container registry
 ```
-  az acr build -t hss-idp-api:0.3.0 -f HSS.IdentityServer/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-hub-api:0.3.1 -f HSS.HubServer/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-user-api:0.3.1 -f HSS.UserApi/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-signalrdemo-api:0.3.1 -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-idp-api:0.4.0 -f HSS.IdentityServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-hub-api:0.4.1 -f HSS.HubServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-user-api:0.4.1 -f HSS.UserApi/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-message-api:0.4.1 -f HSS.MessageApi/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-signalrdemo-api:0.4.1 -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
+
+  docker build -t hss-idp-api:0.4.0 -f HSS.IdentityServer/Dockerfile .
+  docker build -t hss-hub-api:0.4.0 -f HSS.HubServer/Dockerfile .
+  docker build -t hss-user-api:0.4.0 -f HSS.UserApi/Dockerfile .
+  docker build -t hss-message-api:0.4.0 -f HSS.MessageApi/Dockerfile .
+  docker build -t hss-signalrdemo-api:0.4.0 -f HSS.SignalRDemo/Dockerfile .
  ```
