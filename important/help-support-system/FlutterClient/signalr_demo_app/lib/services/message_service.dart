@@ -64,7 +64,7 @@ class MessageService {
   Future<List<MsgDto>> loadUserMessages(targetId) async {
     final response = await client.get(
       Uri.parse(Uri.encodeFull(
-          env.userApiAddress + '/api/messages/user?target=' + targetId)),
+          env.userApiAddress + '/api/messages/user?from=' + targetId)),
     );
     var body = jsonDecode(response.body);
 

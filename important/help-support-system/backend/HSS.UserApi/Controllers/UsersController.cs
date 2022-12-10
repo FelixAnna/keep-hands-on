@@ -1,9 +1,5 @@
 ﻿using HSS.SharedServices.Contacts.Contracts;
 using HSS.SharedServices.Contacts.Services;
-using HSS.UserApi.Users.Contracts;
-using HSS.UserApi.Users.Services;
-using IdentityModel;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,19 +10,11 @@ namespace HSS.UserApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService userService;
         private readonly IContactService contactService;
 
-        public UsersController(IUserService userService, IContactService contactService)
+        public UsersController(IContactService contactService)
         {
-            this.userService = userService;
             this.contactService = contactService;
-        }
-
-        [HttpPost("login")]
-        public async Task<LoginResponse> Login(LoginRequest request)
-        {
-            return await userService.PasswordSignInAsync(request);
         }
 
         [Authorize]

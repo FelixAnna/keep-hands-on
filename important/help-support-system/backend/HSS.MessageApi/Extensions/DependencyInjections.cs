@@ -1,11 +1,9 @@
 ﻿using HSS.Common;
-using HSS.SharedServices.Contacts.Services;
 using HSS.SharedServices.Messages;
-using HSS.SharedServices.Sql.Contact;
 using HSS.SharedServices.Sql.Messages;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace HSS.HubServer.Settings
+namespace HSS.MessageApi.Extensions
 {
     public static class DependencyInjections
     {
@@ -15,9 +13,8 @@ namespace HSS.HubServer.Settings
             IdentityPlatformSettings settings = configuration.GetRequiredSection("IdentityPlatformSettings").Get<IdentityPlatformSettings>();
 
             var connectionString = configuration["ConnectionStrings:DefaultConnection"]!;
-            services.AddSingleton(settings);
-            services.AddScoped<IContactService, ContactService>(provider => new ContactService(connectionString));
-            services.AddScoped<IMessageService, MessageService>(provider => new MessageService(connectionString));
+            services.AddSingleton(settings); 
+            services.AddScoped<IMessageService, MessageService>(_ => new MessageService(connectionString));
             return services;
         }
 
@@ -38,21 +35,6 @@ namespace HSS.HubServer.Settings
 
                     options.Events = new JwtBearerEvents
                     {
-                        OnMessageReceived = context =>
-                        {
-                            var accessToken = context.Request.Query["access_token"];
-
-                            // If the request is for our hub...
-                            var path = context.HttpContext.Request.Path;
-                            Console.WriteLine("Hub get token: " + accessToken.ToString() + " , path is start with /chat:" + path.StartsWithSegments("/chat"));
-                            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
-                            {
-                                Console.WriteLine("token set");
-                                // Read the token out of the query string
-                                context.Token = accessToken;
-                            }
-                            return Task.CompletedTask;
-                        },
                         OnAuthenticationFailed = ctx =>
                         {
                             Console.WriteLine("EEEEEEEEEEEE" + ctx.Exception);

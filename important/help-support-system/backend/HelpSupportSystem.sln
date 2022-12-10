@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolApp", "ToolApp\ToolApp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSS.Common", "HSS.Common\HSS.Common.csproj", "{2FE4FE18-021A-4E8F-AF52-F627D5CEDCBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.SharedServices", "HSS.SharedServices\HSS.SharedServices.csproj", "{50FA79F4-25B8-4993-BAE8-BBCF759D2B60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSS.SharedServices", "HSS.SharedServices\HSS.SharedServices.csproj", "{50FA79F4-25B8-4993-BAE8-BBCF759D2B60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.SharedServices.Sql", "HSS.SharedServices.Sql\HSS.SharedServices.Sql.csproj", "{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSS.SharedServices.Sql", "HSS.SharedServices.Sql\HSS.SharedServices.Sql.csproj", "{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.MessageApi", "HSS.MessageApi\HSS.MessageApi.csproj", "{CD3C4132-980A-4483-8B2F-5215095D2907}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD3C4132-980A-4483-8B2F-5215095D2907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD3C4132-980A-4483-8B2F-5215095D2907}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD3C4132-980A-4483-8B2F-5215095D2907}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD3C4132-980A-4483-8B2F-5215095D2907}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

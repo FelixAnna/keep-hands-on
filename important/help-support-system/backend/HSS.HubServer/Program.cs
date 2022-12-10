@@ -1,6 +1,6 @@
 using HSS.Common.Extensions;
 using HSS.HubServer;
-using HSS.HubServer.Settings;
+using HSS.HubServer.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,8 +1,9 @@
 ﻿using HSS.SharedServices.Messages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
-namespace HSS.UserApi.Controllers
+namespace HSS.MessageApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -15,11 +16,19 @@ namespace HSS.UserApi.Controllers
             _messageService = messageService;
         }
 
+        [HttpGet("hello")]
+        public string Index2(string from)
+        {
+            
+            return "Hi";
+        }
+
         [Authorize]
         [HttpGet("user")]
-        public List<MessageModel> Index(string? from, string? to)
+        public List<MessageModel> Index(string from)
         {
-            return _messageService.GetMessages(from ?? "", to ?? "");
+            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
+            return _messageService.GetMessages(from, userId);
         }
 
         [Authorize]

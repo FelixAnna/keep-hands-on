@@ -1,5 +1,5 @@
 using HSS.Common.Extensions;
-using HSS.UserApi.Settings;
+using HSS.UserApi.Extensions;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);

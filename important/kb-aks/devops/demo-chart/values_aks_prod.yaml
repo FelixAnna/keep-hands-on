@@ -18,8 +18,8 @@ serviceAccount:
   name: "demo-service-account"
 
 config:
-  awsKeyId: ==
-  awsSecretKey: ==
+  awsKeyId: QUtJQVZLRUlSU1lDQlNQRlA0SUY=
+  awsSecretKey: dEtLSzgyTXZTWjh5WWQxeWc2NnhiRDBvZWVkdVFTVGpqRzlpTEpsZA==
   region: ap-southeast-1
   profile: prod ## get dev config, do not use consul
 

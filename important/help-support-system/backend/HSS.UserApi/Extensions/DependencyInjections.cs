@@ -1,14 +1,12 @@
 ﻿using HSS.Common;
 using HSS.SharedServices.Contacts.Services;
 using HSS.SharedServices.Groups.Services;
-using HSS.SharedServices.Messages;
 using HSS.SharedServices.Sql.Contact;
-using HSS.SharedServices.Sql.Messages;
 using HSS.UserApi.Users.Contracts;
 using HSS.UserApi.Users.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace HSS.UserApi.Settings
+namespace HSS.UserApi.Extensions
 {
     public static class DependencyInjections
     {
@@ -22,7 +20,6 @@ namespace HSS.UserApi.Settings
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>(_ => new GroupService(connectionString));
             services.AddScoped<IContactService, ContactService>(_ => new ContactService(connectionString));
-            services.AddScoped<IMessageService, MessageService>(_ => new MessageService(connectionString));
             return services;
         }
 

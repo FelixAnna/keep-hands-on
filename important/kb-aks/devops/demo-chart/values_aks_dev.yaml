@@ -18,8 +18,8 @@ serviceAccount:
   name: "demo-service-account"
 
 config:
-  awsKeyId: ==
-  awsSecretKey: ==
+  awsKeyId: QUtJQVZLRUlSU1lDQlNQRlA0SUY=
+  awsSecretKey: dEtLSzgyTXZTWjh5WWQxeWc2NnhiRDBvZWVkdVFTVGpqRzlpTEpsZA==
   region: ap-southeast-1
   profile: prod ## get dev config, do not use consul
 
@@ -36,7 +36,7 @@ ingress:
   dnsName: api-dev-demo.metadlw.com
   issuer: letsencrypt-staging ## letsencrypt-prod
   server: https://acme-staging-v02.api.letsencrypt.org/directory ## https://acme-v02.api.letsencrypt.org/directory
-  email: yuecnu@hotmail.com  ## need real email address
+  email: xiangyongyu15@gmail.com  ## need real email address
 
 applications:
   - name: product
