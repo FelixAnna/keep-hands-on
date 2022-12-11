@@ -19,7 +19,7 @@ class AuthService {
   Future<dynamic> login(username, password) async {
     var body = json.encode({"userName": username, "password": password});
     final response = await http.post(
-      Uri.parse(env.userApiAddress + "/api/users/login"),
+      Uri.parse(env.userApiAddress + "/api/auth/login"),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
       },

@@ -5,8 +5,8 @@ const options = {
     transport: signalR.HttpTransportType.WebSockets
 };
 const connection = new signalR.HubConnectionBuilder()
-                            .withUrl("https://localhost:7133/chat", options)
-                            //.withUrl("https://api-prod-hss.metadlw.com/hub/chat", options)
+                            //.withUrl("https://localhost:7133/chat", options)
+                            .withUrl("https://api-prod-hss.metadlw.com/hub/chat", options)
                             .configureLogging(signalR.LogLevel.Information)
                             .withAutomaticReconnect()
                             .build();
@@ -15,8 +15,8 @@ const connection = new signalR.HubConnectionBuilder()
 document.getElementById("sendButton").disabled = true;
 
 
-connection.on("ReceiveMessage", function (user, message) {
-    if (user != document.getElementById("userInput").value) {
+connection.on("ReceiveMessage", function (sender, toUser, message) {
+    if (sender != document.getElementById("userInput").value) {
         return;
     }
 
@@ -25,7 +25,7 @@ connection.on("ReceiveMessage", function (user, message) {
     // We can assign user-supplied strings to an element's textContent because it
     // is not interpreted as markup. If you're assigning in any other way, you 
     // should be aware of possible script injection concerns.
-    li.textContent = `${user}: ${message}`;
+    li.textContent = `${sender}: ${message}`;
 });
 
 //auto reconnect

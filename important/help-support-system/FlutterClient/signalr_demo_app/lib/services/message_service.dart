@@ -12,7 +12,7 @@ class MessageService {
 
   Future<List<ChatMessage>> getMessages(from, to) async {
     final response = await client.get(
-      Uri.parse(Uri.encodeFull(env.userApiAddress +
+      Uri.parse(Uri.encodeFull(env.messageApiAddress +
           '/api/messages/user?from=' +
           from +
           "&to=" +
@@ -40,7 +40,7 @@ class MessageService {
   Future<List<ChatMessage>> getGroupMessages(groupId, userId) async {
     final response = await client.get(
       Uri.parse(Uri.encodeFull(
-          env.userApiAddress + '/api/messages/group?groupId=' + groupId)),
+          env.messageApiAddress + '/api/messages/group?groupId=' + groupId)),
     );
     var body = jsonDecode(response.body);
 
@@ -64,7 +64,7 @@ class MessageService {
   Future<List<MsgDto>> loadUserMessages(targetId) async {
     final response = await client.get(
       Uri.parse(Uri.encodeFull(
-          env.userApiAddress + '/api/messages/user?from=' + targetId)),
+          env.messageApiAddress + '/api/messages/user?from=' + targetId)),
     );
     var body = jsonDecode(response.body);
 
@@ -85,7 +85,7 @@ class MessageService {
   Future<List<MsgDto>> loadGroupMessages(groupId) async {
     final response = await client.get(
       Uri.parse(Uri.encodeFull(
-          env.userApiAddress + '/api/messages/group?groupId=' + groupId)),
+          env.messageApiAddress + '/api/messages/group?groupId=' + groupId)),
     );
     var body = jsonDecode(response.body);
 

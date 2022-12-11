@@ -111,9 +111,9 @@ There is another folder "./hss-chart" which is for deploying to a local kind clu
   az acr build -t hss-message-api:0.4.1 -f HSS.MessageApi/Dockerfile -r hssdevacr -g hss-configuration .
   az acr build -t hss-signalrdemo-api:0.4.1 -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
 
-  docker build -t hss-idp-api:0.4.0 -f HSS.IdentityServer/Dockerfile .
-  docker build -t hss-hub-api:0.4.0 -f HSS.HubServer/Dockerfile .
+  docker build -t hss-idp-api:0.4.0 -f HSS.IdentityServer/Dockerfile . 
+  docker build -t hss-hub-api:0.4.0 -f HSS.HubServer/Dockerfile . 
   docker build -t hss-user-api:0.4.0 -f HSS.UserApi/Dockerfile .
   docker build -t hss-message-api:0.4.0 -f HSS.MessageApi/Dockerfile .
-  docker build -t hss-signalrdemo-api:0.4.0 -f HSS.SignalRDemo/Dockerfile .
+  docker build -t hss-signalrdemo-api:0.4.1 -f HSS.SignalRDemo/Dockerfile .
  ```

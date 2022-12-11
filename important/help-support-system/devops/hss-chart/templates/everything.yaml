@@ -243,6 +243,13 @@ spec:
             name: {{ $.Release.Name }}-service-user
             port:
               number: 80
+      - path: /message/(.*)   # for nginx only
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-service-message
+            port:
+              number: 80
       - path: /hub/(.*)   # for nginx only
         pathType: Prefix
         backend:
