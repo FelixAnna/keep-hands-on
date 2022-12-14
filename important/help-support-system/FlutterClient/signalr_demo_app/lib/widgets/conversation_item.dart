@@ -95,6 +95,16 @@ class _ConversationItemState extends State<ConversationItem> {
                       ? FontWeight.bold
                       : FontWeight.normal),
             ),
+            VerticalDivider(),
+            Text(
+              widget.member.unread.toString(),
+              style: TextStyle(
+                  fontSize: 14,
+                  backgroundColor: Colors.lightBlue,
+                  fontWeight: widget.isMessageRead
+                      ? FontWeight.bold
+                      : FontWeight.normal),
+            ),
           ],
         ),
       ),

@@ -34,8 +34,8 @@ class LoginPage extends GetWidget<AuthController> {
                 controller: controller.UserNameEditor,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    hintText: 'Enter valid email id as someone@example.com'),
+                    labelText: 'UserName',
+                    hintText: 'Email or UserName'),
               ),
             ),
             Padding(

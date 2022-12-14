@@ -11,9 +11,9 @@ import '../services/hub_service.dart';
 import '../services/message_service.dart';
 
 class ChatContainerController extends GetxController {
-  late User Profile = User(UserId: "", UserName: "", Email: "");
-  late Contact UserContact = Contact("", [], []);
-  late List<ChatMessages> ChatMsgs = [];
+  var Profile = User(UserId: "", UserName: "", Email: "");
+  var UserContact = Contact("", [], []).obs;
+  var ChatMsgs = new Map<String, ChatMessages>().obs;
 
   late HubService hubService;
   late UserService userService;
@@ -36,9 +36,15 @@ class ChatContainerController extends GetxController {
 
     Profile = User.fromJson(jsonDecode(loginCache[1]));
 
-    hubService = Get.find<HubService>();
+    //load contact
+    await loadContactAndMessages();
 
     // initial connection
+    await initialHubConnect();
+  }
+
+  initialHubConnect() async {
+    hubService = Get.find<HubService>();
     await hubService.initial();
 
     // subscribe to messages
@@ -49,51 +55,59 @@ class ChatContainerController extends GetxController {
         listenMethod: "ReceiveGroupMessage");
 
     // start connection
-    hubService.start(callback: () => Get.toNamed("/login"));
+    await hubService.start(callback: () => Get.toNamed("/login"));
+  }
 
-    //load contact
+  loadContactAndMessages() async {
     userService = Get.find<UserService>();
-    UserContact = await userService.getCurrentContacts();
+    var contact = await userService.getCurrentContacts();
 
     //load history messages for each contact
     msgService = Get.find<MessageService>();
-    for (var user in UserContact.Friends) {
+    for (var user in contact.Friends) {
       var messages = await msgService.loadUserMessages(user.UserId);
-      var last = messages.length > 0
-          ? messages.last
-          : MsgDto(
-              Id: -1,
-              From: '',
-              To: '',
-              Content: '',
-              MsgTime: DateTime.now(),
-            );
-      ChatMsgs.add(ChatMessages(
+      if (messages.length > 0) {
+        var last = messages.last;
+        ChatMsgs[user.UserId] = ChatMessages(
+            ChatId: user.UserId,
+            LatestMsge: last.Content,
+            UnreadCount: messages.length, //TODO: how to get the unread count
+            Time: last.MsgTime!.toUtc(),
+            Messages: messages);
+      } else {
+        ChatMsgs[user.UserId] = ChatMessages(
           ChatId: user.UserId,
-          LatestMsge: last.Content,
-          UnreadCount: messages.length, //TODO: how to get the unread count
-          Time: last.MsgTime,
-          Messages: messages));
+          LatestMsge: "",
+          UnreadCount: 0,
+          Messages: [],
+          Time: null,
+        );
+      }
     }
 
-    for (var group in UserContact.Groups) {
+    for (var group in contact.Groups) {
       var messages = await msgService.loadGroupMessages(group.GroupId);
-      var last = messages.length > 0
-          ? messages.last
-          : MsgDto(
-              Id: -1,
-              From: '',
-              To: '',
-              Content: '',
-              MsgTime: DateTime.now(),
-            );
-      ChatMsgs.add(ChatMessages(
+      if (messages.length > 0) {
+        var last = messages.last;
+        ChatMsgs[group.GroupId] = ChatMessages(
+            ChatId: group.GroupId,
+            LatestMsge: last.Content,
+            UnreadCount: messages.length, //TODO: how to get the unread count
+            Time: last.MsgTime!.toUtc(),
+            Messages: messages);
+      } else {
+        ChatMsgs[group.GroupId] = ChatMessages(
           ChatId: group.GroupId,
-          LatestMsge: last.Content,
-          UnreadCount: messages.length, //TODO: how to get the unread count
-          Time: last.MsgTime,
-          Messages: messages));
+          LatestMsge: "",
+          UnreadCount: 0,
+          Messages: [],
+          Time: null,
+        );
+      }
     }
+
+    // update contact after all done
+    UserContact.value = contact;
   }
 
   handleNewUserMessage(List<Object?>? parameters) {
@@ -114,32 +128,20 @@ class ChatContainerController extends GetxController {
 
   mergeMsg(String from, String to, String msg) {
     var chatId = Profile.UserId == to ? from : to;
-    var chatMsg = getChatSummary(chatId);
+    var chatMsg = ChatMsgs[chatId]!;
 
+    var utcNow = DateTime.now().toUtc();
     chatMsg.LatestMsge = msg;
+    chatMsg.Time = utcNow;
     chatMsg.UnreadCount++;
     chatMsg.Messages.add(MsgDto(
       Id: -1,
       From: from,
       To: to,
       Content: msg,
-      MsgTime: null,
+      MsgTime: utcNow,
     ));
-  }
 
-  ChatMessages getChatSummary(String chatId) {
-    if (!ChatMsgs.any((element) => element.ChatId == chatId)) {
-      ChatMsgs.add(ChatMessages(
-        ChatId: chatId,
-        LatestMsge: "",
-        UnreadCount: 0,
-        Messages: [],
-        Time: DateTime.now().toUtc(),
-      ));
-    }
-
-    var chatMsg = ChatMsgs.firstWhere((element) => element.ChatId == chatId);
-
-    return chatMsg;
+    ChatMsgs.update(chatId, (value) => chatMsg);
   }
 }

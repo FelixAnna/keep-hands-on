@@ -4,6 +4,7 @@ import 'package:signalr_demo_app/models/login_response.dart';
 import 'package:signalr_demo_app/services/message_service.dart';
 import '../models/chat_message.dart';
 import '../services/chart_hub_service.dart';
+import '../services/hub_service.dart';
 
 class ChatDetailsPage extends StatefulWidget {
   final String chatId;
@@ -25,7 +26,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   @override
   void initState() {
     super.initState();
-    initSignalR();
+    loadMsg();
   }
 
   @override
@@ -194,37 +195,15 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
           messageContent: msg,
           messageType: "sender"));
     });
-    await ChatHubService.hubConnection.invoke("SendToUser",
+    await HubService.hubConnection!.invoke("SendToUser",
         args: <Object>[widget.chatId, msg]).then((value) => {});
   }
 
-  void initSignalR() async {
-    await hubService.initHubConnection(
-        listeningMessage: _handleNewMessage, listenMethod: "ReceiveMessage");
-
-    hubService.startConnect(
-      callback: () => Get.toNamed("/login"),
-    );
+  void loadMsg() async {
     final msgList =
         await messageService.getMessages(widget.chatId, widget.profile.UserId);
     setState(() {
       messages = msgList;
-    });
-  }
-
-  void _handleNewMessage(List<Object?>? parameters) {
-    setState(() {
-      var fromUser = parameters?.elementAt(0).toString();
-      var msg = parameters?.elementAt(1).toString();
-      var sender =
-          fromUser! == widget.chatId ? widget.name : widget.profile.UserName;
-      if (fromUser == widget.chatId) {
-        messages.add(ChatMessage(
-          sender: sender,
-          messageContent: msg!,
-          messageType: "receiver",
-        ));
-      }
     });
   }
 

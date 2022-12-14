@@ -6,7 +6,7 @@ import '../config/env.dart';
 import '../utils/localstorage_service.dart';
 
 class HubService {
-  static late HubConnection hubConnection;
+  static HubConnection? hubConnection = null;
   final IAppEnv env;
   HubService({required this.env});
 
@@ -22,26 +22,29 @@ class HubService {
         .withUrl(env.hubApiAddress + "/chat", options: httpOptions)
         .withAutomaticReconnect()
         .build();
-    hubConnection.onclose(({Exception? error}) => print("Connection Closed"));
+    hubConnection!.onclose(({Exception? error}) => print("Connection Closed"));
   }
 
   subscribe({
     required Function(List<Object?>? parameters) listeningMessage,
     required String listenMethod,
   }) {
-    hubConnection.on(listenMethod, listeningMessage);
+    hubConnection!.on(listenMethod, listeningMessage);
   }
 
   start({Function? callback}) async {
-    if (hubConnection.state == HubConnectionState.Disconnected) {
+    if (hubConnection!.state == HubConnectionState.Disconnected) {
       // once error go to login
-      await hubConnection.start()?.catchError((onError) {
+      await hubConnection!.start()?.catchError((onError) {
         callback?.call();
       });
     }
   }
 
   stop() async {
-    await hubConnection.stop();
+    if (hubConnection != null &&
+        hubConnection!.state == HubConnectionState.Connected) {
+      await hubConnection!.stop();
+    }
   }
 }

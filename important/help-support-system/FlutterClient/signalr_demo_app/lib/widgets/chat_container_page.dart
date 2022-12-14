@@ -55,66 +55,83 @@ class ChatContainerPage extends GetWidget<ChatContainerController> {
                 ),
               ),
             ),
-            ListView.builder(
-              itemCount: controller.UserContact.Groups.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(top: 16),
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return ConversationItem(
-                  profile: controller.Profile,
-                  member: getChatMemberFromGroup(
-                      controller.UserContact.Groups[index]),
-                  isMessageRead: (index == 0 || index == 3) ? true : false,
-                );
-              },
-            ),
-            ListView.builder(
-              itemCount: controller.UserContact.Friends.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(top: 16),
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return ConversationItem(
-                  profile: controller.Profile,
-                  member: getChatMemberFromUser(
-                      controller.UserContact.Friends[index]),
-                  isMessageRead: (index == 0 || index == 3) ? true : false,
-                );
-              },
-            ),
+            Obx(() => ListView.builder(
+                  itemCount: controller.UserContact.value.Groups.length,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(top: 16),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    var info = controller.UserContact.value.Groups[index];
+                    var chatId = info.GroupId;
+                    return Obx(() => ConversationItem(
+                          profile: controller.Profile,
+                          member: ChatMember(
+                            talkingTo: chatId,
+                            name: info.Name,
+                            messageText:
+                                controller.ChatMsgs[chatId]!.LatestMsge,
+                            imageURL:
+                                "https://thumbs.dreamstime.com/z/little-cats-20284533.jpg",
+                            unread: controller.ChatMsgs[chatId]!.UnreadCount,
+                            time: getTime(controller.ChatMsgs[chatId]!.Time),
+                            type: "group",
+                          ),
+                          //getChatMemberFromGroup(
+                          //  controller.UserContact.value.Groups[index]),
+                          isMessageRead:
+                              (index == 0 || index == 3) ? true : false,
+                        ));
+                  },
+                )),
+            Obx(() => ListView.builder(
+                  itemCount: controller.UserContact.value.Friends.length,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(top: 16),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    var info = controller.UserContact.value.Friends[index];
+                    var chatId = info.UserId;
+                    return Obx(() => ConversationItem(
+                          profile: controller.Profile,
+                          member: ChatMember(
+                            talkingTo: chatId,
+                            name: info.UserName,
+                            messageText:
+                                controller.ChatMsgs[chatId]!.LatestMsge,
+                            imageURL:
+                                "https://cdn.pixabay.com/photo/2015/11/16/14/43/cat-1045782__340.jpg",
+                            unread: controller.ChatMsgs[chatId]!.UnreadCount,
+                            time: getTime(controller.ChatMsgs[chatId]!.Time),
+                            type: "user",
+                          ),
+                          //getChatMemberFromUser(
+                          //  controller.UserContact.value.Friends[index]),
+                          isMessageRead:
+                              (index == 0 || index == 3) ? true : false,
+                        ));
+                  },
+                )),
           ],
         ),
       ),
     );
   }
 
-  getChatMemberFromUser(MemberInfo info) {
-    var chatId = info.UserId;
-    var summary = controller.getChatSummary(chatId);
-    return ChatMember(
-      talkingTo: chatId,
-      name: info.UserName,
-      messageText: summary.LatestMsge,
-      imageURL:
-          "https://cdn.pixabay.com/photo/2015/11/16/14/43/cat-1045782__340.jpg",
-      unread: summary.UnreadCount,
-      time: summary.Time.toString(),
-      type: "user",
-    );
-  }
+  String getTime(DateTime? time) {
+    if (time == null) {
+      return "Never";
+    }
 
-  getChatMemberFromGroup(GroupInfo info) {
-    var chatId = info.GroupId;
-    var summary = controller.getChatSummary(chatId);
-    return ChatMember(
-      talkingTo: chatId,
-      name: info.Name,
-      messageText: summary.LatestMsge,
-      imageURL: "https://thumbs.dreamstime.com/z/little-cats-20284533.jpg",
-      unread: summary.UnreadCount,
-      time: summary.Time.toString(),
-      type: "group",
-    );
+    var now = DateTime.now().toUtc();
+    var diff = now.difference(time).inMinutes;
+    if (diff <= 2) {
+      return "Just now";
+    } else if (diff < 60) {
+      return "${diff} mins ago";
+    } else if (diff < 1440) {
+      return "${(diff / 60).round()} hour(s) ago";
+    } else {
+      return time.toIso8601String();
+    }
   }
 }

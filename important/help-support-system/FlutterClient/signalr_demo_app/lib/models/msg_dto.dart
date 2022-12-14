@@ -17,5 +17,5 @@ class MsgDto {
         From = json['from'],
         To = json['to'],
         Content = json['content'],
-        MsgTime = DateTime.tryParse(json['msg_time']);
+        MsgTime = DateTime.tryParse(json['msg_time'] + "Z");
 }

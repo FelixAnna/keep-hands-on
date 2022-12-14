@@ -6,6 +6,7 @@ import '../models/chat_message.dart';
 import '../models/group_member.dart';
 import '../models/login_response.dart';
 import '../services/chart_hub_service.dart';
+import '../services/hub_service.dart';
 
 class GroupChatDetailsPage extends StatefulWidget {
   final String chatId;
@@ -30,7 +31,7 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
   @override
   void initState() {
     super.initState();
-    initSignalR();
+    loadMsg();
   }
 
   @override
@@ -201,19 +202,11 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
           messageContent: msg,
           messageType: "sender"));
     });
-    await ChatHubService.hubConnection.invoke("SendToGroup",
+    await HubService.hubConnection!.invoke("SendToGroup",
         args: <Object>[widget.chatId, msg]).then((value) => {});
   }
 
-  void initSignalR() async {
-    await hubService.initHubConnection(
-        listeningMessage: _handleNewMessage,
-        listenMethod: "ReceiveGroupMessage");
-
-    hubService.startConnect(
-      callback: () => Get.toNamed("/login"),
-    );
-
+  void loadMsg() async {
     final msgList = await messageService.getGroupMessages(
         widget.chatId, widget.profile.UserId);
 
@@ -221,22 +214,6 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
     setState(() {
       messages = msgList;
       groupMembers = gpMembers;
-    });
-  }
-
-  void _handleNewMessage(List<Object?>? parameters) {
-    setState(() {
-      var fromUser = parameters?.elementAt(0).toString();
-      var groupId = parameters?.elementAt(1).toString();
-      var msg = parameters?.elementAt(2).toString();
-
-      if (groupId == widget.chatId && fromUser != widget.profile.UserId) {
-        messages.add(ChatMessage(
-          sender: fromUser!,
-          messageContent: msg!,
-          messageType: "receiver",
-        ));
-      }
     });
   }
 

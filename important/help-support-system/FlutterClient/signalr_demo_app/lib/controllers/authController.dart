@@ -6,6 +6,7 @@ import 'package:signalr_demo_app/config/env.dart';
 import 'package:signalr_demo_app/models/login_response.dart';
 import 'package:signalr_demo_app/services/auth_service.dart';
 import '../services/auth_storage_service.dart';
+import '../services/hub_service.dart';
 
 class AuthController extends GetxController {
   late String Token = '';
@@ -64,6 +65,9 @@ class AuthController extends GetxController {
   }
 
   logout() async {
+    var hubService = Get.find<HubService>();
+
     await authStorageService.ClearLoginResult();
+    await hubService.stop();
   }
 }

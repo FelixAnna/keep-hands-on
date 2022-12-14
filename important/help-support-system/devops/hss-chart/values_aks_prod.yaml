@@ -40,7 +40,7 @@ ingress:
 applications:
   - name: user
     port: 80
-    image: hssdevacr.azurecr.io/hss-user-api:0.3.5
+    image: hssdevacr.azurecr.io/hss-user-api:0.4.2
     resources:
       requests:
         memory: 64Mi
@@ -50,7 +50,7 @@ applications:
         cpu: "128m"
   - name: message
     port: 80
-    image: hssdevacr.azurecr.io/hss-message-api:0.3.5
+    image: hssdevacr.azurecr.io/hss-message-api:0.4.2
     resources:
       requests:
         memory: 64Mi
@@ -60,7 +60,7 @@ applications:
         cpu: "128m"
   - name: hub
     port: 80
-    image: hssdevacr.azurecr.io/hss-hub-api:0.3.1
+    image: hssdevacr.azurecr.io/hss-hub-api:0.4.2
     resources:
       requests:
         memory: 64Mi
@@ -70,7 +70,7 @@ applications:
         cpu: "128m"
   - name: signalrdemo
     port: 80
-    image: hssdevacr.azurecr.io/hss-signalrdemo-api:0.3.1
+    image: hssdevacr.azurecr.io/hss-signalrdemo-api:0.4.2
     resources:
       requests:
         memory: 128Mi
@@ -80,7 +80,7 @@ applications:
         cpu: "256m"
   - name: idp
     port: 80
-    image: hssdevacr.azurecr.io/hss-idp-api:0.2.3
+    image: hssdevacr.azurecr.io/hss-idp-api:0.4.2
     resources:
       requests:
         memory: 256Mi

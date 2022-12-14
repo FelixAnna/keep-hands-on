@@ -10,7 +10,8 @@ A Help Support System where people can chat in real time
 4. install and configure [azure cli](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli);
 5. install [kubectl](https://kubernetes.io/docs/tasks/tools/);
 6. install [helm](https://helm.sh/docs/intro/install/);
-7. install [terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli).
+7. install [terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli);
+8. install [consul](https://developer.hashicorp.com/consul/downloads?host=www.consul.io).
 
 ---
 
@@ -38,8 +39,12 @@ open the "backend" folder in vs code, to check it works, run:
 dotnet restore && dotnet build
 ```
 
-start local instances by running(**IDP service need to start first**):
+(Optional) start consul 
+```
+consul agent -dev
+```
 
+start local instances by running(**IDP service need to start first**):
 ```
 ## start all services in the background
 kill $(jobs -p) &
@@ -104,16 +109,43 @@ sh hss_services.sh prod ## prod/dev
 There is another folder "./hss-chart" which is for deploying to a local kind cluster, it doesn't depend on cert-manager, and consul.
 
 #### Docker build & push to azure container registry
-```
-  az acr build -t hss-idp-api:0.4.0 -f HSS.IdentityServer/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-hub-api:0.4.1 -f HSS.HubServer/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-user-api:0.4.1 -f HSS.UserApi/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-message-api:0.4.1 -f HSS.MessageApi/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-signalrdemo-api:0.4.1 -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
 
-  docker build -t hss-idp-api:0.4.0 -f HSS.IdentityServer/Dockerfile . 
-  docker build -t hss-hub-api:0.4.0 -f HSS.HubServer/Dockerfile . 
-  docker build -t hss-user-api:0.4.0 -f HSS.UserApi/Dockerfile .
-  docker build -t hss-message-api:0.4.0 -f HSS.MessageApi/Dockerfile .
-  docker build -t hss-signalrdemo-api:0.4.1 -f HSS.SignalRDemo/Dockerfile .
+```
+  ## if you have docker
+  
+  tag=0.4.2
+
+  docker build -t hss-idp-api:$tag -f HSS.IdentityServer/Dockerfile . 
+  docker build -t hss-hub-api:$tag -f HSS.HubServer/Dockerfile . 
+  docker build -t hss-user-api:$tag -f HSS.UserApi/Dockerfile .
+  docker build -t hss-message-api:$tag -f HSS.MessageApi/Dockerfile .
+  docker build -t hss-signalrdemo-api:$tag -f HSS.SignalRDemo/Dockerfile .
+
+
+  docker image tag hss-idp-api:$tag hssdevacr.azurecr.io/hss-idp-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-idp-api:$tag
+
+  docker image tag hss-hub-api:$tag hssdevacr.azurecr.io/hss-hub-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-hub-api:$tag
+
+  docker image tag hss-user-api:$tag hssdevacr.azurecr.io/hss-user-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-user-api:$tag
+
+  docker image tag hss-message-api:$tag hssdevacr.azurecr.io/hss-message-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-message-api:$tag
+
+  docker image tag hss-signalrdemo-api:$tag hssdevacr.azurecr.io/hss-signalrdemo-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-signalrdemo-api:$tag
+```
+```
+  ## if you do not have docker
+    
+  tag=0.4.2
+  
+  az acr build -t hss-idp-api:$tag -f HSS.IdentityServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-hub-api:$tag -f HSS.HubServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-user-api:$tag -f HSS.UserApi/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-message-api:$tag -f HSS.MessageApi/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-signalrdemo-api:$tag -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
+
  ```
