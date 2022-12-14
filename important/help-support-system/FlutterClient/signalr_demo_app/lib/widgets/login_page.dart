@@ -65,7 +65,7 @@ class LoginPage extends GetWidget<AuthController> {
                 //onHover:(value) => ,
                 onPressed: () async {
                   await controller.login(true);
-                  await Get.find<ProfileController>().initial();
+                  await Get.find<ChatContainerController>().initial();
                   Get.back();
                   //failed action
                 },

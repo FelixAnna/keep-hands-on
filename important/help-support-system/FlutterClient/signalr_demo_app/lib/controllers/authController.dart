@@ -19,8 +19,8 @@ class AuthController extends BaseController {
 
   initial() async {
     IdpAuthority = Get.find<IAppEnv>().idpAuthority;
-    UserNameEditor.text = UserName;
     await loadUserFromCache();
+    UserNameEditor.text = UserName;
   }
 
   isLoggedIn() {
