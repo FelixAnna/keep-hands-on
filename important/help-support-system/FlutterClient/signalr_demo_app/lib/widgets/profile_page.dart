@@ -17,25 +17,25 @@ class ProfilePage extends GetWidget<ProfileController> {
                 /*2*/
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    controller.Profile.UserName,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: Obx(() => Text(
+                        controller.UserInfo.value.UserName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
                 ),
-                Text(
-                  controller.Profile.Email,
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                  ),
-                ),
-                Text(
-                  controller.Profile.UserId,
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                  ),
-                ),
+                Obx(() => Text(
+                      controller.UserInfo.value.Email,
+                      style: TextStyle(
+                        color: Colors.grey[500],
+                      ),
+                    )),
+                Obx(() => Text(
+                      controller.UserInfo.value.UserId,
+                      style: TextStyle(
+                        color: Colors.grey[500],
+                      ),
+                    )),
               ],
             )),
             /*3*/

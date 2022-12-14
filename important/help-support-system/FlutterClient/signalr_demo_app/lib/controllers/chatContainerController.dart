@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:signalr_demo_app/controllers/baseController.dart';
 import 'package:signalr_demo_app/models/chat_messages.dart';
 import 'package:signalr_demo_app/models/msg_dto.dart';
 import 'package:signalr_demo_app/services/user_service.dart';
@@ -6,9 +7,8 @@ import '../models/contact.dart';
 import '../services/auth_storage_service.dart';
 import '../services/hub_service.dart';
 import '../services/message_service.dart';
-import 'profileController.dart';
 
-class ChatContainerController extends ProfileController {
+class ChatContainerController extends BaseController {
   var UserContact = Contact("", [], []).obs;
   var ChatMsgs = new Map<String, ChatMessages>().obs;
 
@@ -24,7 +24,7 @@ class ChatContainerController extends ProfileController {
   }
 
   initial() async {
-    if (Token == '') {
+    if (!await loadUserFromCache()) {
       Get.toNamed("/login");
       return;
     }
@@ -34,6 +34,7 @@ class ChatContainerController extends ProfileController {
 
     // initial connection
     await initialHubConnect();
+    print("chat ready");
   }
 
   initialHubConnect() async {

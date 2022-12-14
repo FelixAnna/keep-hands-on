@@ -16,6 +16,7 @@ import 'package:signalr_demo_app/widgets/chat_container_page.dart';
 import 'package:signalr_demo_app/widgets/login_page.dart';
 import 'package:signalr_demo_app/widgets/profile_page.dart';
 import 'controllers/authController.dart';
+import 'controllers/profileController.dart';
 import 'my_http_overrides.dart';
 import 'package:http/http.dart' as http;
 
@@ -82,9 +83,10 @@ class HSSApp extends StatelessWidget {
     Get.put(GroupMemberService(client, env: envService));
 
     Get.put(AuthStorageService());
-    Get.put(AuthController());
     Get.put(HubService(env: envService));
-    Get.put(ChatContainerController());
+    Get.lazyPut(() => ProfileController());
+    Get.lazyPut(() => AuthController());
+    Get.lazyPut(() => ChatContainerController());
   }
 
   initWidget() {

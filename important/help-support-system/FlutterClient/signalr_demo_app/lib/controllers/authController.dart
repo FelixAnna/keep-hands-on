@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/config/env.dart';
-import 'package:signalr_demo_app/controllers/profileController.dart';
+import 'package:signalr_demo_app/controllers/baseController.dart';
 import 'package:signalr_demo_app/models/login_response.dart';
 import 'package:signalr_demo_app/services/auth_service.dart';
-import '../services/auth_storage_service.dart';
-import '../services/hub_service.dart';
 
-class AuthController extends ProfileController {
+class AuthController extends BaseController {
   late String IdpAuthority = '';
 
   var UserNameEditor = TextEditingController();
@@ -22,6 +20,7 @@ class AuthController extends ProfileController {
   initial() async {
     IdpAuthority = Get.find<IAppEnv>().idpAuthority;
     UserNameEditor.text = UserName;
+    await loadUserFromCache();
   }
 
   isLoggedIn() {

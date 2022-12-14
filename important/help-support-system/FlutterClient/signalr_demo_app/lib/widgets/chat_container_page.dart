@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:signalr_demo_app/models/chat_member.dart';
-import 'package:signalr_demo_app/models/contact.dart';
 import '../controllers/chatContainerController.dart';
 import 'conversation_item.dart';
 import 'package:get/get.dart';
@@ -128,10 +127,8 @@ class ChatContainerPage extends GetWidget<ChatContainerController> {
       return "Just now";
     } else if (diff < 60) {
       return "${diff} mins ago";
-    } else if (diff < 120) {
-      return "1 hour ago";
     } else if (diff < 1440) {
-      return "${(diff / 60).round()} hours ago";
+      return "${(diff / 60).round()} hour(s) ago";
     } else {
       return time.toIso8601String();
     }
