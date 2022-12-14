@@ -13,7 +13,7 @@ class AuthStorageService {
           {
             await LocalStorageService.save(
                 LocalStorageService.REMEMBER_USERNAME,
-                response["profile"]["email"])
+                response["profile"]["userName"])
           }
         else
           {

@@ -1,32 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:signalr_demo_app/controllers/profileController.dart';
 
-import '../models/login_response.dart';
-import '../utils/localstorage_service.dart';
-
-class ProfilePage extends StatefulWidget {
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  late User profile;
-
-  @override
-  void initState() {
-    _init();
-    super.initState();
-  }
-
-  _init() async {
-    var profileText =
-        await LocalStorageService.get(LocalStorageService.PROFILE);
-    setState(() {
-      profile = User.fromJson(jsonDecode(profileText));
-    });
-  }
-
+class ProfilePage extends GetWidget<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,20 +18,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
-                    profile.UserName,
+                    controller.Profile.UserName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 Text(
-                  profile.Email,
+                  controller.Profile.Email,
                   style: TextStyle(
                     color: Colors.grey[500],
                   ),
                 ),
                 Text(
-                  profile.UserId,
+                  controller.Profile.UserId,
                   style: TextStyle(
                     color: Colors.grey[500],
                   ),

@@ -22,6 +22,12 @@ class HubService {
         .withUrl(env.hubApiAddress + "/chat", options: httpOptions)
         .withAutomaticReconnect()
         .build();
+    hubConnection!.onreconnected(({connectionId}) {
+      print("Reconnected");
+    });
+    hubConnection!.onreconnecting(({error}) {
+      print("Reconnecting ... ");
+    });
     hubConnection!.onclose(({Exception? error}) => print("Connection Closed"));
   }
 
@@ -35,7 +41,10 @@ class HubService {
   start({Function? callback}) async {
     if (hubConnection!.state == HubConnectionState.Disconnected) {
       // once error go to login
-      await hubConnection!.start()?.catchError((onError) {
+      await hubConnection!
+          .start()
+          ?.then((x) => {print("Connection Started")})
+          .catchError((onError) {
         callback?.call();
       });
     }

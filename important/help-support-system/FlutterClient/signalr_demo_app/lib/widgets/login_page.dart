@@ -8,11 +8,6 @@ import '../controllers/chatContainerController.dart';
 class LoginPage extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
-    if (controller.initialized && controller.isLoggedIn()) {
-      // Get.back();
-      print("you already logged in, to go back ...");
-    }
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -34,8 +29,8 @@ class LoginPage extends GetWidget<AuthController> {
                 controller: controller.UserNameEditor,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'UserName',
-                    hintText: 'Email or UserName'),
+                    labelText: 'User Name',
+                    hintText: 'Enter your user name'),
               ),
             ),
             Padding(
@@ -75,7 +70,10 @@ class LoginPage extends GetWidget<AuthController> {
                 },
                 child: Text(
                   'Login',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),
                 ),
               ),
             ),
