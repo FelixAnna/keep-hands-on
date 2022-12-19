@@ -18,4 +18,15 @@ class MsgDto {
         To = json['to'],
         Content = json['content'],
         MsgTime = DateTime.tryParse(json['msg_time'] + "Z");
+
+  Map<String, dynamic> toMap(String chatId) {
+    return {
+      'id': Id,
+      'chatId': chatId,
+      'sender': From,
+      'target': To,
+      'content': Content,
+      'msgTime': MsgTime!.toUtc().toString(),
+    };
+  }
 }

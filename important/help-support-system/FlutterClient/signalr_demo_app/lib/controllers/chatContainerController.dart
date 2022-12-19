@@ -3,14 +3,17 @@ import 'package:signalr_demo_app/controllers/baseController.dart';
 import 'package:signalr_demo_app/models/chat_messages.dart';
 import 'package:signalr_demo_app/models/msg_dto.dart';
 import 'package:signalr_demo_app/services/user_service.dart';
+import 'package:sqflite/sqflite.dart';
 import '../models/contact.dart';
 import '../services/auth_storage_service.dart';
 import '../services/hub_service.dart';
 import '../services/message_service.dart';
+import '../utils/sqflite_service.dart';
 
 class ChatContainerController extends BaseController {
   var UserContact = Contact("", [], []).obs;
   var ChatMsgs = new Map<String, ChatMessages>().obs;
+  late Database localDb;
 
   late HubService hubService;
   late UserService userService;
@@ -24,6 +27,7 @@ class ChatContainerController extends BaseController {
   }
 
   initial() async {
+    localDb = await SQFliteService.getDatabase();
     if (!await loadUserFromCache()) {
       Get.toNamed("/login");
       return;
@@ -70,26 +74,16 @@ class ChatContainerController extends BaseController {
 
     // update contact after all done
     UserContact.value = contact;
-  }
 
-  setChatMsgs(String chatId, List<MsgDto> messages) {
-    //TODO need lock here
-    if (messages.length > 0) {
-      var last = messages.last;
-      ChatMsgs[chatId] = ChatMessages(
-          ChatId: chatId,
-          LatestMsge: last.Content,
-          UnreadCount: messages.length, //TODO: how to get the unread count
-          Time: last.MsgTime!.toUtc(),
-          Messages: messages);
-    } else {
-      ChatMsgs[chatId] = ChatMessages(
-        ChatId: chatId,
-        LatestMsge: "",
-        UnreadCount: 0,
-        Messages: [],
-        Time: null,
-      );
+    //save to local db
+    for (var chatId in ChatMsgs.keys) {
+      var batch = localDb.batch();
+      batch.insert("Chats", ChatMsgs[chatId]!.toMap());
+      for (var msg in ChatMsgs[chatId]!.Messages) {
+        batch.insert("Messages", msg.toMap(chatId));
+      }
+
+      await batch.commit();
     }
   }
 
@@ -109,25 +103,51 @@ class ChatContainerController extends BaseController {
     mergeMsg(fromUser!, groupId!, msg!);
   }
 
-  mergeMsg(String from, String to, String msg) {
+  mergeMsg(String from, String to, String msg) async {
     var chatId = Profile.UserId == to ? from : to;
     if (!ChatMsgs.containsKey(chatId)) {
       setChatMsgs(chatId, []);
     }
-
-    var chatMsg = ChatMsgs[chatId]!;
     var utcNow = DateTime.now().toUtc();
-    chatMsg.LatestMsge = msg;
-    chatMsg.Time = utcNow;
-    chatMsg.UnreadCount++;
-    chatMsg.Messages.add(MsgDto(
+
+    var newMsge = MsgDto(
       Id: -1,
       From: from,
       To: to,
       Content: msg,
       MsgTime: utcNow,
-    ));
+    );
+    var messages = ChatMsgs[chatId]!.Messages;
+    messages.add(newMsge);
+    setChatMsgs(chatId, messages);
 
-    ChatMsgs.update(chatId, (value) => chatMsg);
+    //persist new message
+    var batch = localDb.batch();
+    batch.insert("Chats", ChatMsgs[chatId]!.toMap());
+    batch.insert("Messages", newMsge.toMap(chatId));
+    await batch.commit();
+  }
+
+  setChatMsgs(String chatId, List<MsgDto> messages) {
+    //TODO need lock here
+    if (messages.length > 0) {
+      var last = messages.last;
+      ChatMsgs[chatId] = ChatMessages(
+          OwnerId: Profile.UserId,
+          ChatId: chatId,
+          LatestMsge: last.Content,
+          UnreadCount: messages.length, //TODO: how to get the unread count
+          Time: last.MsgTime!.toUtc(),
+          Messages: messages);
+    } else {
+      ChatMsgs[chatId] = ChatMessages(
+        OwnerId: Profile.UserId,
+        ChatId: chatId,
+        LatestMsge: "",
+        UnreadCount: 0,
+        Messages: [],
+        Time: null,
+      );
+    }
   }
 }

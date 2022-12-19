@@ -98,7 +98,7 @@ class HSSApp extends StatelessWidget {
   initNavBar() {
     pages.add(containerWidget);
     pages.add(profileWidget);
-    pages.add(loginWidget);
+    pages.add(profileWidget);
   }
 }
 
