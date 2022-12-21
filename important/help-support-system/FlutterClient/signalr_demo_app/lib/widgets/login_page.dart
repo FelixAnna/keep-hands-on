@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/controllers/authController.dart';
-import 'package:signalr_demo_app/controllers/profileController.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/chatContainerController.dart';

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/controllers/baseController.dart';
+import 'package:signalr_demo_app/controllers/chatDetailController.dart';
 import 'package:signalr_demo_app/models/chat_messages.dart';
 import 'package:signalr_demo_app/models/msg_dto.dart';
 import 'package:signalr_demo_app/services/user_service.dart';
@@ -11,6 +12,8 @@ import '../services/message_service.dart';
 import '../utils/sqflite_service.dart';
 
 class ChatContainerController extends BaseController {
+  List<ChatDetailController> p2pFollowers = [];
+
   var UserContact = Contact("", [], []).obs;
   var ChatMsgs = new Map<String, ChatMessages>().obs;
   late Database localDb;
@@ -121,6 +124,12 @@ class ChatContainerController extends BaseController {
     messages.add(newMsge);
     setChatMsgs(chatId, messages);
 
+    if (p2pFollowers.any((element) => element.chatId == chatId)) {
+      var follower =
+          p2pFollowers.where((element) => element.chatId == chatId).first;
+      follower.updateMsg(newMsge);
+    }
+
     //persist new message
     var batch = localDb.batch();
     batch.insert("Chats", ChatMsgs[chatId]!.toMap());
@@ -148,6 +157,12 @@ class ChatContainerController extends BaseController {
         Messages: [],
         Time: null,
       );
+    }
+  }
+
+  addP2pFollower(ChatDetailController controller) {
+    if (!p2pFollowers.any((element) => controller.chatId == element.chatId)) {
+      this.p2pFollowers.add(controller);
     }
   }
 }

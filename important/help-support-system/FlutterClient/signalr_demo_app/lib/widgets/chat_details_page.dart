@@ -1,37 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:signalr_demo_app/models/login_response.dart';
-import 'package:signalr_demo_app/services/message_service.dart';
-import '../models/chat_message.dart';
-import '../services/chart_hub_service.dart';
-import '../services/hub_service.dart';
+import 'package:signalr_demo_app/controllers/chatDetailController.dart';
 
-class ChatDetailsPage extends StatefulWidget {
+class ChatDetailsPage extends StatelessWidget {
   final String chatId;
   final String name;
-  final User profile;
-  ChatDetailsPage(
-      {required this.chatId, required this.name, required this.profile});
-
-  @override
-  _ChatDetailsPageState createState() => _ChatDetailsPageState();
-}
-
-class _ChatDetailsPageState extends State<ChatDetailsPage> {
-  String message = "";
-  List<ChatMessage> messages = [];
-  final messageController = TextEditingController();
-  final ChatHubService hubService = Get.find<ChatHubService>();
-  final MessageService messageService = Get.find<MessageService>();
-  @override
-  void initState() {
-    super.initState();
-    loadMsg();
-  }
+  ChatDetailsPage({required this.chatId, required this.name});
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -68,7 +45,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        widget.name,
+                        this.name,
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
@@ -94,34 +71,39 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
       ),
       body: Stack(
         children: <Widget>[
-          ListView.builder(
-            itemCount: messages.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10, bottom: 70),
-            physics: AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              return Container(
-                padding:
-                    EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
-                child: Align(
-                  alignment: (messages[index].messageType == "receiver"
-                      ? Alignment.topLeft
-                      : Alignment.topRight),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: (messages[index].messageType == "receiver"
-                          ? Colors.grey.shade200
-                          : Colors.blue[200]),
+          GetX<ChatDetailController>(
+            init: Get.find<ChatDetailController>(tag: this.chatId),
+            builder: (_) {
+              return ListView.builder(
+                itemCount: _.messages.length,
+                shrinkWrap: true,
+                padding: EdgeInsets.only(top: 10, bottom: 70),
+                physics: AlwaysScrollableScrollPhysics(),
+                controller: _.scrollController,
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: EdgeInsets.only(
+                        left: 14, right: 14, top: 10, bottom: 10),
+                    child: Align(
+                      alignment: (_.messages[index].messageType == "receiver"
+                          ? Alignment.topLeft
+                          : Alignment.topRight),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: (_.messages[index].messageType == "receiver"
+                              ? Colors.grey.shade200
+                              : Colors.blue[200]),
+                        ),
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          _.messages[index].messageContent,
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
                     ),
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      messages[index].messageContent,
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                ),
+                  );
+                },
               );
             },
           ),
@@ -154,20 +136,21 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                     width: 15,
                   ),
                   Expanded(
-                    child: TextField(
-                      controller: messageController,
-                      decoration: InputDecoration(
-                          hintText: "Write message...",
-                          hintStyle: TextStyle(color: Colors.black54),
-                          border: InputBorder.none),
-                    ),
-                  ),
+                      child: TextField(
+                    controller: Get.find<ChatDetailController>(tag: this.chatId)
+                        .messageController,
+                    decoration: InputDecoration(
+                        hintText: "Write message...",
+                        hintStyle: TextStyle(color: Colors.black54),
+                        border: InputBorder.none),
+                  )),
                   SizedBox(
                     width: 15,
                   ),
                   FloatingActionButton(
                     onPressed: () {
-                      _sendMessage();
+                      Get.find<ChatDetailController>(tag: this.chatId)
+                          .sendMsg();
                     },
                     child: Icon(
                       Icons.send,
@@ -184,32 +167,5 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
         ],
       ),
     );
-  }
-
-  Future<void> _sendMessage() async {
-    final msg = messageController.text;
-    messageController.text = "";
-    setState(() {
-      messages.add(ChatMessage(
-          sender: widget.profile.UserName,
-          messageContent: msg,
-          messageType: "sender"));
-    });
-    await HubService.hubConnection!.invoke("SendToUser",
-        args: <Object>[widget.chatId, msg]).then((value) => {});
-  }
-
-  void loadMsg() async {
-    final msgList =
-        await messageService.getMessages(widget.chatId, widget.profile.UserId);
-    setState(() {
-      messages = msgList;
-    });
-  }
-
-  ScrollController _scrollController = ScrollController();
-
-  _scrollToBottom() {
-    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
 }

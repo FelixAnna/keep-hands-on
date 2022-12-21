@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:signalr_demo_app/controllers/chatContainerController.dart';
 import 'package:signalr_demo_app/models/chat_member.dart';
 
+import '../controllers/chatDetailController.dart';
 import '../models/login_response.dart';
 import 'chat_details_page.dart';
 import 'group_chat_details_page.dart';
@@ -31,8 +33,14 @@ class _ConversationItemState extends State<ConversationItem> {
     return GestureDetector(
       onTap: () {
         if (widget.member.type == "user") {
+          var chatController = ChatDetailController(
+            chatId: widget.member.talkingTo,
+            name: widget.member.name,
+          );
+          chatController.subscribe(Get.find<ChatContainerController>());
+
+          Get.put(chatController, tag: widget.member.talkingTo);
           Get.to(() => ChatDetailsPage(
-                profile: widget.profile,
                 chatId: widget.member.talkingTo,
                 name: widget.member.name,
               ));

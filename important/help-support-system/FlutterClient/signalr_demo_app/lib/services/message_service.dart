@@ -24,6 +24,7 @@ class MessageService {
     List<ChatMessage> msgList = messages.map((tagJson) {
       final item = MsgDto.fromJson(tagJson);
       return ChatMessage(
+          id: -1,
           sender: item.From,
           messageContent: item.Content,
           messageType: to == item.To ? 'receiver' : 'sender');
@@ -48,6 +49,7 @@ class MessageService {
     List<ChatMessage> msgList = messages.map((tagJson) {
       final item = MsgDto.fromJson(tagJson);
       return ChatMessage(
+          id: -1,
           sender: item.From,
           messageContent: item.Content,
           messageType: userId != item.From ? 'receiver' : 'sender');

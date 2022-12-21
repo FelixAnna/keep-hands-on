@@ -198,6 +198,7 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
     messageController.text = "";
     setState(() {
       messages.add(ChatMessage(
+          id: -1,
           sender: widget.profile.UserId,
           messageContent: msg,
           messageType: "sender"));
