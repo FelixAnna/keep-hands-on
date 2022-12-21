@@ -10,9 +10,11 @@ import '../services/auth_storage_service.dart';
 import '../services/hub_service.dart';
 import '../services/message_service.dart';
 import '../utils/sqflite_service.dart';
+import 'groupChatDetailController.dart';
 
 class ChatContainerController extends BaseController {
-  List<ChatDetailController> p2pFollowers = [];
+  List<ChatDetailController> personFollowers = [];
+  List<GroupChatDetailController> groupFollowers = [];
 
   var UserContact = Contact("", [], []).obs;
   var ChatMsgs = new Map<String, ChatMessages>().obs;
@@ -124,9 +126,13 @@ class ChatContainerController extends BaseController {
     messages.add(newMsge);
     setChatMsgs(chatId, messages);
 
-    if (p2pFollowers.any((element) => element.chatId == chatId)) {
-      var follower =
-          p2pFollowers.where((element) => element.chatId == chatId).first;
+    if (personFollowers.any((e) => e.chatId == chatId)) {
+      var follower = personFollowers.where((e) => e.chatId == chatId).first;
+      follower.updateMsg(newMsge);
+    }
+
+    if (groupFollowers.any((e) => e.chatId == chatId)) {
+      var follower = groupFollowers.where((e) => e.chatId == chatId).first;
       follower.updateMsg(newMsge);
     }
 
@@ -160,9 +166,15 @@ class ChatContainerController extends BaseController {
     }
   }
 
-  addP2pFollower(ChatDetailController controller) {
-    if (!p2pFollowers.any((element) => controller.chatId == element.chatId)) {
-      this.p2pFollowers.add(controller);
+  addPersonFollower(ChatDetailController controller) {
+    if (!personFollowers.any((e) => controller.chatId == e.chatId)) {
+      this.personFollowers.add(controller);
+    }
+  }
+
+  addGroupFollower(GroupChatDetailController controller) {
+    if (!groupFollowers.any((e) => controller.chatId == e.chatId)) {
+      this.groupFollowers.add(controller);
     }
   }
 }

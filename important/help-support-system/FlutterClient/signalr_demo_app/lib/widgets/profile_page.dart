@@ -11,33 +11,34 @@ class ProfilePage extends GetWidget<ProfileController> {
         child: Row(
           children: [
             Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /*2*/
-                Container(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Obx(() => Text(
-                        controller.UserInfo.value.UserName,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /*2*/
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Obx(() => Text(
+                          controller.UserInfo.value.UserName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
+                  ),
+                  Obx(() => Text(
+                        controller.UserInfo.value.Email,
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[500],
                         ),
                       )),
-                ),
-                Obx(() => Text(
-                      controller.UserInfo.value.Email,
-                      style: TextStyle(
-                        color: Colors.grey[500],
-                      ),
-                    )),
-                Obx(() => Text(
-                      controller.UserInfo.value.UserId,
-                      style: TextStyle(
-                        color: Colors.grey[500],
-                      ),
-                    )),
-              ],
-            )),
+                  Obx(() => Text(
+                        controller.UserInfo.value.UserId,
+                        style: TextStyle(
+                          color: Colors.grey[500],
+                        ),
+                      )),
+                ],
+              ),
+            ),
             /*3*/
             Icon(
               Icons.star,

@@ -9,6 +9,8 @@ class ChatDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        Get.find<ChatDetailController>(tag: this.chatId).scrollToBottom());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

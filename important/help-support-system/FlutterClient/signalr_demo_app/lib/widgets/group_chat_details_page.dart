@@ -1,42 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:signalr_demo_app/services/group_member_service.dart';
-import 'package:signalr_demo_app/services/message_service.dart';
-import '../models/chat_message.dart';
-import '../models/group_member.dart';
-import '../models/login_response.dart';
-import '../services/chart_hub_service.dart';
-import '../services/hub_service.dart';
+import '../controllers/groupChatDetailController.dart';
 
-class GroupChatDetailsPage extends StatefulWidget {
+class GroupChatDetailsPage extends StatelessWidget {
   final String chatId;
   final String name;
-
-  final User profile;
-  GroupChatDetailsPage(
-      {required this.chatId, required this.name, required this.profile});
-
-  @override
-  _GroupChatDetailsPageState createState() => _GroupChatDetailsPageState();
-}
-
-class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
-  List<ChatMessage> messages = [];
-  late GroupMembers groupMembers;
-
-  final messageController = TextEditingController();
-  final ChatHubService hubService = Get.find<ChatHubService>();
-  final MessageService messageService = Get.find<MessageService>();
-  final GroupMemberService groupMemberService = Get.find<GroupMemberService>();
-  @override
-  void initState() {
-    super.initState();
-    loadMsg();
-  }
+  GroupChatDetailsPage({required this.chatId, required this.name});
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        Get.find<GroupChatDetailController>(tag: this.chatId).scrollToBottom());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -73,7 +47,7 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        widget.name,
+                        this.name,
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
@@ -99,36 +73,41 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
       ),
       body: Stack(
         children: <Widget>[
-          ListView.builder(
-            itemCount: messages.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10, bottom: 70),
-            physics: AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              return Container(
-                padding:
-                    EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
-                child: Align(
-                  alignment: (messages[index].messageType == "receiver"
-                      ? Alignment.topLeft
-                      : Alignment.topRight),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: (messages[index].messageType == "receiver"
-                          ? Colors.grey.shade200
-                          : Colors.blue[200]),
+          GetX<GroupChatDetailController>(
+            init: Get.find<GroupChatDetailController>(tag: this.chatId),
+            builder: (_) {
+              return ListView.builder(
+                itemCount: _.messages.length,
+                shrinkWrap: true,
+                padding: EdgeInsets.only(top: 10, bottom: 70),
+                physics: AlwaysScrollableScrollPhysics(),
+                controller: _.scrollController,
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: EdgeInsets.only(
+                        left: 14, right: 14, top: 10, bottom: 10),
+                    child: Align(
+                      alignment: (_.messages[index].messageType == "receiver"
+                          ? Alignment.topLeft
+                          : Alignment.topRight),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: (_.messages[index].messageType == "receiver"
+                              ? Colors.grey.shade200
+                              : Colors.blue[200]),
+                        ),
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          _.messages[index].messageContent +
+                              " from " +
+                              _.getSenderName(_.messages[index].sender),
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
                     ),
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      messages[index].messageContent +
-                          " from " +
-                          getSenderName(messages[index].sender),
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                ),
+                  );
+                },
               );
             },
           ),
@@ -162,7 +141,9 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
                   ),
                   Expanded(
                     child: TextField(
-                      controller: messageController,
+                      controller:
+                          Get.find<GroupChatDetailController>(tag: this.chatId)
+                              .messageController,
                       decoration: InputDecoration(
                           hintText: "Write message...",
                           hintStyle: TextStyle(color: Colors.black54),
@@ -174,7 +155,8 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
                   ),
                   FloatingActionButton(
                     onPressed: () {
-                      _sendMessage();
+                      Get.find<GroupChatDetailController>(tag: this.chatId)
+                          .sendMsg();
                     },
                     child: Icon(
                       Icons.send,
@@ -191,41 +173,5 @@ class _GroupChatDetailsPageState extends State<GroupChatDetailsPage> {
         ],
       ),
     );
-  }
-
-  Future<void> _sendMessage() async {
-    final msg = messageController.text;
-    messageController.text = "";
-    setState(() {
-      messages.add(ChatMessage(
-          id: -1,
-          sender: widget.profile.UserId,
-          messageContent: msg,
-          messageType: "sender"));
-    });
-    await HubService.hubConnection!.invoke("SendToGroup",
-        args: <Object>[widget.chatId, msg]).then((value) => {});
-  }
-
-  void loadMsg() async {
-    final msgList = await messageService.getGroupMessages(
-        widget.chatId, widget.profile.UserId);
-
-    var gpMembers = await groupMemberService.getGroupMembersInfo(widget.chatId);
-    setState(() {
-      messages = msgList;
-      groupMembers = gpMembers;
-    });
-  }
-
-  String getSenderName(senderId) {
-    return groupMembers.Members.firstWhere(
-        (element) => element.UserId == senderId).UserName;
-  }
-
-  ScrollController _scrollController = ScrollController();
-
-  _scrollToBottom() {
-    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
 }

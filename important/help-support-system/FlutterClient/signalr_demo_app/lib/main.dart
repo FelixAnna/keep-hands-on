@@ -10,6 +10,7 @@ import 'package:signalr_demo_app/services/chart_hub_service.dart';
 import 'package:signalr_demo_app/services/group_member_service.dart';
 import 'package:signalr_demo_app/services/hub_service.dart';
 import 'package:signalr_demo_app/services/message_service.dart';
+import 'package:signalr_demo_app/services/message_storage_service.dart';
 import 'package:signalr_demo_app/services/user_service.dart';
 import 'package:signalr_demo_app/utils/authorized_client.dart';
 import 'package:signalr_demo_app/widgets/chat_container_page.dart';
@@ -84,6 +85,7 @@ class HSSApp extends StatelessWidget {
 
     Get.put(AuthStorageService());
     Get.put(HubService(env: envService));
+    Get.put(MessageStorageService());
     Get.lazyPut(() => ProfileController());
     Get.lazyPut(() => AuthController());
     Get.lazyPut(() => ChatContainerController());
