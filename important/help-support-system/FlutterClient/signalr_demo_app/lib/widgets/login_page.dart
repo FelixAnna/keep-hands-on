@@ -29,8 +29,8 @@ class LoginPage extends GetWidget<AuthController> {
                 controller: controller.UserNameEditor,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'User Name',
-                    hintText: 'Enter your user name'),
+                    labelText: 'Username',
+                    hintText: 'Enter your username'),
               ),
             ),
             Padding(
@@ -60,21 +60,68 @@ class LoginPage extends GetWidget<AuthController> {
               width: 250,
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-              child: TextButton(
-                //onHover:(value) => ,
-                onPressed: () async {
-                  await controller.login(true);
-                  await Get.find<ChatContainerController>().initial();
-                  Get.back();
-                  //failed action
+              child: GetX<AuthController>(
+                builder: (_) {
+                  return TextButton(
+                    onPressed: () async {
+                      if (controller.isLoading.value) {
+                        return;
+                      }
+                      await controller.login(true);
+                      if (controller.Token == '') {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text("Login Failed"),
+                            content: const Text(
+                                "Please check your network, username and password."),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(ctx).pop();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(14),
+                                  child: const Text("Okay"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                        return;
+                      }
+                      Get.find<ChatContainerController>().initial();
+                      Get.back();
+                      //failed action
+                    },
+                    child: controller.isLoading.value
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Loading...',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            ],
+                          )
+                        : Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                            ),
+                          ),
+                  );
                 },
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                  ),
-                ),
               ),
             ),
             SizedBox(

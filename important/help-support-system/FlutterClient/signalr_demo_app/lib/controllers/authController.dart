@@ -11,6 +11,8 @@ class AuthController extends BaseController {
   var UserNameEditor = TextEditingController();
   var PasswordEditor = TextEditingController();
 
+  var isLoading = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
@@ -28,8 +30,16 @@ class AuthController extends BaseController {
   }
 
   login(bool keepUserName) async {
+    var userName = UserNameEditor.text;
+    var password = PasswordEditor.text;
+
+    if (userName == '' || password == '') {
+      return;
+    }
+
+    isLoading.value = true;
     await Get.find<AuthService>()
-        .login(UserNameEditor.text, PasswordEditor.text)
+        .login(userName, password)
         .then((response) async => {
               Token = response["accessToken"],
               Profile = User.fromJson(response["profile"]),
@@ -38,6 +48,7 @@ class AuthController extends BaseController {
         .onError((error, stackTrace) => {
               Token = '',
             });
+    isLoading.value = false;
     update();
   }
 }

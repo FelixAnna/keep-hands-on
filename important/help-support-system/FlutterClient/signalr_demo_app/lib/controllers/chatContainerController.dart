@@ -4,12 +4,11 @@ import 'package:signalr_demo_app/controllers/chatDetailController.dart';
 import 'package:signalr_demo_app/models/chat_messages.dart';
 import 'package:signalr_demo_app/models/msg_dto.dart';
 import 'package:signalr_demo_app/services/user_service.dart';
-import 'package:sqflite/sqflite.dart';
 import '../models/contact.dart';
 import '../services/auth_storage_service.dart';
 import '../services/hub_service.dart';
 import '../services/message_service.dart';
-import '../utils/sqflite_service.dart';
+import '../services/message_storage_service.dart';
 import 'groupChatDetailController.dart';
 
 class ChatContainerController extends BaseController {
@@ -18,7 +17,7 @@ class ChatContainerController extends BaseController {
 
   var UserContact = Contact("", [], []).obs;
   var ChatMsgs = new Map<String, ChatMessages>().obs;
-  late Database localDb;
+  late MessageStorageService messageStorageService;
 
   late HubService hubService;
   late UserService userService;
@@ -32,7 +31,7 @@ class ChatContainerController extends BaseController {
   }
 
   initial() async {
-    localDb = await SQFliteService.getDatabase();
+    messageStorageService = Get.find();
     if (!await loadUserFromCache()) {
       Get.toNamed("/login");
       return;
@@ -43,7 +42,41 @@ class ChatContainerController extends BaseController {
 
     // initial connection
     await initialHubConnect();
+
     print("chat ready");
+  }
+
+  loadContactAndMessages() async {
+    userService = Get.find<UserService>();
+    var contact = await userService.getCurrentContacts();
+
+    for (var user in contact.Friends) {
+      setChatMsgs(user.UserId, []);
+    }
+
+    for (var group in contact.Groups) {
+      setChatMsgs(group.GroupId, []);
+    }
+
+    // initial contact
+    UserContact.value = contact;
+
+    //load history messages for each contact
+    msgService = Get.find<MessageService>();
+    for (var user in contact.Friends) {
+      var messages = await msgService.loadUserMessages(user.UserId);
+      setChatMsgs(user.UserId, messages);
+    }
+
+    for (var group in contact.Groups) {
+      var messages = await msgService.loadGroupMessages(group.GroupId);
+      setChatMsgs(group.GroupId, messages);
+    }
+
+    //save to local db
+    for (var chatId in ChatMsgs.keys) {
+      await messageStorageService.saveMessage(chatId, ChatMsgs[chatId]!);
+    }
   }
 
   initialHubConnect() async {
@@ -59,37 +92,6 @@ class ChatContainerController extends BaseController {
 
     // start connection
     await hubService.start(callback: () => Get.toNamed("/login"));
-  }
-
-  loadContactAndMessages() async {
-    userService = Get.find<UserService>();
-    var contact = await userService.getCurrentContacts();
-
-    //load history messages for each contact
-    msgService = Get.find<MessageService>();
-    for (var user in contact.Friends) {
-      var messages = await msgService.loadUserMessages(user.UserId);
-      setChatMsgs(user.UserId, messages);
-    }
-
-    for (var group in contact.Groups) {
-      var messages = await msgService.loadGroupMessages(group.GroupId);
-      setChatMsgs(group.GroupId, messages);
-    }
-
-    // update contact after all done
-    UserContact.value = contact;
-
-    //save to local db
-    for (var chatId in ChatMsgs.keys) {
-      var batch = localDb.batch();
-      batch.insert("Chats", ChatMsgs[chatId]!.toMap());
-      for (var msg in ChatMsgs[chatId]!.Messages) {
-        batch.insert("Messages", msg.toMap(chatId));
-      }
-
-      await batch.commit();
-    }
   }
 
   handleNewUserMessage(List<Object?>? parameters) {
@@ -113,34 +115,23 @@ class ChatContainerController extends BaseController {
     if (!ChatMsgs.containsKey(chatId)) {
       setChatMsgs(chatId, []);
     }
-    var utcNow = DateTime.now().toUtc();
 
     var newMsge = MsgDto(
-      Id: -1,
-      From: from,
-      To: to,
-      Content: msg,
-      MsgTime: utcNow,
-    );
+        Id: -1,
+        From: from,
+        To: to,
+        Content: msg,
+        MsgTime: DateTime.now().toUtc());
     var messages = ChatMsgs[chatId]!.Messages;
     messages.add(newMsge);
     setChatMsgs(chatId, messages);
 
-    if (personFollowers.any((e) => e.chatId == chatId)) {
-      var follower = personFollowers.where((e) => e.chatId == chatId).first;
-      follower.updateMsg(newMsge);
-    }
-
-    if (groupFollowers.any((e) => e.chatId == chatId)) {
-      var follower = groupFollowers.where((e) => e.chatId == chatId).first;
-      follower.updateMsg(newMsge);
-    }
+    //notify and update all chat detail page
+    notify(chatId, newMsge);
 
     //persist new message
-    var batch = localDb.batch();
-    batch.insert("Chats", ChatMsgs[chatId]!.toMap());
-    batch.insert("Messages", newMsge.toMap(chatId));
-    await batch.commit();
+    await messageStorageService.saveNewMessage(
+        chatId, ChatMsgs[chatId]!, newMsge);
   }
 
   setChatMsgs(String chatId, List<MsgDto> messages) {
@@ -163,6 +154,18 @@ class ChatContainerController extends BaseController {
         Messages: [],
         Time: null,
       );
+    }
+  }
+
+  notify(String chatId, MsgDto newMsge) {
+    if (personFollowers.any((e) => e.chatId == chatId)) {
+      var follower = personFollowers.where((e) => e.chatId == chatId).first;
+      follower.updateMsg(newMsge);
+    }
+
+    if (groupFollowers.any((e) => e.chatId == chatId)) {
+      var follower = groupFollowers.where((e) => e.chatId == chatId).first;
+      follower.updateMsg(newMsge);
     }
   }
 

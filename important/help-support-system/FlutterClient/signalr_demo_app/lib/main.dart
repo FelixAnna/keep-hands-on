@@ -6,13 +6,13 @@ import 'package:get/get.dart';
 import 'package:signalr_demo_app/config/env.dart';
 import 'package:signalr_demo_app/controllers/chatContainerController.dart';
 import 'package:signalr_demo_app/services/auth_service.dart';
-import 'package:signalr_demo_app/services/chart_hub_service.dart';
 import 'package:signalr_demo_app/services/group_member_service.dart';
 import 'package:signalr_demo_app/services/hub_service.dart';
 import 'package:signalr_demo_app/services/message_service.dart';
 import 'package:signalr_demo_app/services/message_storage_service.dart';
 import 'package:signalr_demo_app/services/user_service.dart';
 import 'package:signalr_demo_app/utils/authorized_client.dart';
+import 'package:signalr_demo_app/widgets/channels_page.dart';
 import 'package:signalr_demo_app/widgets/chat_container_page.dart';
 import 'package:signalr_demo_app/widgets/login_page.dart';
 import 'package:signalr_demo_app/widgets/profile_page.dart';
@@ -39,6 +39,7 @@ class HSSApp extends StatelessWidget {
   late final LoginPage loginWidget;
   late final ChatContainerPage containerWidget;
   late final ProfilePage profileWidget;
+  late final ChannelsPage channelsPage;
 
   // This widget is the root of your application.
   @override
@@ -66,6 +67,10 @@ class HSSApp extends StatelessWidget {
           page: () => loginWidget,
         ),
         GetPage(
+          name: "/channels",
+          page: () => channelsPage,
+        ),
+        GetPage(
           name: "/conversation",
           page: () => containerWidget,
         ),
@@ -78,7 +83,6 @@ class HSSApp extends StatelessWidget {
     IAppEnv envService = AppEnv();
     Get.put<IAppEnv>(envService);
     Get.put(AuthService(env: envService));
-    Get.put(ChatHubService(env: envService));
     Get.put(MessageService(client, env: envService));
     Get.put(UserService(client, env: envService));
     Get.put(GroupMemberService(client, env: envService));
@@ -95,11 +99,12 @@ class HSSApp extends StatelessWidget {
     loginWidget = LoginPage();
     containerWidget = ChatContainerPage();
     profileWidget = ProfilePage();
+    channelsPage = ChannelsPage();
   }
 
   initNavBar() {
     pages.add(containerWidget);
-    pages.add(profileWidget);
+    pages.add(channelsPage);
     pages.add(profileWidget);
   }
 }

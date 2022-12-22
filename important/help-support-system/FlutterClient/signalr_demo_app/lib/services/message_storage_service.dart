@@ -1,3 +1,5 @@
+import 'package:signalr_demo_app/models/chat_messages.dart';
+
 import '../models/chat_message.dart';
 import '../models/msg_dto.dart';
 import '../utils/sqflite_service.dart';
@@ -32,5 +34,26 @@ class MessageStorageService {
             messageContent: e.Content,
             messageType: e.From == userId ? "sender" : "receiver"))
         .toList();
+  }
+
+  Future saveMessage(String chatId, ChatMessages chatMessages) async {
+    var localDb = await SQFliteService.getDatabase();
+    var batch = localDb.batch();
+    batch.insert("Chats", chatMessages.toMap());
+    for (var msg in chatMessages.Messages) {
+      batch.insert("Messages", msg.toMap(chatId));
+    }
+
+    await batch.commit();
+  }
+
+  Future saveNewMessage(
+      String chatId, ChatMessages chatMessages, MsgDto newMsg) async {
+    var localDb = await SQFliteService.getDatabase();
+    var batch = localDb.batch();
+    batch.insert("Chats", chatMessages.toMap());
+    batch.insert("Messages", newMsg.toMap(chatId));
+
+    await batch.commit();
   }
 }
