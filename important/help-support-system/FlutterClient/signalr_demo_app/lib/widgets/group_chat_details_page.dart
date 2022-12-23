@@ -100,7 +100,7 @@ class GroupChatDetailsPage extends StatelessWidget {
                         padding: EdgeInsets.all(16),
                         child: Text(
                           _.messages[index].messageContent +
-                              " from " +
+                              " from @" +
                               _.getSenderName(_.messages[index].sender),
                           style: TextStyle(fontSize: 15),
                         ),

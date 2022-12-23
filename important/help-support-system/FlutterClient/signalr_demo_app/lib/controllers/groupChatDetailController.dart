@@ -57,8 +57,6 @@ class GroupChatDetailController extends BaseController {
         .invoke("SendToGroup", args: <Object>[chatId, message])
         .then((value) => {print("Message sent")})
         .onError((error, stackTrace) => {print("Failed to send message")});
-
-    containerController.mergeMsg(Profile.UserId, chatId, message);
   }
 
   updateMsg(MsgDto msg) {

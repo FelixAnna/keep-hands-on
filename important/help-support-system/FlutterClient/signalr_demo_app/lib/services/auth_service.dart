@@ -18,6 +18,7 @@ class AuthService {
 
   Future<dynamic> login(username, password) async {
     var body = json.encode({"userName": username, "password": password});
+    var start = DateTime.now().millisecondsSinceEpoch;
     final response = await http.post(
       Uri.parse(env.userApiAddress + "/api/auth/login"),
       headers: {
@@ -27,6 +28,7 @@ class AuthService {
       body: body,
     );
     final responseJson = jsonDecode(response.body);
+    print(DateTime.now().millisecondsSinceEpoch - start);
     if (response.statusCode == HttpStatus.ok) {
       return responseJson;
     } else {

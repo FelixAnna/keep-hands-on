@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 
-import '../models/login_response.dart';
+import '../models/user.dart';
 import '../services/auth_service.dart';
 import '../services/auth_storage_service.dart';
 import '../services/hub_service.dart';

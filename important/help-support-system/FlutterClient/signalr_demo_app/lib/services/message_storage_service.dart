@@ -36,6 +36,23 @@ class MessageStorageService {
         .toList();
   }
 
+  Future clearMessage(String chatId) async {
+    var localDb = await SQFliteService.getDatabase();
+    var batch = localDb.batch();
+    batch.delete(
+      "Chats",
+      where: "chatId=?",
+      whereArgs: [chatId],
+    );
+    batch.delete(
+      "Messages",
+      where: "chatId=?",
+      whereArgs: [chatId],
+    );
+
+    await batch.commit();
+  }
+
   Future saveMessage(String chatId, ChatMessages chatMessages) async {
     var localDb = await SQFliteService.getDatabase();
     var batch = localDb.batch();

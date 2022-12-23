@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:signalr_demo_app/controllers/chatContainerController.dart';
 import 'package:signalr_demo_app/models/chat_member.dart';
 
 import '../controllers/chatDetailController.dart';
 import '../controllers/groupChatDetailController.dart';
-import '../models/login_response.dart';
+import '../models/user.dart';
 import 'chat_details_page.dart';
 import 'group_chat_details_page.dart';
 
@@ -38,7 +37,7 @@ class _ConversationItemState extends State<ConversationItem> {
             chatId: widget.member.talkingTo,
             name: widget.member.name,
           );
-          chatController.subscribe(Get.find<ChatContainerController>());
+          chatController.subscribe(Get.find());
 
           Get.put(chatController, tag: widget.member.talkingTo);
           Get.to(() => ChatDetailsPage(
@@ -50,7 +49,7 @@ class _ConversationItemState extends State<ConversationItem> {
             chatId: widget.member.talkingTo,
             name: widget.member.name,
           );
-          chatController.subscribe(Get.find<ChatContainerController>());
+          chatController.subscribe(Get.find());
 
           Get.put(chatController, tag: widget.member.talkingTo);
           Get.to(() => GroupChatDetailsPage(

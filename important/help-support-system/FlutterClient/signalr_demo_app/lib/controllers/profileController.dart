@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../models/login_response.dart';
+import '../models/user.dart';
 import 'baseController.dart';
 
 class ProfileController extends BaseController {

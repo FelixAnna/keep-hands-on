@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/config/env.dart';
 import 'package:signalr_demo_app/controllers/baseController.dart';
-import 'package:signalr_demo_app/models/login_response.dart';
+import 'package:signalr_demo_app/models/user.dart';
 import 'package:signalr_demo_app/services/auth_service.dart';
 
 class AuthController extends BaseController {
@@ -23,10 +23,6 @@ class AuthController extends BaseController {
     IdpAuthority = Get.find<IAppEnv>().idpAuthority;
     await loadUserFromCache();
     UserNameEditor.text = UserName;
-  }
-
-  isLoggedIn() {
-    return Token != '' && Profile.UserId != '';
   }
 
   login(bool keepUserName) async {

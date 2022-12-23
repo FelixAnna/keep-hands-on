@@ -125,10 +125,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentPage = 0;
+  late AuthController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = Get.find<AuthController>();
   }
 
   @override
@@ -165,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Text("Logout"),
                                   onPressed: () {
                                     Navigator.pop(ctxt);
-                                    Get.find<AuthController>()
+                                    controller
                                         .logout()
                                         .then((value) => Get.toNamed("/login"));
                                   },

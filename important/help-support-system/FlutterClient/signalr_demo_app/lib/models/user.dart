@@ -1,16 +1,3 @@
-class LoginResponse {
-  String AccessToken;
-  User Profile;
-  LoginResponse({required this.AccessToken, required this.Profile});
-
-  LoginResponse.fromJson(Map<String, dynamic> json)
-      : AccessToken = json['accessToken'],
-        Profile = json['profile'];
-
-  Map<String, dynamic> toJson() =>
-      {'accessToken': this.AccessToken, 'profile': this.Profile};
-}
-
 class User {
   String UserId;
   String UserName;
