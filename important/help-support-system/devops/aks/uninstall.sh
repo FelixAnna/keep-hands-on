@@ -8,5 +8,5 @@ sh uninstall.sh $env
 ## destory infrastructure
 
 cd ../terraform/profiles/$env
-
+terraform init -reconfigure
 terraform destroy -auto-approve
