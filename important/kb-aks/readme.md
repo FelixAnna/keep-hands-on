@@ -1,15 +1,104 @@
-# demo deploy existing micro-service to aks
+# Demo Project
 
-## provision and de-provision infrastructure
+A project for demo
 
-## install basic services
+## Tools
 
-#### Azure CLI
-- [Install](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
-- [Login](https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli)
+1. install git: https://git-scm.com/downloads;
+2. install \[dotnet 6 sdk\] (https://dotnet.microsoft.com/en-us/download/dotnet/6.0);
+3. install [nodejs](https://nodejs.org/en/download/) and [npm](https://www.npmjs.com/package/npm);
+4. install and configure [azure cli](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli);
+5. install [kubectl](https://kubernetes.io/docs/tasks/tools/);
+6. install [helm](https://helm.sh/docs/intro/install/);
+7. install [terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli);
+8. install [consul](https://developer.hashicorp.com/consul/downloads?host=www.consul.io).
 
-#### Terraform
-- [Install](https://developer.hashicorp.com/terraform/downloads)
+---
+
+1. \[optional\] install [postman](https://www.postman.com/downloads/);
+2. \[optional\] install [draw.io](https://github.com/jgraph/drawio-desktop/releases);
+3. \[optional\] install [docker](https://www.docker.com/);
+4. \[optional\] install [kind](https://kubernetes.io/docs/tasks/tools/#kind);
+5. \[optional\] install and configure [aws cli](https://aws.amazon.com/cli/).
+
+
+### DevOps
+
+in "devops" folder, you can find how to deploy the microservices to azure Kubernetes service.
+
+#### microservices helm chart
+
+microservice helm chart is located in "./hss-chart".
+
+#### aks deployment
+
+deploy to aks with "prod" argument will create valid cert by cert-manager, and use consul as service register,
+
+```
+## deploy (need AWS CLI configured)
+cd aks
+sh install.sh prod  ## prod/dev
+```
+
+```
+## destroy (need AWS CLI configured)
+cd aks
+sh uninstall.sh prod  ## prod/dev
+```
+
+```
+## install/upgrade our microservices only (don't need to configure AWS CLI)
+cd aks/services
+sh hss_services.sh prod ## prod/dev
+```
+
+#### local deployment
+
+There is another folder "./hss-chart" which is for deploying to a local kind cluster, it doesn't depend on cert-manager, and consul.
+
+#### Docker build & push to azure container registry
+
+```
+  ## if you have docker
+  
+  tag=0.4.2
+
+  docker build -t hss-idp-api:$tag -f HSS.IdentityServer/Dockerfile . 
+  docker build -t hss-hub-api:$tag -f HSS.HubServer/Dockerfile . 
+  docker build -t hss-user-api:$tag -f HSS.UserApi/Dockerfile .
+  docker build -t hss-message-api:$tag -f HSS.MessageApi/Dockerfile .
+  docker build -t hss-signalrdemo-api:$tag -f HSS.SignalRDemo/Dockerfile .
+
+
+  docker image tag hss-idp-api:$tag hssdevacr.azurecr.io/hss-idp-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-idp-api:$tag
+
+  docker image tag hss-hub-api:$tag hssdevacr.azurecr.io/hss-hub-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-hub-api:$tag
+
+  docker image tag hss-user-api:$tag hssdevacr.azurecr.io/hss-user-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-user-api:$tag
+
+  docker image tag hss-message-api:$tag hssdevacr.azurecr.io/hss-message-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-message-api:$tag
+
+  docker image tag hss-signalrdemo-api:$tag hssdevacr.azurecr.io/hss-signalrdemo-api:$tag
+  docker image push hssdevacr.azurecr.io/hss-signalrdemo-api:$tag
+```
+```
+  ## if you do not have docker
+    
+  tag=0.4.2
+  
+  az acr build -t hss-idp-api:$tag -f HSS.IdentityServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-hub-api:$tag -f HSS.HubServer/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-user-api:$tag -f HSS.UserApi/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-message-api:$tag -f HSS.MessageApi/Dockerfile -r hssdevacr -g hss-configuration .
+  az acr build -t hss-signalrdemo-api:$tag -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
+
+ ```
+
+#### Terraform Backend
 - [Backend](https://developer.hashicorp.com/terraform/language/settings/backends/azurerm)
 
 ####  Consul
