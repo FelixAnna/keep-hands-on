@@ -21,7 +21,7 @@ config:
   awsKeyId: awsKeyIdPlaceHolder
   awsSecretKey: awsSecretKeyPlaceHolder
   region: ap-southeast-1
-  profile: prod ## get dev config, do not use consul
+  profile: dev ## get dev config, do not use consul
 
 quota:
   requests:
