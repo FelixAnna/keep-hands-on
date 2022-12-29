@@ -113,8 +113,8 @@ deploy-services:
   script:
     - echo "Deploy services"
     - cd kb-aks/devops/
-    - sed -i "s/awsKeyIdPlaceHolder/${AWS_ACCESS_KEY_ID}/" ./$app-chart/values_aks_$env.yaml
-    - sed -i "s/awsSecretKeyPlaceHolder/${AWS_SECRET_ACCESS_KEY}/" ./$app-chart/values_aks_$env.yaml
+    - sed -i "s/awsKeyIdPlaceHolder/$(echo -n $AWS_ACCESS_KEY_ID | base64)/" ./$app-chart/values_aks_$env.yaml
+    - sed -i "s/awsSecretKeyPlaceHolder/$(echo -n $AWS_SECRET_ACCESS_KEY | base64)/" ./$app-chart/values_aks_$env.yaml
     - cd aks/services
     - sh basic_services.sh $app $env
     - sh main_services.sh $app $env $imageTag
