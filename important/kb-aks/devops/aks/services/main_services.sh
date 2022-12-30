@@ -1,7 +1,6 @@
-
-app=$1
-env=$2
-tag=$3
+env=$1
+tag=$2
+app=$3
 
 ns="${app}ns"
 
