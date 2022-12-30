@@ -13,8 +13,17 @@
 stages:
   - triggers
 
+variables: 
+  imageTag: latest
+  env: dev
+  app: demo
+  
 kb_aks:
   stage: triggers
+  variables:
+    imageTag: $imageTag
+    env: $env
+    app: $app
   trigger:
     include: 
       - local: kb-aks/.gitlab-ci.yml
