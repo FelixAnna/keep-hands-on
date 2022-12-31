@@ -37,7 +37,7 @@ ingress:
 applications:
   - name: product
     port: 8181
-    image: yufelix/demo-product-api:1.0.0
+    image: hssdevacr.azurecr.io/demo-product-api:imageVersion
     resources:
       requests:
         memory: 64Mi
@@ -47,7 +47,7 @@ applications:
         cpu: "128m"
   - name: price
     port: 8282
-    image: yufelix/demo-price-api:1.0.0
+    image: hssdevacr.azurecr.io/demo-price-api:imageVersion
     resources:
       requests:
         memory: 64Mi

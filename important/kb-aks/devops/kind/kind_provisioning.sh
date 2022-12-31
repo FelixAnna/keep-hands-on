@@ -1,6 +1,21 @@
-kind delete clusters demo-cluster
+tag=$1
+app=$2  # microservice/deployment name
 
-kind create cluster --config demo-cluster.yml
+if [ "$app" == '' ];
+then
+    app=demo
+fi
+
+if [ "$tag" == '' ];
+then
+    tag=latest
+fi
+
+ns="${app}ns"
+
+kind delete clusters $app-cluster
+
+kind create cluster --config $app-cluster.yml
 
 echo "install nginx  ..."
 echo "(if you need kong, please uninstall nginx, then follow readme.md)"
@@ -17,11 +32,18 @@ kubectl wait --namespace ingress-nginx \
 
 echo "install services ..."
 cd ..
-ns=demons
-helm upgrade --install demo ./demo-chart-nossl/ \
+
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+echo $AWS_SECRET_ACCESS_KEY
+sed -i "s/awsKeyIdPlaceHolder/$(echo -n $AWS_ACCESS_KEY_ID | base64)/" ./$app-chart-nossl/values_dev.yaml
+sed -i "s/awsSecretKeyPlaceHolder/$(echo -n $AWS_SECRET_ACCESS_KEY | base64)/" ./$app-chart-nossl/values_dev.yaml
+sed -i "s/imageVersion/$tag/" ./$app-chart-nossl/values_dev.yaml
+
+helm upgrade --install $app ./$app-chart-nossl/ \
 --namespace $ns \
 --create-namespace \
---values ./demo-chart-nossl/values_dev.yaml \
+--values ./$app-chart-nossl/values_dev.yaml \
 --wait
 
 kubectl get all -n $ns
