@@ -35,7 +35,7 @@ cd ..
 
 AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
-echo $AWS_SECRET_ACCESS_KEY
+echo $AWS_ACCESS_KEY_ID
 sed -i "s/awsKeyIdPlaceHolder/$(echo -n $AWS_ACCESS_KEY_ID | base64)/" ./$app-chart-nossl/values_dev.yaml
 sed -i "s/awsSecretKeyPlaceHolder/$(echo -n $AWS_SECRET_ACCESS_KEY | base64)/" ./$app-chart-nossl/values_dev.yaml
 sed -i "s/imageVersion/$tag/" ./$app-chart-nossl/values_dev.yaml
@@ -47,4 +47,8 @@ helm upgrade --install $app ./$app-chart-nossl/ \
 --wait
 
 kubectl get all -n $ns
+
+sed -i "s/$(echo -n $AWS_ACCESS_KEY_ID | base64)/awsKeyIdPlaceHolder/" ./$app-chart-nossl/values_dev.yaml
+sed -i "s/$(echo -n $AWS_SECRET_ACCESS_KEY | base64)/awsSecretKeyPlaceHolder/" ./$app-chart-nossl/values_dev.yaml
+sed -i "s/$tag/imageVersion/" ./$app-chart-nossl/values_dev.yaml
 echo "done"

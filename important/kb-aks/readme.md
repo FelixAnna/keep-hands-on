@@ -26,9 +26,37 @@ A project for demo
 
 in "devops" folder, you can find how to deploy the microservices to azure Kubernetes service.
 
+#### Docker build & push to azure container registry
+
+```
+  ## if you have docker
+
+  tag=latest
+
+  cd kb-aks/src/product-service
+  docker build -t demo-product-api:$tag -f Dockerfile . 
+  docker image tag demo-product-api:$tag hssdevacr.azurecr.io/demo-product-api:$tag
+  docker image push hssdevacr.azurecr.io/demo-product-api:$tag
+  
+  cd ../price-service
+  docker build -t demo-price-api:$tag -f Dockerfile . 
+  docker image tag demo-price-api:$tag hssdevacr.azurecr.io/demo-price-api:$tag
+  docker image push hssdevacr.azurecr.io/demo-price-api:$tag
+```
+```
+  ## if you do not have docker
+    
+  tag=latest
+  cd kb-aks/src/product-service
+  az acr build -t demo-product-api:$tag -f Dockerfile -r hssdevacr -g configuration-rg .
+  cd ../price-service
+  az acr build -t demo-price-api:$tag -f Dockerfile -r hssdevacr -g configuration-rg .
+
+ ```
+ 
 #### microservices helm chart
 
-microservice helm chart is located in "./hss-chart".
+microservice helm chart is located in "./demo-chart".
 
 #### aks deployment
 
@@ -49,54 +77,13 @@ sh uninstall.sh prod  ## prod/dev
 ```
 ## install/upgrade our microservices only (don't need to configure AWS CLI)
 cd aks/services
-sh hss_services.sh prod ## prod/dev
+sh main_services.sh prod ## prod/dev
 ```
 
 #### local deployment
 
-There is another folder "./hss-chart" which is for deploying to a local kind cluster, it doesn't depend on cert-manager, and consul.
+There is another folder "./demo-chart-nossl" which is for deploying to a local kind cluster, it doesn't depend on cert-manager, and consul.
 
-#### Docker build & push to azure container registry
-
-```
-  ## if you have docker
-  
-  tag=0.4.2
-
-  docker build -t hss-idp-api:$tag -f HSS.IdentityServer/Dockerfile . 
-  docker build -t hss-hub-api:$tag -f HSS.HubServer/Dockerfile . 
-  docker build -t hss-user-api:$tag -f HSS.UserApi/Dockerfile .
-  docker build -t hss-message-api:$tag -f HSS.MessageApi/Dockerfile .
-  docker build -t hss-signalrdemo-api:$tag -f HSS.SignalRDemo/Dockerfile .
-
-
-  docker image tag hss-idp-api:$tag hssdevacr.azurecr.io/hss-idp-api:$tag
-  docker image push hssdevacr.azurecr.io/hss-idp-api:$tag
-
-  docker image tag hss-hub-api:$tag hssdevacr.azurecr.io/hss-hub-api:$tag
-  docker image push hssdevacr.azurecr.io/hss-hub-api:$tag
-
-  docker image tag hss-user-api:$tag hssdevacr.azurecr.io/hss-user-api:$tag
-  docker image push hssdevacr.azurecr.io/hss-user-api:$tag
-
-  docker image tag hss-message-api:$tag hssdevacr.azurecr.io/hss-message-api:$tag
-  docker image push hssdevacr.azurecr.io/hss-message-api:$tag
-
-  docker image tag hss-signalrdemo-api:$tag hssdevacr.azurecr.io/hss-signalrdemo-api:$tag
-  docker image push hssdevacr.azurecr.io/hss-signalrdemo-api:$tag
-```
-```
-  ## if you do not have docker
-    
-  tag=0.4.2
-  
-  az acr build -t hss-idp-api:$tag -f HSS.IdentityServer/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-hub-api:$tag -f HSS.HubServer/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-user-api:$tag -f HSS.UserApi/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-message-api:$tag -f HSS.MessageApi/Dockerfile -r hssdevacr -g hss-configuration .
-  az acr build -t hss-signalrdemo-api:$tag -f HSS.SignalRDemo/Dockerfile -r hssdevacr -g hss-configuration .
-
- ```
 
 #### Terraform Backend
 - [Backend](https://developer.hashicorp.com/terraform/language/settings/backends/azurerm)

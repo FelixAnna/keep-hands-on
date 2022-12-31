@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "demo_rg" {
 
 data "azurerm_container_registry" "hss_acr" {
   name                = "hssdevacr"
-  resource_group_name = "hss-configuration"
+  resource_group_name = "configuration-rg"
 }
 
 data "azurerm_user_assigned_identity" "nodepoolIdentity" {
