@@ -22,11 +22,11 @@ A project for demo
 5. \[optional\] install and configure [aws cli](https://aws.amazon.com/cli/).
 
 
-### DevOps
+## DevOps
 
 in "devops" folder, you can find how to deploy the microservices to azure Kubernetes service.
 
-#### Docker build & push to azure container registry
+### Docker build & push to azure container registry
 
 ```
   ## if you have docker
@@ -54,11 +54,11 @@ in "devops" folder, you can find how to deploy the microservices to azure Kubern
 
  ```
  
-#### microservices helm chart
+### microservices helm chart
 
 microservice helm chart is located in "./demo-chart".
 
-#### aks deployment
+### aks deployment
 
 deploy to aks with "prod" argument will create valid cert by cert-manager, and use consul as service register,
 
@@ -80,23 +80,26 @@ cd aks/services
 sh main_services.sh prod ## prod/dev
 ```
 
-#### local deployment
+### local deployment
 
 There is another folder "./demo-chart-nossl" which is for deploying to a local kind cluster, it doesn't depend on cert-manager, and consul.
 
+follow: [./devops/kind/readme.md](./devops/kind/readme.md)
 
-#### Terraform Backend
+## other
+
+### Terraform Backend
 - [Backend](https://developer.hashicorp.com/terraform/language/settings/backends/azurerm)
 
-####  Consul
+###  Consul
 - [Consul](https://github.com/hashicorp/consul)
 - [Consul and kubernetes deployment guide](https://developer.hashicorp.com/consul/tutorials/kubernetes/kubernetes-deployment-guide)
 
-####  Ingress
+###  Ingress
 - [Nginx](https://kubernetes.github.io/ingress-nginx/)
 - [Create an ingress controller in AKS](https://learn.microsoft.com/en-us/azure/aks/ingress-basic?tabs=azure-cli#create-an-ingress-controller)
 
-#### cert-manager
+### cert-manager
 - [Cert-Manager](https://artifacthub.io/packages/helm/cert-manager/cert-manager)
 - [CustomResourceDefinition prerequisite](https://artifacthub.io/packages/helm/cert-manager/cert-manager#installing-the-chart)
 
