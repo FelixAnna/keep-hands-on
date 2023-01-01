@@ -10,6 +10,11 @@
 # See https://docs.gitlab.com/ee/ci/yaml/index.html for all available options
 
 # you can delete this line if you're not using Docker
+stages:
+  - test
+  - build
+  - deploy
+
 image: docker
 services:
   - docker:dind
@@ -17,6 +22,7 @@ variables:
   DOCKER_HOST: tcp://localhost:2375/
   imageTag: latest
   env: prod
+  app: hss
 
 workflow:
   rules:
@@ -26,6 +32,14 @@ workflow:
       when: always
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH && $CI_COMMIT_BRANCH != 'develop'
       when: never
+
+test:
+  stage: test
+  before_script:
+  - ''
+  script:
+    - echo "Do a test here"
+    - echo "For example run a test suite"
 
 before_script:
   - echo "Before script section"
@@ -40,6 +54,7 @@ after_script:
 
 docker-build-idp:
   stage: build
+  needs: ['test']
   script:    
     - cd backend
 
@@ -50,6 +65,7 @@ docker-build-idp:
 
 docker-build-hub:
   stage: build
+  needs: ['test']
   script:    
     - cd backend
 
@@ -60,6 +76,7 @@ docker-build-hub:
 
 docker-build-user:
   stage: build
+  needs: ['test']
   script:    
     - cd backend
 
@@ -76,14 +93,9 @@ docker-build-user:
     - docker image tag hss-signalrdemo-api:$imageTag hssdevacr.azurecr.io/hss-signalrdemo-api:$imageTag
     - docker image push hssdevacr.azurecr.io/hss-signalrdemo-api:$imageTag
 
-test1:
-  stage: test
-  script:
-    - echo "Do a test here"
-    - echo "For example run a test suite"
-
 deploy-infrastructure:
   stage: deploy
+  needs: ['docker-build-idp','docker-build-hub','docker-build-user']
   before_script:
     - ''
   image:
@@ -93,7 +105,7 @@ deploy-infrastructure:
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   script:
     - echo "Deploy infrastructure"
-    - cd devops/aks/terraform/profiles/prod
+    - cd devops/aks/terraform/profiles/$env
     - rm -rf .terraform
     - terraform --version
     - terraform init
@@ -112,6 +124,8 @@ deploy-services:
   needs: ['deploy-infrastructure']
   script:
     - echo "Deploy services"
-    - cd devops/aks/services
-    - sh basic_services.sh $env
-    - sh hss_services.sh $env $imageTag
+    - cd devops/
+    - sed -i "s/imageVersion/$imageTag/" ./$app-chart/values_aks_$env.yaml
+    - cd aks/services
+    - sh basic_services.sh $env $app
+    - sh main_services.sh $env $app

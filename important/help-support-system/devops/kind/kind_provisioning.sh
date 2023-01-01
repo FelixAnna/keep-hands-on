@@ -1,6 +1,21 @@
-kind delete clusters hss-cluster
+tag=$1
+app=$2  # microservice/deployment name
 
-kind create cluster --config hss-cluster.yml
+if [ "$app" == '' ];
+then
+    app=hss
+fi
+
+if [ "$tag" == '' ];
+then
+    tag=latest
+fi
+
+ns="${app}ns"
+
+kind delete clusters $app-cluster
+
+kind create cluster --config $app-cluster.yml
 
 echo "install nginx  ..."
 echo "(if you need kong, please uninstall nginx, then follow readme.md)"
@@ -17,8 +32,16 @@ kubectl wait --namespace ingress-nginx \
 
 echo "install services ..."
 cd ..
-ns=hssns
-helm upgrade --install hss ./hss-chart-nossl/ --namespace $ns --create-namespace --values ./hss-chart-nossl/values_dev.yaml --wait
 
-kubectl get all -n $ns
+sed -i "s/imageVersion/$tag/" ./$app-chart-nossl/values_dev.yaml
+
+helm upgrade --install $app ./$app-chart-nossl/ \
+--namespace $ns \
+--create-namespace \
+--values ./$app-chart-nossl/values_dev.yaml \
+--wait
+
+kubectl get all -n $noss
+
+sed -i "s/$tag/imageVersion/" ./$app-chart-nossl/values_dev.yaml
 echo "done"

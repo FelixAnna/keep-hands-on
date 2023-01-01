@@ -1,9 +1,15 @@
 ## uninstall basic 
-env=$1
+env=$1  # dev or prod
+app=$2  # microservice/deployment name
+
+if [ "$app" == '' ];
+then
+    app=hss
+fi
 
 cd ./services
 
-sh uninstall.sh $env
+sh uninstall.sh $env $app
 
 ## destory infrastructure
 
