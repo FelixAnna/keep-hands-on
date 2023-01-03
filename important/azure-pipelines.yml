@@ -1,0 +1,130 @@
+trigger:
+ - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+- job: runTest
+  displayName: Run Tests # Human-readable name for the job. 
+  pool:
+    name: Azure Pipelines
+    timeoutInMinutes: 5
+
+  steps:
+  - task: GoTool@0
+    displayName: 'Use Go 1.19.3'
+    inputs:
+      version: 1.19.3
+
+  - task: Go@0
+    displayName: 'Run Test Cases - Price Service'
+    inputs:
+      command: test
+      arguments: ./...
+      workingDirectory: 'kb-aks/src/price-service'
+
+  - task: Go@0
+    displayName: 'Run Test Cases - Product Service'
+    inputs:
+      command: test
+      arguments: ./...
+      workingDirectory: 'kb-aks/src/product-service'
+
+  #Multi-configuration and multi-agent job options are not exported to YAML. Configure these options using documentation guidance: https://docs.microsoft.com/vsts/pipelines/process/phases
+
+- job: buildAndPush
+  displayName: Build and Push Images # Human-readable name for the job. 
+  dependsOn: runTest
+  pool:
+    name: Azure Pipelines
+    timeoutInMinutes: 10
+
+  steps:
+  - task: Docker@2
+    displayName: 'Build Price image'
+    inputs:
+      containerRegistry: sharedacr
+      repository: 'demo-price-api'
+      Dockerfile: 'kb-aks/src/price-service/Dockerfile'
+      buildContext: 'kb-aks/src/price-service'
+      tags: '$(imageTag)'
+
+  - task: Docker@2
+    displayName: 'Build product image'
+    inputs:
+      containerRegistry: sharedacr
+      repository: 'demo-product-api'
+      Dockerfile: 'kb-aks/src/product-service/Dockerfile'
+      buildContext: 'kb-aks/src/product-service'
+      tags: '$(imageTag)'
+
+- job: provisioningInfrastructure
+  displayName: Apply infrastructure # Human-readable name for the job. 
+  dependsOn: buildAndPush
+  pool:
+    name: Azure Pipelines
+    timeoutInMinutes: 30
+
+  steps:
+  - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    displayName: 'Use Terraform latest'
+
+  - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    displayName: 'terraform initial'
+    inputs:
+      command: init
+      workingDirectory: 'kb-aks/devops/aks/terraform/profiles/$(env)'
+      backendType: azurerm
+      backendServiceArm: 'Visual Studio Professional Subscription (6edd6bd3-4741-4bd4-87bc-f7f59b8679b5)'
+      backendAzureRmSubscriptionId: '$(ARM_SUBSCRIPTION_ID)'
+      backendAzureRmResourceGroupName: 'configuration-rg'
+      backendAzureRmStorageAccountName: configstoragefelix
+      backendAzureRmContainerName: tfstate
+      backendAzureRmKey: 'demo-$(env).nginx.tfstate'
+
+  - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    displayName: 'terraform apply'
+    inputs:
+      command: apply
+      workingDirectory: 'kb-aks/devops/aks/terraform/profiles/$(env)'
+      environmentServiceName: 'Visual Studio Professional Subscription (6edd6bd3-4741-4bd4-87bc-f7f59b8679b5)'
+      providerAzureRmSubscriptionId: '$(ARM_SUBSCRIPTION_ID)'
+      runAzLogin: true
+      commandOptions: '-auto-approve'
+      providerServiceAws: 'aws connection'
+      providerAwsRegion: '$(AWS_DEFAULT_REGION)'
+
+- job: deployServices
+  displayName: Deploy Helm Charts # Human-readable name for the job. 
+  dependsOn: provisioningInfrastructure
+  pool:
+    name: Azure Pipelines
+    timeoutInMinutes: 15
+
+  steps:
+  - task: AzureCLI@2
+    displayName: 'Replace Keys & Tags'
+    inputs:
+      azureSubscription: 'Visual Studio Professional Subscription (6edd6bd3-4741-4bd4-87bc-f7f59b8679b5)'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az login --service-principal --username="${ARM_CLIENT_ID}" --password="${ARM_CLIENT_SECRET}" --tenant=${ARM_TENANT_ID}
+        sed -i "s/awsKeyIdPlaceHolder/$(echo -n $(AWS_ACCESS_KEY_ID) | base64)/" ./$(app)-chart/values_aks_$(env).yaml
+        sed -i "s/awsSecretKeyPlaceHolder/$(echo -n $(AWS_SECRET_ACCESS_KEY) | base64)/" ./$(app)-chart/values_aks_$(env).yaml
+        sed -i "s/imageVersion/$(imageTag)/" ./$(app)-chart/values_aks_$(env).yaml
+      workingDirectory: 'kb-aks/devops'
+
+  - task: AzureCLI@2
+    displayName: 'Deploy All Charts'
+    inputs:
+      azureSubscription: 'Visual Studio Professional Subscription (6edd6bd3-4741-4bd4-87bc-f7f59b8679b5)'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        sh basic_services.sh $(env) $(app)
+        sh main_services.sh $(env) $(app)
+        useGlobalConfig: true
+      workingDirectory: 'kb-aks/devops/aks/services'
+
