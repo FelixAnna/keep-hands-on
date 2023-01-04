@@ -1,6 +1,7 @@
 
-app=$1
-env=$2
+env=$1
+app=$2
+
 rgName=$app-$env-rg
 ipName=nginxIp
 clusterName="${env}Cluster"

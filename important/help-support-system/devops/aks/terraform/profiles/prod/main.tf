@@ -1,8 +1,8 @@
 terraform {
   # need setup backend in azure storage account first
   backend "azurerm" {
-    resource_group_name  = "hss-configuration"
-    storage_account_name = "hssconfigstore"
+    resource_group_name  = "configuration-rg"
+    storage_account_name = "configstoragefelix"
     container_name       = "tfstate"
     key                  = "hss-prod.nginx.tfstate"
   }

@@ -101,7 +101,7 @@ sh uninstall.sh prod  ## prod/dev
 ```
 ## install/upgrade our microservices only (don't need to configure AWS CLI)
 cd aks/services
-sh hss_services.sh prod ## prod/dev
+sh main_services.sh prod ## prod/dev
 ```
 
 #### local deployment
