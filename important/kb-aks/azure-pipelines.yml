@@ -2,7 +2,10 @@ trigger:
   branches:
     include:
     - develop
-
+  paths:
+    include:
+      - kb-aks/
+      - azure-pipelines.yml
 parameters:
   - name: environment
     displayName: Where to deploy?
@@ -11,19 +14,26 @@ parameters:
     values:
     - prod
     - dev
-
+  - name: imageTag
+    displayName: Docker image tag
+    type: string
+    default: latest
+    
 variables:
 - group: ${{parameters.environment}}-variable-group
 - name: env
   value: ${{parameters.environment}}
+- name: imageTag
+  value: ${{parameters.imageTag}}
 
+pool:
+  name: Azure Pipelines
+  vmImage: 'ubuntu-latest'
+  
 jobs:
 - job: runTest
   displayName: Run Tests # Human-readable name for the job. 
-  pool:
-    name: Azure Pipelines
-    vmImage: 'ubuntu-latest'
-    timeoutInMinutes: 5
+  timeoutInMinutes: 5
 
   steps:
   - task: GoTool@0
@@ -50,10 +60,7 @@ jobs:
 - job: buildAndPush
   displayName: Build and Push Images # Human-readable name for the job. 
   dependsOn: runTest
-  pool:
-    name: Azure Pipelines
-    vmImage: 'ubuntu-latest'
-    timeoutInMinutes: 10
+  timeoutInMinutes: 10
 
   steps:
   - task: Docker@2
@@ -77,10 +84,7 @@ jobs:
 - job: provisioningInfrastructure
   displayName: Apply infrastructure # Human-readable name for the job. 
   dependsOn: buildAndPush
-  pool:
-    name: Azure Pipelines
-    vmImage: 'ubuntu-latest'
-    timeoutInMinutes: 30
+  timeoutInMinutes: 30
 
   steps:
   - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
@@ -132,10 +136,7 @@ jobs:
 - job: deployServices
   displayName: Deploy All Services # Human-readable name for the job. 
   dependsOn: provisioningInfrastructure
-  pool:
-    name: Azure Pipelines
-    vmImage: 'ubuntu-latest'
-    timeoutInMinutes: 15
+  timeoutInMinutes: 15
 
   steps:
   - task: AzureCLI@2

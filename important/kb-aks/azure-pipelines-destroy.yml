@@ -19,13 +19,14 @@ variables:
 - name: env
   value: ${{parameters.environment}}
 
+pool:
+  name: Azure Pipelines
+  vmImage: 'ubuntu-latest'
+  
 jobs:
 - job: unintallServices
   displayName: Uninstall All Services # Human-readable name for the job. 
-  pool:
-    name: Azure Pipelines
-    vmImage: 'ubuntu-latest'
-    timeoutInMinutes: 15
+  timeoutInMinutes: 15
 
   steps:
   - task: AzureCLI@2
@@ -42,10 +43,8 @@ jobs:
 - job: destroyInfrastructure
   displayName: Destroy infrastructure # Human-readable name for the job. 
   dependsOn: unintallServices
-  pool:
-    name: Azure Pipelines
-    vmImage: 'ubuntu-latest'
-    timeoutInMinutes: 30
+  timeoutInMinutes: 30
+  
   steps:
   - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
     displayName: 'Use Terraform latest'
