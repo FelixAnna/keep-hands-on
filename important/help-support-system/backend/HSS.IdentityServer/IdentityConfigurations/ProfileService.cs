@@ -23,8 +23,8 @@ namespace HSS.IdentityServer.IdentityConfigurations
             var claims = new List<Claim>
             {
                 new Claim(JwtClaimTypes.Email, user.Email),
-                new Claim(JwtClaimTypes.Name, user.UserName),
-                //new Claim(JwtClaimTypes.NickName, user.UserName),
+                new Claim(JwtClaimTypes.NickName, user.NickName!),
+                new Claim(JwtClaimTypes.Picture, user.AvatarUrl!),
             };
 
             context.IssuedClaims.AddRange(claims);

@@ -3,7 +3,7 @@ import '../models/user.dart';
 import 'baseController.dart';
 
 class ProfileController extends BaseController {
-  var UserInfo = User(UserId: '', UserName: '', Email: '').obs;
+  var UserInfo = User(UserId: '', NickName: '', AvatarUrl: '', Email: '').obs;
   @override
   void onInit() async {
     super.onInit();

@@ -81,18 +81,18 @@ class HSSApp extends StatelessWidget {
   initDI() {
     var client = new AuthorizedClient(http.Client());
     IAppEnv envService = AppEnv();
-    Get.put<IAppEnv>(envService);
-    Get.put(AuthService(env: envService));
-    Get.put(MessageService(client, env: envService));
-    Get.put(UserService(client, env: envService));
-    Get.put(GroupMemberService(client, env: envService));
+    Get.put<IAppEnv>(envService, permanent: true);
+    Get.put(AuthService(env: envService), permanent: true);
+    Get.put(MessageService(client, env: envService), permanent: true);
+    Get.put(UserService(client, env: envService), permanent: true);
+    Get.put(GroupMemberService(client, env: envService), permanent: true);
 
-    Get.put(AuthStorageService());
-    Get.put(HubService(env: envService));
-    Get.put(MessageStorageService());
-    Get.lazyPut(() => ProfileController());
-    Get.lazyPut(() => AuthController());
-    Get.lazyPut(() => ChatContainerController());
+    Get.put(AuthStorageService(), permanent: true);
+    Get.put(HubService(env: envService), permanent: true);
+    Get.put(MessageStorageService(), permanent: true);
+    Get.put(ProfileController(), permanent: true);
+    Get.put(AuthController(), permanent: true);
+    Get.put(ChatContainerController(), permanent: true);
   }
 
   initWidget() {
@@ -167,9 +167,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Text("Logout"),
                                   onPressed: () {
                                     Navigator.pop(ctxt);
-                                    controller
-                                        .logout()
-                                        .then((value) => Get.toNamed("/login"));
+                                    controller.logout().then((value) => {
+                                          Get.toNamed("/login"),
+                                        });
                                   },
                                 )
                               ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/controllers/baseController.dart';
 import 'package:signalr_demo_app/controllers/chatContainerController.dart';
+import 'package:signalr_demo_app/models/contact.dart';
 import 'package:signalr_demo_app/services/group_member_service.dart';
 
 import '../models/chat_message.dart';
@@ -16,7 +17,7 @@ class GroupChatDetailController extends BaseController {
   GroupChatDetailController({required this.chatId, required this.name});
 
   RxList messages = [].obs;
-  late GroupMembers groupMembers;
+  var groupMembers = GroupMembers([], GroupInfo(GroupId: "", Name: "")).obs;
   late ChatContainerController containerController;
   late MessageStorageService messageStorageService;
   late GroupMemberService groupMemberService;
@@ -39,7 +40,8 @@ class GroupChatDetailController extends BaseController {
 
     //load group member
     groupMemberService = Get.find();
-    groupMembers = await groupMemberService.getGroupMembersInfo(this.chatId);
+    groupMembers.value =
+        await groupMemberService.getGroupMembersInfo(this.chatId);
 
     //load history
     messages.value =
@@ -75,11 +77,19 @@ class GroupChatDetailController extends BaseController {
   }
 
   scrollToBottom() {
-    scrollController.jumpTo(scrollController.position.maxScrollExtent + 60);
+    if (scrollController.hasClients)
+      scrollController.jumpTo(scrollController.position.maxScrollExtent + 60);
   }
 
   String getSenderName(senderId) {
-    return groupMembers.Members.firstWhere(
-        (element) => element.UserId == senderId).UserName;
+    return groupMembers.value.Members
+        .firstWhere((element) => element.UserId == senderId)
+        .NickName;
+  }
+
+  String getSenderAvatarUrl(senderId) {
+    return groupMembers.value.Members
+        .firstWhere((element) => element.UserId == senderId)
+        .AvatarUrl;
   }
 }

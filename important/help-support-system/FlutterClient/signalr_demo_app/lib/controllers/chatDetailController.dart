@@ -17,8 +17,8 @@ class ChatDetailController extends BaseController {
   late ChatContainerController containerController;
   late MessageStorageService messageStorageService;
 
-  final messageController = TextEditingController();
-  final scrollController = ScrollController();
+  var messageController = TextEditingController();
+  var scrollController = ScrollController();
 
   @override
   void onInit() async {
@@ -69,6 +69,7 @@ class ChatDetailController extends BaseController {
   }
 
   scrollToBottom() {
-    scrollController.jumpTo(scrollController.position.maxScrollExtent + 60);
+    if (scrollController.hasClients)
+      scrollController.jumpTo(scrollController.position.maxScrollExtent + 60);
   }
 }

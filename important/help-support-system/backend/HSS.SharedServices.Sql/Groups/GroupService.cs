@@ -47,7 +47,7 @@ namespace HSS.SharedServices.Sql.Contact
             using (var connnection = new SqlConnection(connectionString))
             {
                 var groupMemberIds = connnection.Query<string>("SELECT UserId FROM hss.GroupMembers WHERE GroupId=@groupId", new { groupId });
-                var groupMembers = connnection.Query<GroupMember>("SELECT Id as UserId, UserName, Email FROM dbo.AspNetUsers WHERE Id IN @ids", new { ids = groupMemberIds });
+                var groupMembers = connnection.Query<GroupMember>("SELECT Id as UserId, NickName, AvatarUrl, Email FROM dbo.AspNetUsers WHERE Id IN @ids", new { ids = groupMemberIds });
 
                 return groupMembers.ToList();
             }

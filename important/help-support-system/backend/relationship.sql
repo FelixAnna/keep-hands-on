@@ -8,7 +8,7 @@ DBCC CHECKIDENT ('ssh-db.hss.Groups', RESEED, 0)
 GO;
 
 insert into [hss].[Groups]([Name]) values('Hello World');
-insert into [hss].[Groups](Name) values('Test Group');
+insert into [hss].[Groups]([Name]) values('Test Group');
 
 insert into [hss].[GroupMembers](UserId, GroupId) values ('2c8c3408-849d-4f91-beab-0ca1af147f07', 1);
 insert into [hss].[GroupMembers](UserId, GroupId) values ('370bb376-12ba-47c8-8250-f1b9744a1677', 1);

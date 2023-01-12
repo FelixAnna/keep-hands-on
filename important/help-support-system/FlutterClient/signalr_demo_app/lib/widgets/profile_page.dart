@@ -15,10 +15,20 @@ class ProfilePage extends GetWidget<ProfileController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /*2*/
+                  Obx(
+                    () => CircleAvatar(
+                      backgroundImage: NetworkImage(controller
+                                  .UserInfo.value.AvatarUrl ==
+                              ''
+                          ? "https://upload.wikimedia.org/wikipedia/commons/e/ee/Unknown-person.gif"
+                          : controller.UserInfo.value.AvatarUrl),
+                      maxRadius: 60,
+                    ),
+                  ),
                   Container(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Obx(() => Text(
-                          controller.UserInfo.value.UserName,
+                          controller.UserInfo.value.NickName,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),

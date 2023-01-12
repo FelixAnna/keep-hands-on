@@ -5,7 +5,9 @@ import 'package:signalr_demo_app/controllers/chatDetailController.dart';
 class ChatDetailsPage extends StatelessWidget {
   final String chatId;
   final String name;
-  ChatDetailsPage({required this.chatId, required this.name});
+  final String avatarUrl;
+  ChatDetailsPage(
+      {required this.chatId, required this.name, required this.avatarUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +36,7 @@ class ChatDetailsPage extends StatelessWidget {
                   width: 2,
                 ),
                 CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://cdn.pixabay.com/photo/2015/11/16/14/43/cat-1045782__340.jpg"),
+                  backgroundImage: NetworkImage(avatarUrl),
                   maxRadius: 20,
                 ),
                 SizedBox(
@@ -83,24 +84,57 @@ class ChatDetailsPage extends StatelessWidget {
                 physics: AlwaysScrollableScrollPhysics(),
                 controller: _.scrollController,
                 itemBuilder: (context, index) {
+                  var isTargetMsg = _.messages[index].messageType == "receiver";
                   return Container(
                     padding: EdgeInsets.only(
                         left: 14, right: 14, top: 10, bottom: 10),
                     child: Align(
-                      alignment: (_.messages[index].messageType == "receiver"
+                      alignment: (isTargetMsg
                           ? Alignment.topLeft
                           : Alignment.topRight),
                       child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: (_.messages[index].messageType == "receiver"
-                              ? Colors.grey.shade200
-                              : Colors.blue[200]),
-                        ),
-                        padding: EdgeInsets.all(16),
-                        child: Text(
-                          _.messages[index].messageContent,
-                          style: TextStyle(fontSize: 15),
+                        padding: EdgeInsets.all(8),
+                        child: Container(
+                          child: Row(
+                            mainAxisAlignment: isTargetMsg
+                                ? MainAxisAlignment.start
+                                : MainAxisAlignment.end,
+                            children: [
+                              isTargetMsg
+                                  ? Tooltip(
+                                      message: name,
+                                      triggerMode: TooltipTriggerMode.tap,
+                                      child: CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(avatarUrl),
+                                      ),
+                                    )
+                                  : Container(),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: (isTargetMsg
+                                      ? Colors.grey.shade200
+                                      : Colors.blue[200]),
+                                ),
+                                padding: EdgeInsets.all(16),
+                                child: Text(
+                                  _.messages[index].messageContent,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              isTargetMsg
+                                  ? Container()
+                                  : Tooltip(
+                                      message: _.Profile.NickName,
+                                      triggerMode: TooltipTriggerMode.tap,
+                                      child: CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(_.Profile.AvatarUrl),
+                                      ),
+                                    ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

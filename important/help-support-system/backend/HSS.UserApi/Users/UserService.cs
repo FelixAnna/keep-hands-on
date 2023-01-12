@@ -55,7 +55,8 @@ namespace HSS.UserApi.Users.Contracts
                     Profile = new UserModel
                     {
                         UserId = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Subject)?.Value!,
-                        UserName = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name)?.Value!,
+                        NickName= jwtSecurityToken.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.NickName)?.Value!,
+                        AvatarUrl= jwtSecurityToken.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Picture)?.Value!,
                         Email = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email)?.Value!
                     }
                 };

@@ -8,18 +8,27 @@ class Contact {
 
 class MemberInfo {
   String UserId;
-  String UserName;
+  String NickName;
+  String AvatarUrl;
   String Email;
   MemberInfo(
-      {required this.UserId, required this.UserName, required this.Email});
+      {required this.UserId,
+      required this.NickName,
+      required this.AvatarUrl,
+      required this.Email});
 
   MemberInfo.fromJson(Map<String, dynamic> json)
       : UserId = json['userId'],
-        UserName = json['userName'],
+        NickName = json['nickName'],
+        AvatarUrl = json['avatarUrl'],
         Email = json['email'];
 
-  Map<String, dynamic> toJson() =>
-      {'userId': this.UserId, 'userName': this.UserName, 'email': this.Email};
+  Map<String, dynamic> toJson() => {
+        'userId': this.UserId,
+        'nickName': this.NickName,
+        'avatarUrl': this.AvatarUrl,
+        'email': this.Email
+      };
 }
 
 class GroupInfo {

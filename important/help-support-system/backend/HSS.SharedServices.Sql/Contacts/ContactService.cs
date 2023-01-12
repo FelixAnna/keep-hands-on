@@ -37,7 +37,7 @@ namespace HSS.SharedServices.Sql.Contact
             using (var connnection = new SqlConnection(connectionString))
             {
                 var friendIds = connnection.Query<string>("SELECT FriendId FROM hss.Friends WHERE UserId=@userId", new { userId });
-                var results = connnection.Query<FriendModel>("SELECT Id as UserId, Email, UserName FROM dbo.AspNetUsers WHERE Id IN @ids", new { ids = friendIds });
+                var results = connnection.Query<FriendModel>("SELECT Id as UserId, Email, NickName, AvatarUrl FROM dbo.AspNetUsers WHERE Id IN @ids", new { ids = friendIds });
                 return results.ToList();
             }
         }

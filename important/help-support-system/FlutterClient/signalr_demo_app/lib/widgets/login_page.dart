@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/controllers/authController.dart';
+import 'package:signalr_demo_app/controllers/profileController.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/chatContainerController.dart';
@@ -90,8 +91,11 @@ class LoginPage extends GetWidget<AuthController> {
                         );
                         return;
                       }
-                      Get.find<ChatContainerController>().initial();
+
                       Get.back();
+
+                      await Get.find<ChatContainerController>().initial();
+                      await Get.find<ProfileController>().initial();
                       //failed action
                     },
                     child: controller.isLoading.value

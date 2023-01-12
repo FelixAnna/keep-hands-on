@@ -94,11 +94,10 @@ class ChatContainerPage extends GetWidget<ChatContainerController> {
                           profile: controller.Profile,
                           member: ChatMember(
                             talkingTo: chatId,
-                            name: info.UserName,
+                            name: info.NickName,
                             messageText:
                                 controller.ChatMsgs[chatId]!.LatestMsge,
-                            imageURL:
-                                "https://cdn.pixabay.com/photo/2015/11/16/14/43/cat-1045782__340.jpg",
+                            imageURL: info.AvatarUrl,
                             unread: controller.ChatMsgs[chatId]!.UnreadCount,
                             time: getTime(controller.ChatMsgs[chatId]!.Time),
                             type: "user",

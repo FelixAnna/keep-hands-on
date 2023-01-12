@@ -26,6 +26,9 @@ namespace HSS.UserApi.Controllers
         [HttpGet("group")]
         public List<MessageModel> Group(string groupId)
         {
+            //ensure user in group or have permission
+            //to do
+            
             return _messageService.GetGroupMessages(groupId);
         }
     }

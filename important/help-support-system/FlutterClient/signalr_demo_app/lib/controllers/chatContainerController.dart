@@ -163,6 +163,7 @@ class ChatContainerController extends BaseController {
     if (personFollowers.any((e) => e.chatId == chatId)) {
       var follower = personFollowers.where((e) => e.chatId == chatId).first;
       follower.updateMsg(newMsge);
+      return;
     }
 
     if (groupFollowers.any((e) => e.chatId == chatId)) {

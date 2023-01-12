@@ -54,10 +54,17 @@ class GroupChatDetailsPage extends StatelessWidget {
                       SizedBox(
                         height: 6,
                       ),
-                      Text(
-                        "Online",
-                        style: TextStyle(
-                            color: Colors.grey.shade600, fontSize: 13),
+                      GetX<GroupChatDetailController>(
+                        init: Get.find<GroupChatDetailController>(
+                            tag: this.chatId),
+                        builder: (_) {
+                          return Text(
+                            "Person: " +
+                                _.groupMembers.value.Members.length.toString(),
+                            style: TextStyle(
+                                color: Colors.grey.shade600, fontSize: 13),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -83,26 +90,66 @@ class GroupChatDetailsPage extends StatelessWidget {
                 physics: AlwaysScrollableScrollPhysics(),
                 controller: _.scrollController,
                 itemBuilder: (context, index) {
+                  var isTargetMsg = _.messages[index].messageType == "receiver";
+                  var senderName = _.getSenderName(_.messages[index].sender);
+                  var senderAvatarUrl =
+                      _.getSenderAvatarUrl(_.messages[index].sender);
                   return Container(
                     padding: EdgeInsets.only(
                         left: 14, right: 14, top: 10, bottom: 10),
                     child: Align(
-                      alignment: (_.messages[index].messageType == "receiver"
+                      alignment: (isTargetMsg
                           ? Alignment.topLeft
                           : Alignment.topRight),
                       child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: (_.messages[index].messageType == "receiver"
-                              ? Colors.grey.shade200
-                              : Colors.blue[200]),
-                        ),
+                        // decoration: BoxDecoration(
+                        //   borderRadius: BorderRadius.circular(20),
+                        //   color: (isTargetMsg
+                        //       ? Colors.grey.shade200
+                        //       : Colors.blue[200]),
+                        // ),
                         padding: EdgeInsets.all(16),
-                        child: Text(
-                          _.messages[index].messageContent +
-                              " from @" +
-                              _.getSenderName(_.messages[index].sender),
-                          style: TextStyle(fontSize: 15),
+                        child: Container(
+                          child: Row(
+                            mainAxisAlignment: isTargetMsg
+                                ? MainAxisAlignment.start
+                                : MainAxisAlignment.end,
+                            children: [
+                              isTargetMsg
+                                  ? Tooltip(
+                                      message: senderName,
+                                      triggerMode: TooltipTriggerMode.tap,
+                                      child: CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(senderAvatarUrl),
+                                      ),
+                                    )
+                                  : Container(),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: (isTargetMsg
+                                      ? Colors.grey.shade200
+                                      : Colors.blue[200]),
+                                ),
+                                padding: EdgeInsets.all(16),
+                                child: Text(
+                                  _.messages[index].messageContent,
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ),
+                              isTargetMsg
+                                  ? Container()
+                                  : Tooltip(
+                                      message: _.Profile.NickName,
+                                      triggerMode: TooltipTriggerMode.tap,
+                                      child: CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(_.Profile.AvatarUrl),
+                                      ),
+                                    ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
