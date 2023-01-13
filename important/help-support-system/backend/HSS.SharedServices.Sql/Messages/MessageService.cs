@@ -52,6 +52,8 @@ namespace HSS.SharedServices.Sql.Messages
         public async Task SaveMessageAsync(SaveMessageRequest request)
         {
             using var connnection = new SqlConnection(connectionString);
+
+            //TODO fix the schema issue
             await connnection.InsertAsync(new MessageEntity
             {
                 From = request.Sender,

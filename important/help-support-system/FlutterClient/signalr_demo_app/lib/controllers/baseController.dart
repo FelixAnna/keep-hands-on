@@ -46,17 +46,6 @@ class BaseController extends GetxController {
 
   logout() async {
     var hubService = Get.find<HubService>();
-
-    var chatContainer = Get.find<ChatContainerController>();
-    for (var element in chatContainer.groupFollowers) {
-      await Get.delete<GroupChatDetailController>(tag: element.chatId);
-    }
-    chatContainer.groupFollowers.clear();
-    for (var element in chatContainer.personFollowers) {
-      await Get.delete<ChatDetailController>(tag: element.chatId);
-    }
-    chatContainer.personFollowers.clear();
-
     await authStorageService.ClearLoginResult();
     await hubService.stop();
   }

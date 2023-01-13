@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HSS.Common.Entities;
 
-[Table("hss.Messages")]
+[Table("Messages", Schema = "hss")]
 public class MessageEntity
 {
     public int Id { get; set; }

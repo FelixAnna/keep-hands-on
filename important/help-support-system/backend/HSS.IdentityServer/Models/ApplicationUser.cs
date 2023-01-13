@@ -8,4 +8,7 @@ public class ApplicationUser : IdentityUser
     public string? NickName { get; set; }
     [PersonalData]
     public string? AvatarUrl { get; set; }
+
+    [PersonalData]
+    public string? TenantId { get; set; }
 }

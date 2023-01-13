@@ -35,6 +35,9 @@ class ChatContainerController extends BaseController {
       return;
     }
 
+    //reset listeners
+    await resetListeners();
+
     //load contact
     await loadContactAndMessages();
 
@@ -94,6 +97,17 @@ class ChatContainerController extends BaseController {
 
     // start connection
     await hubService.start(callback: () => Get.toNamed("/login"));
+  }
+
+  resetListeners() async {
+    for (var element in groupFollowers) {
+      await Get.delete<GroupChatDetailController>(tag: element.chatId);
+    }
+    groupFollowers.clear();
+    for (var element in personFollowers) {
+      await Get.delete<ChatDetailController>(tag: element.chatId);
+    }
+    personFollowers.clear();
   }
 
   handleNewUserMessage(List<Object?>? parameters) {
