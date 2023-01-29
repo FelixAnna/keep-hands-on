@@ -37,4 +37,19 @@ class AuthStorageService {
         await LocalStorageService.save(LocalStorageService.JWT_KEY, ''),
         await LocalStorageService.save(LocalStorageService.PROFILE, ''),
       };
+
+  SaveTenantsResult(response) async => {
+        await LocalStorageService.save(
+            LocalStorageService.TENANTS_KEY, jsonEncode(response)),
+      };
+
+  GetTenantsCache() async {
+    var tenants =
+        await LocalStorageService.get(LocalStorageService.TENANTS_KEY);
+    return tenants;
+  }
+
+  ClearTenantsResult() async => {
+        await LocalStorageService.save(LocalStorageService.TENANTS_KEY, ''),
+      };
 }

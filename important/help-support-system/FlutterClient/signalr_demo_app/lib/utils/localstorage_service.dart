@@ -4,6 +4,7 @@ class LocalStorageService {
   static const JWT_KEY = "jwt";
   static const PROFILE = "profile";
   static const REMEMBER_USERNAME = 'curr_username';
+  static const TENANTS_KEY = "tenants";
   static final storage = FlutterSecureStorage();
 
   static Future<void> save(key, value) async {

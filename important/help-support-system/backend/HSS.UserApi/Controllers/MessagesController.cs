@@ -28,7 +28,7 @@ namespace HSS.UserApi.Controllers
         {
             //ensure user in group or have permission
             //to do
-            
+
             return _messageService.GetGroupMessages(groupId);
         }
     }

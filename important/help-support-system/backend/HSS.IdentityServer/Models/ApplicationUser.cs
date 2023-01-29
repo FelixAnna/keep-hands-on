@@ -10,5 +10,5 @@ public class ApplicationUser : IdentityUser
     public string? AvatarUrl { get; set; }
 
     [PersonalData]
-    public string? TenantId { get; set; }
+    public int? TenantId { get; set; }
 }

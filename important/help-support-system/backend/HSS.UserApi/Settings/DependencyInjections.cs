@@ -18,7 +18,7 @@ namespace HSS.UserApi.Settings
             IdentityPlatformSettings settings = configuration.GetRequiredSection("IdentityPlatformSettings").Get<IdentityPlatformSettings>();
 
             var connectionString = configuration["ConnectionStrings:DefaultConnection"]!;
-            services.AddSingleton(settings); 
+            services.AddSingleton(settings);
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>(_ => new GroupService(connectionString));
             services.AddScoped<IContactService, ContactService>(_ => new ContactService(connectionString));

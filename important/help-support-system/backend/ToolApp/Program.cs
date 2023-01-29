@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using IdentityModel;
 using IdentityServer4.Models;
-using System.Net.Sockets;
 
 Console.WriteLine("Hello, World!");
 

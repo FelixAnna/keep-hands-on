@@ -4,7 +4,7 @@
     {
         public Group Group { get; set; } = null!;
 
-        public List<GroupMember>? Memebers { get; set;}
+        public List<GroupMember>? Memebers { get; set; }
     }
     public class GroupMember
     {
@@ -12,8 +12,8 @@
 
         public string NickName { get; set; } = null!;
         public string AvatarUrl { get; set; } = null!;
-
         public string Email { get; set; } = null!;
+        public int TenantId { get; set; }
     }
     public class Group
     {

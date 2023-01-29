@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HSS.Common.Entities;
 
-[Table("Tenants", Schema ="hss")]
+[Table("Tenants", Schema = "hss")]
 public class TenantEntity
 {
     public int Id { get; set; }
@@ -10,8 +10,9 @@ public class TenantEntity
     public TenantStatus Status { get; set; }
 }
 
-public enum TenantStatus {
-    New,
-    Approved,
-    Ready=255
+public enum TenantStatus
+{
+    New = 1,
+    Approved = 2,
+    Ready = 256
 }

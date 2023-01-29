@@ -24,7 +24,7 @@ namespace HSS.HubServer
             var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
             var contacts = contactService.GetUserContact(userId);
             Groups.AddToGroupAsync(Context.ConnectionId, userId);
-            foreach(var group in contacts.Contact.Groups)
+            foreach (var group in contacts.Contact.Groups)
             {
                 Groups.AddToGroupAsync(Context.ConnectionId, group.GroupId.ToString());
             }

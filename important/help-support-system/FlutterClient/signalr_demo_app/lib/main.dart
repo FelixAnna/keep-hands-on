@@ -10,6 +10,7 @@ import 'package:signalr_demo_app/services/group_member_service.dart';
 import 'package:signalr_demo_app/services/hub_service.dart';
 import 'package:signalr_demo_app/services/message_service.dart';
 import 'package:signalr_demo_app/services/message_storage_service.dart';
+import 'package:signalr_demo_app/services/tenant_service.dart';
 import 'package:signalr_demo_app/services/user_service.dart';
 import 'package:signalr_demo_app/utils/authorized_client.dart';
 import 'package:signalr_demo_app/widgets/channels_page.dart';
@@ -83,6 +84,7 @@ class HSSApp extends StatelessWidget {
     IAppEnv envService = AppEnv();
     Get.put<IAppEnv>(envService, permanent: true);
     Get.put(AuthService(env: envService), permanent: true);
+    Get.put(TenantService(env: envService), permanent: true);
     Get.put(MessageService(client, env: envService), permanent: true);
     Get.put(UserService(client, env: envService), permanent: true);
     Get.put(GroupMemberService(client, env: envService), permanent: true);

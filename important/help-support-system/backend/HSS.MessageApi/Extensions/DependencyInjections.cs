@@ -13,7 +13,7 @@ namespace HSS.MessageApi.Extensions
             IdentityPlatformSettings settings = configuration.GetRequiredSection("IdentityPlatformSettings").Get<IdentityPlatformSettings>();
 
             var connectionString = configuration["ConnectionStrings:DefaultConnection"]!;
-            services.AddSingleton(settings); 
+            services.AddSingleton(settings);
             services.AddScoped<IMessageService, MessageService>(_ => new MessageService(connectionString));
             return services;
         }

@@ -75,7 +75,7 @@ Update migrations:
     Add-Migration InitialCreate
     Update-Database
 
-    dotnet ef migration add migrationName
+    dotnet ef migrations add migrationName
     dotnet ef database update
     dotnet ef database update migrationName  -- rollback to special migration
 

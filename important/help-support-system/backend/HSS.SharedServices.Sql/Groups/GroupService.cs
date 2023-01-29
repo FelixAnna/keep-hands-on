@@ -31,7 +31,7 @@ namespace HSS.SharedServices.Sql.Contact
             using (var connnection = new SqlConnection(connectionString))
             {
                 var newGroupId = connnection.Query<string>("SELECT GroupId FROM hss.GroupMembers WHERE UserId=@userId and GroupId=@groupId", new { userId, groupId });
-                if(groupId != newGroupId.FirstOrDefault())
+                if (groupId != newGroupId.FirstOrDefault())
                 {
                     throw new InvalidOperationException($"User with id {userId} not in group with id {groupId}");
                 }
@@ -47,7 +47,7 @@ namespace HSS.SharedServices.Sql.Contact
             using (var connnection = new SqlConnection(connectionString))
             {
                 var groupMemberIds = connnection.Query<string>("SELECT UserId FROM hss.GroupMembers WHERE GroupId=@groupId", new { groupId });
-                var groupMembers = connnection.Query<GroupMember>("SELECT Id as UserId, NickName, AvatarUrl, Email FROM dbo.AspNetUsers WHERE Id IN @ids", new { ids = groupMemberIds });
+                var groupMembers = connnection.Query<GroupMember>("SELECT Id as UserId, NickName, AvatarUrl, Email, TenantId FROM dbo.AspNetUsers WHERE Id IN @ids", new { ids = groupMemberIds });
 
                 return groupMembers.ToList();
             }

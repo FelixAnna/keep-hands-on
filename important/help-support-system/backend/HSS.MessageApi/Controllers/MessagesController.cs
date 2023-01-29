@@ -19,7 +19,7 @@ namespace HSS.MessageApi.Controllers
         [HttpGet("hello")]
         public string Index2(string from)
         {
-            
+
             return "Hi";
         }
 

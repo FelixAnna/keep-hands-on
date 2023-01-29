@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Friends", Schema ="hss")]
+    [Table("Friends", Schema = "hss")]
     public class FriendEntity
     {
         public int Id { get; set; }

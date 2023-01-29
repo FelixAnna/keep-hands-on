@@ -13,6 +13,22 @@
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating mb-3 mt-3">
+                <select asp-for="Input.TenantId"
+                        asp-items="@(new SelectList(Model.Tenants, nameof(TenantModel.Id), nameof(TenantModel.Name)))">
+                    <option>Please select one</option>
+                </select>
+            </div>
+            <div class="form-floating mb-3 mt-3">
+                <input asp-for="Input.NickName" class="form-control" aria-required="true" />
+                <label asp-for="Input.NickName"></label>
+                <span asp-validation-for="Input.NickName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 mt-3">
+                <input asp-for="Input.AvatarUrl" class="form-control" aria-required="true" />
+                <label asp-for="Input.AvatarUrl"></label>
+                <span asp-validation-for="Input.AvatarUrl" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 mt-3">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
                 <label asp-for="Input.Email"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
@@ -26,16 +42,6 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3 mt-3">
-                <input asp-for="Input.NickName" class="form-control" aria-required="true" />
-                <label asp-for="Input.NickName"></label>
-                <span asp-validation-for="Input.NickName" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3 mt-3">
-                <input asp-for="Input.AvatarUrl" class="form-control" aria-required="true" />
-                <label asp-for="Input.AvatarUrl"></label>
-                <span asp-validation-for="Input.AvatarUrl" class="text-danger"></span>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>

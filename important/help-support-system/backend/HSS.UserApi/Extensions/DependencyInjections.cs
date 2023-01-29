@@ -2,6 +2,8 @@
 using HSS.SharedServices.Contacts.Services;
 using HSS.SharedServices.Groups.Services;
 using HSS.SharedServices.Sql.Contact;
+using HSS.SharedServices.Sql.Tenants;
+using HSS.SharedServices.Tenants.Services;
 using HSS.UserApi.Users.Contracts;
 using HSS.UserApi.Users.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,10 +18,11 @@ namespace HSS.UserApi.Extensions
             IdentityPlatformSettings settings = configuration.GetRequiredSection("IdentityPlatformSettings").Get<IdentityPlatformSettings>();
 
             var connectionString = configuration["ConnectionStrings:DefaultConnection"]!;
-            services.AddSingleton(settings); 
+            services.AddSingleton(settings);
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>(_ => new GroupService(connectionString));
             services.AddScoped<IContactService, ContactService>(_ => new ContactService(connectionString));
+            services.AddScoped<ITenantService, TenantService>(_ => new TenantService(connectionString));
             return services;
         }
 

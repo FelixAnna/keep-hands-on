@@ -1,4 +1,6 @@
-﻿namespace HSS.SharedServices.Contacts
+﻿using HSS.Common.Models;
+
+namespace HSS.SharedServices.Contacts
 {
     public class UserContactModel
     {
@@ -13,11 +15,7 @@
         public string Name { get; set; } = null!;
     }
 
-    public class FriendModel
+    public class FriendModel : UserModel
     {
-        public string UserId { get; set; } = null!;
-        public string Email { get; set; } = null!;
-        public string NickName { get; set; } = null!;
-        public string AvatarUrl { get; set; } = null!;
     }
 }

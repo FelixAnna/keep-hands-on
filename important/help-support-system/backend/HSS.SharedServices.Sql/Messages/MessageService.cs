@@ -52,6 +52,10 @@ namespace HSS.SharedServices.Sql.Messages
         public async Task SaveMessageAsync(SaveMessageRequest request)
         {
             using var connnection = new SqlConnection(connectionString);
+            SqlMapperExtensions.TableNameMapper = (type) =>
+            {
+                return $"hss.Messages";
+            };
 
             //TODO fix the schema issue
             await connnection.InsertAsync(new MessageEntity

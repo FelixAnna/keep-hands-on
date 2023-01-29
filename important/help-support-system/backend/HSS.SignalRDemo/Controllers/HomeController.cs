@@ -60,7 +60,7 @@ namespace HSS.SignalRDemo.Controllers
                 ClientId = "webclient2",
                 ClientSecret = "SomethingUnknown@1116",
                 //Scope = "read",
-                
+
                 UserName = user.UserName,
                 Password = user.Password
             });
@@ -70,7 +70,7 @@ namespace HSS.SignalRDemo.Controllers
                 var userInfoResponse = await httpClient.GetUserInfoAsync(new UserInfoRequest
                 {
                     Address = disco.UserInfoEndpoint,
-                    
+
                     Token = identityServerResponse.AccessToken,
                 });
                 Console.WriteLine("User: {0}", userInfoResponse.Json);

@@ -6,4 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HSS.Common\HSS.Common.csproj" />
+  </ItemGroup>
 </Project>

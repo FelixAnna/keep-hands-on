@@ -1,19 +1,18 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:signalr_demo_app/controllers/chatDetailController.dart';
-import 'package:signalr_demo_app/controllers/groupChatDetailController.dart';
 
 import '../models/user.dart';
 import '../services/auth_service.dart';
 import '../services/auth_storage_service.dart';
 import '../services/hub_service.dart';
-import 'chatContainerController.dart';
+import '../services/tenant_service.dart';
 
 class BaseController extends GetxController {
   late String UserName = "";
   late String Token = "";
-  late User Profile = User(UserId: '', NickName: '', AvatarUrl: '', Email: '');
+  late User Profile =
+      User(UserId: '', TenantId: '', NickName: '', AvatarUrl: '', Email: '');
 
   late AuthStorageService authStorageService;
   @override
@@ -22,9 +21,8 @@ class BaseController extends GetxController {
   }
 
   Future<bool> loadUserFromCache() async {
-    authStorageService = Get.find<AuthStorageService>();
-
     // load last login info from local cache
+    authStorageService = Get.find<AuthStorageService>();
     var loginCache = await authStorageService.GetLoginCache();
     UserName = loginCache[2];
 
@@ -47,6 +45,28 @@ class BaseController extends GetxController {
   logout() async {
     var hubService = Get.find<HubService>();
     await authStorageService.ClearLoginResult();
+    await authStorageService.ClearTenantsResult();
     await hubService.stop();
+  }
+
+  loadTenants() async {
+    var service = Get.find<AuthStorageService>();
+    var tenants = await service.GetTenantsCache();
+    //print(tenants);
+    if (tenants != '') {
+      return tenants;
+    }
+
+    await Get.find<TenantService>()
+        .loadTenants("Ready")
+        .then((response) async => {
+              await service.SaveTenantsResult(response),
+            })
+        .onError((error, stackTrace) => {
+              Token = '',
+            });
+
+    tenants = await service.GetTenantsCache();
+    return tenants;
   }
 }

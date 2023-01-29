@@ -23,7 +23,9 @@ namespace HSS.IdentityServer.IdentityConfigurations
             var claims = new List<Claim>
             {
                 new Claim(JwtClaimTypes.Email, user.Email),
+                new Claim(JwtClaimTypes.Name, user.NickName!),
                 new Claim(JwtClaimTypes.NickName, user.NickName!),
+                new Claim("tenantId", user.TenantId!.ToString()??""),
                 new Claim(JwtClaimTypes.Picture, user.AvatarUrl!),
             };
 
@@ -34,7 +36,7 @@ namespace HSS.IdentityServer.IdentityConfigurations
         {
             var user = await _userManager.GetUserAsync(context.Subject);
 
-            context.IsActive = user!=null;
+            context.IsActive = user != null;
         }
     }
 }

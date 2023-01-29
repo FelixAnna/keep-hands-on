@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+using HSS.Common.Entities;
+using HSS.IdentityServer.Data;
 using HSS.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace HSS.IdentityServer.Areas.Identity.Pages.Account.Manage
 {
@@ -17,13 +17,16 @@ namespace HSS.IdentityServer.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly DbContext _context;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         /// <summary>
@@ -31,6 +34,7 @@ namespace HSS.IdentityServer.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+        public TenantModel Tenant { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -78,6 +82,17 @@ namespace HSS.IdentityServer.Areas.Identity.Pages.Account.Manage
 
             Username = userName;
 
+            if (user.TenantId > 0)
+            {
+                Tenant = _context.Set<TenantEntity>()
+                .Where(x => x.Id == user.TenantId.Value)
+                .Select(x => new TenantModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).First();
+            }
+
             Input = new InputModel
             {
                 NickName = user.NickName,
@@ -112,12 +127,12 @@ namespace HSS.IdentityServer.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            if(Input.NickName != user.NickName)
+            if (Input.NickName != user.NickName)
             {
                 user.NickName = Input.NickName;
             }
 
-            if(Input.AvatarUrl!= user.AvatarUrl)
+            if (Input.AvatarUrl != user.AvatarUrl)
             {
                 user.AvatarUrl = Input.AvatarUrl;
             }

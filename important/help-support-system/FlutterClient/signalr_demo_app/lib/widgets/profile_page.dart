@@ -46,6 +46,12 @@ class ProfilePage extends GetWidget<ProfileController> {
                           color: Colors.grey[500],
                         ),
                       )),
+                  Obx(() => Text(
+                        controller.TenantName.value,
+                        style: TextStyle(
+                          color: Colors.grey[500],
+                        ),
+                      )),
                 ],
               ),
             ),

@@ -21,8 +21,16 @@ namespace HSS.UserApi.Controllers
         [HttpGet("contact")]
         public GetContactResponse GetContacts()
         {
-           var userId = User.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.NameIdentifier)?.Value!;
+            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
             return contactService.GetUserContact(userId);
+        }
+
+        [Authorize]
+        [HttpGet("colleagues")]
+        public GetColleagueResponse GetUserColleagues(string keywords)
+        {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
+            return contactService.GetColleagues(userId);
         }
     }
 }
