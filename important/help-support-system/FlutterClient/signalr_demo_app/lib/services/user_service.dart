@@ -29,4 +29,26 @@ class UserService {
       throw new Exception(response.toString());
     }
   }
+
+  Future<List<ColleagueInfo>> getColleagues(String keywords) async {
+    var query = "";
+    if (keywords.trim().length > 0) {
+      query = '?keywords=' + jsonEncode(keywords.trim());
+    }
+    final response = await client
+        .get(Uri.parse(env.userApiAddress + '/api/users/colleagues' + query));
+    var body = jsonDecode(response.body);
+
+    var colleaguesJson = body['colleagues'] as List;
+    List<ColleagueInfo> colleaguesList = colleaguesJson
+        .map((tagJson) => ColleagueInfo.fromJson(tagJson))
+        .toList();
+
+    if (response.statusCode == HttpStatus.ok) {
+      return colleaguesList;
+    } else {
+      print('error: ' + response.toString());
+      throw new Exception(response.toString());
+    }
+  }
 }

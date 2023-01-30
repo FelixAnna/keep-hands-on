@@ -27,10 +27,10 @@ namespace HSS.UserApi.Controllers
 
         [Authorize]
         [HttpGet("colleagues")]
-        public GetColleagueResponse GetUserColleagues(string keywords)
+        public GetColleagueResponse GetUserColleagues(string? keywords = "")
         {
             var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
-            return contactService.GetColleagues(userId);
+            return contactService.GetColleagues(userId, keywords);
         }
     }
 }

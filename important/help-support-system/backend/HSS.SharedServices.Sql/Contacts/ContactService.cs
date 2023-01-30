@@ -32,16 +32,16 @@ namespace HSS.SharedServices.Sql.Contact
             };
         }
 
-        public GetColleagueResponse GetColleagues(string userId)
+        public GetColleagueResponse GetColleagues(string userId, string keywords)
         {
 
             var friends = GetUserFriends(userId);
-            var colleagues = GetUserColleagues(userId);
+            keywords = Newtonsoft.Json.JsonConvert.DeserializeObject<string>(keywords);
+            var colleagues = GetUserColleagues(userId, keywords);
 
             foreach (var item in colleagues)
             {
                 item.IsFriend = friends.Any(y => y.UserId == item.UserId);
-
             }
 
             var results = new GetColleagueResponse()
@@ -74,12 +74,15 @@ namespace HSS.SharedServices.Sql.Contact
             }
         }
 
-        private IList<ColleagueModel> GetUserColleagues(string userId)
+        private IList<ColleagueModel> GetUserColleagues(string userId, string keywords)
         {
             using (var connnection = new SqlConnection(connectionString))
             {
-                var currentUserTenantId = connnection.Query<string>("SELECT tenantId FROM dbo.AspNetUsers WHERE UserId=@userId", new { userId = userId });
-                var results = connnection.Query<ColleagueModel>("SELECT * FROM dbo.AspNetUsers WHERE TenantId = @tenantId", new { tenantId = currentUserTenantId });
+                var currentUserTenantId = connnection.Query<string>("SELECT TenantId FROM dbo.AspNetUsers WHERE Id=@userId", new { userId = userId });
+                var results = connnection.Query<ColleagueModel>("SELECT Id as UserId, Email, NickName, AvatarUrl, TenantId FROM dbo.AspNetUsers WHERE TenantId = @tenantId", new { tenantId = currentUserTenantId.First() });
+                if (!string.IsNullOrWhiteSpace(keywords)) {
+                    results = results.Where(x=>x.Email.Contains(keywords) || x.NickName.Contains(keywords));
+                }
 
                 return results.ToList();
             }

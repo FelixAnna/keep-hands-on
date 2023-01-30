@@ -6,6 +6,6 @@ namespace HSS.SharedServices.Contacts.Services
     {
         GetContactResponse GetUserContact(string userId);
 
-        GetColleagueResponse GetColleagues(string userId);
+        GetColleagueResponse GetColleagues(string userId, string keywords);
     }
 }

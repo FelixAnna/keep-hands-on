@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:signalr_demo_app/models/contact.dart';
 
 import '../controllers/chatDetailController.dart';
-import '../models/user.dart';
 import 'chat_details_page.dart';
 
 class UserItem extends StatelessWidget {
-  final User member;
+  final ColleagueInfo member;
   UserItem({
     required this.member,
   });
@@ -14,28 +14,7 @@ class UserItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        var isRegistered =
-            Get.isRegistered<ChatDetailController>(tag: this.member.UserId);
-        if (!isRegistered) {
-          var chatController = ChatDetailController(
-            chatId: this.member.UserId,
-            name: this.member.NickName,
-          );
-          await chatController.initial();
-          chatController.subscribe(Get.find());
-          Get.put(chatController, tag: this.member.UserId);
-        }
-
-        // TO DO
-        // Add friendship if not exists
-
-        Get.to(() => ChatDetailsPage(
-              chatId: this.member.UserId,
-              name: this.member.NickName,
-              avatarUrl: this.member.AvatarUrl,
-            ));
-      },
+      onTap: () async {},
       child: Container(
         padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Row(
@@ -63,10 +42,49 @@ class UserItem extends StatelessWidget {
                           SizedBox(
                             height: 6,
                           ),
+                          !this.member.IsFriend
+                              ? IconButton(
+                                  icon: Icon(Icons.person_add),
+                                  color: Colors.lightBlue,
+                                  onPressed: () async {
+                                    // TODO add relationship
+                                    // TODO
+                                    print(
+                                        "add friend relationship is on the way...");
+                                  },
+                                )
+                              : Container()
                         ],
                       ),
                     ),
                   ),
+                  IconButton(
+                    icon: Icon(this.member.IsFriend
+                        ? Icons.chat
+                        : Icons.chat_bubble_outline_rounded),
+                    color: Colors.lightBlue,
+                    onPressed: () async {
+                      Get.back();
+
+                      var isRegistered = Get.isRegistered<ChatDetailController>(
+                          tag: this.member.UserId);
+                      if (!isRegistered) {
+                        var chatController = ChatDetailController(
+                          chatId: this.member.UserId,
+                          name: this.member.NickName,
+                        );
+                        await chatController.initial();
+                        chatController.subscribe(Get.find());
+                        Get.put(chatController, tag: this.member.UserId);
+                      }
+
+                      Get.to(() => ChatDetailsPage(
+                            chatId: this.member.UserId,
+                            name: this.member.NickName,
+                            avatarUrl: this.member.AvatarUrl,
+                          ));
+                    },
+                  )
                 ],
               ),
             ),

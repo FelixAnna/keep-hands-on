@@ -45,3 +45,31 @@ class GroupInfo {
         'name': this.Name,
       };
 }
+
+class ColleagueInfo extends MemberInfo {
+  int TenantId;
+  bool IsFriend;
+
+  ColleagueInfo(
+      {required int TenantId,
+      required bool IsFriend,
+      required String UserId,
+      required String NickName,
+      required String AvatarUrl,
+      required String Email})
+      : this.TenantId = TenantId,
+        this.IsFriend = IsFriend,
+        super(
+            UserId: UserId,
+            NickName: NickName,
+            AvatarUrl: AvatarUrl,
+            Email: Email);
+
+  ColleagueInfo.fromJson(Map<String, dynamic> json)
+      : TenantId = json['tenantId'],
+        IsFriend = json['isFriend'],
+        super.fromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      {'tenantId': this.TenantId, 'isFriend': this.IsFriend, ...super.toJson()};
+}

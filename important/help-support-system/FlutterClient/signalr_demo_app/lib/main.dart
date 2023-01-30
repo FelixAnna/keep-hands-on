@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/config/env.dart';
 import 'package:signalr_demo_app/controllers/chatContainerController.dart';
+import 'package:signalr_demo_app/controllers/searchUserController.dart';
 import 'package:signalr_demo_app/services/auth_service.dart';
 import 'package:signalr_demo_app/services/group_member_service.dart';
 import 'package:signalr_demo_app/services/hub_service.dart';
@@ -90,6 +91,7 @@ class HSSApp extends StatelessWidget {
     Get.put(GroupMemberService(client, env: envService), permanent: true);
 
     Get.put(AuthStorageService(), permanent: true);
+    Get.put(SearchUserController(), permanent: true);
     Get.put(HubService(env: envService), permanent: true);
     Get.put(MessageStorageService(), permanent: true);
     Get.put(ProfileController(), permanent: true);

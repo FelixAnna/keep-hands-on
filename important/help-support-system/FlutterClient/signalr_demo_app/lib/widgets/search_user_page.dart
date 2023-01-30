@@ -34,9 +34,9 @@ class SearchUserPage extends GetWidget<SearchUserController> {
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     var info = controller.Users[index];
-                    return Obx(() => UserItem(
-                          member: info,
-                        ));
+                    return UserItem(
+                      member: info,
+                    );
                   },
                 )),
           ],

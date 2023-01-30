@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:signalr_demo_app/controllers/searchUserController.dart';
 import 'package:signalr_demo_app/models/chat_member.dart';
+import 'package:signalr_demo_app/widgets/search_user_page.dart';
 import '../controllers/chatContainerController.dart';
 import 'conversation_item.dart';
 import 'package:get/get.dart';
@@ -27,26 +29,24 @@ class ChatContainerPage extends GetWidget<ChatContainerController> {
                     Container(
                       padding:
                           EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 2),
-                      height: 30,
+                      height: 36,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: Colors.pink[50],
+                        color: Colors.lightBlue[50],
                       ),
                       child: Row(
                         children: <Widget>[
-                          Icon(
-                            Icons.add,
-                            color: Colors.pink,
-                            size: 20,
+                          new IconButton(
+                            icon: new Icon(Icons.person_add),
+                            color: Colors.lightBlue,
+                            onPressed: () async => {
+                              await Get.find<SearchUserController>().initial(),
+                              Get.to(() => SearchUserPage()),
+                            },
                           ),
                           SizedBox(
                             width: 2,
-                          ),
-                          Text(
-                            "Add New",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
+                          )
                         ],
                       ),
                     )

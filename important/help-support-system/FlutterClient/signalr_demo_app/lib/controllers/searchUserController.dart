@@ -18,5 +18,12 @@ class SearchUserController extends BaseController {
       Get.toNamed("/login");
       return;
     }
+
+    //load users
+    userService = Get.find<UserService>();
+    var colleagues = await userService.getColleagues("");
+    Users.value = colleagues
+        .where((element) => element.UserId != Profile.UserId)
+        .toList();
   }
 }

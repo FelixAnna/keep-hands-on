@@ -24,7 +24,7 @@ class ProfileController extends BaseController {
     UserInfo.value = Profile;
 
     var tenants = await loadTenants();
-    print(tenants);
+    //print(tenants);
     if (tenants != '') {
       var tenant = jsonDecode(tenants)
           .where((element) => element["id"].toString() == Profile.TenantId);
