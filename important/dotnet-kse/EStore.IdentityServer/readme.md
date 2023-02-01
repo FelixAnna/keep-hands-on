@@ -77,3 +77,5 @@ Update migrations:
     dotnet ef database update
     dotnet ef database update migrationName  -- rollback to special migration
 
+    dotnet ef database remove
+
