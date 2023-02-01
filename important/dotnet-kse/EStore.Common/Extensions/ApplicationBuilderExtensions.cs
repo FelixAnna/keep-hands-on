@@ -23,7 +23,7 @@ namespace EStore.Common.Extensions
             {
                 // Get server IP address
                 var features = app.Properties["server.Features"] as FeatureCollection;
-                var addresses = features!.Get<IServerAddressesFeature>();
+                var addresses = features!.Get<IServerAddressesFeature>()!;
                 var address = addresses.Addresses.First();
 
                 // Register service with consul

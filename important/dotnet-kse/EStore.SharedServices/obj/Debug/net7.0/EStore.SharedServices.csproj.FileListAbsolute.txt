@@ -1,0 +1,15 @@
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\bin\Debug\net7.0\EStore.SharedServices.deps.json
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\bin\Debug\net7.0\EStore.SharedServices.dll
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\bin\Debug\net7.0\EStore.SharedServices.pdb
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\bin\Debug\net7.0\EStore.Common.dll
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\bin\Debug\net7.0\EStore.Common.pdb
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\EStore.SharedServices.csproj.AssemblyReference.cache
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\EStore.SharedServices.GeneratedMSBuildEditorConfig.editorconfig
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\EStore.SharedServices.AssemblyInfoInputs.cache
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\EStore.SharedServices.AssemblyInfo.cs
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\EStore.SharedServices.csproj.CoreCompileInputs.cache
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\EStore.SharedServices.csproj.CopyComplete
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\EStore.SharedServices.dll
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\refint\EStore.SharedServices.dll
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\EStore.SharedServices.pdb
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.SharedServices\obj\Debug\net7.0\ref\EStore.SharedServices.dll

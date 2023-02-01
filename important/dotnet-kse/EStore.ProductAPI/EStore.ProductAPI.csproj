@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EStore.Common\EStore.Common.csproj" />
+    <ProjectReference Include="..\EStore.DataAccess.InMemoryCache\EStore.DataAccess.MemCache.csproj" />
+    <ProjectReference Include="..\EStore.DataAccess.Wrapper\EStore.DataAccess.Wrapper.csproj" />
+    <ProjectReference Include="..\EStore.SharedServices.SqlServer\EStore.DataAccess.SqlServer.csproj" />
+    <ProjectReference Include="..\EStore.SharedServices\EStore.SharedServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+  </ItemGroup>
+
+</Project>

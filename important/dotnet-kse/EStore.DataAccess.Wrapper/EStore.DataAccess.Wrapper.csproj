@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EStore.Common\EStore.Common.csproj" />
+    <ProjectReference Include="..\EStore.DataAccess.InMemoryCache\EStore.DataAccess.MemCache.csproj" />
+    <ProjectReference Include="..\EStore.SharedServices.SqlServer\EStore.DataAccess.SqlServer.csproj" />
+    <ProjectReference Include="..\EStore.SharedServices\EStore.SharedServices.csproj" />
+  </ItemGroup>
+
+</Project>

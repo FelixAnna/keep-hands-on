@@ -1,0 +1,17 @@
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\EStore.DataAccess.MemCache.csproj.AssemblyReference.cache
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\EStore.DataAccess.MemCache.GeneratedMSBuildEditorConfig.editorconfig
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\EStore.DataAccess.MemCache.AssemblyInfoInputs.cache
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\EStore.DataAccess.MemCache.AssemblyInfo.cs
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\EStore.DataAccess.MemCache.csproj.CoreCompileInputs.cache
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\bin\Debug\net7.0\EStore.DataAccess.MemCache.deps.json
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\bin\Debug\net7.0\EStore.DataAccess.MemCache.dll
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\bin\Debug\net7.0\EStore.DataAccess.MemCache.pdb
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\bin\Debug\net7.0\EStore.Common.dll
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\bin\Debug\net7.0\EStore.SharedServices.dll
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\bin\Debug\net7.0\EStore.Common.pdb
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\bin\Debug\net7.0\EStore.SharedServices.pdb
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\EStore.DataAccess.MemCache.csproj.CopyComplete
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\EStore.DataAccess.MemCache.dll
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\refint\EStore.DataAccess.MemCache.dll
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\EStore.DataAccess.MemCache.pdb
+D:\felix\github\keep-hands-on\important\dotnet-kse\EStore.DataAccess.InMemoryCache\obj\Debug\net7.0\ref\EStore.DataAccess.MemCache.dll

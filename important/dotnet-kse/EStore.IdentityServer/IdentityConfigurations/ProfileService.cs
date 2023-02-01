@@ -22,7 +22,7 @@ namespace EStore.IdentityServer.IdentityConfigurations
 
             var claims = new List<Claim>
             {
-                new Claim(JwtClaimTypes.Email, user.Email),
+                new Claim(JwtClaimTypes.Email, user.Email!),
                 new Claim(JwtClaimTypes.Name, user.NickName!),
                 new Claim(JwtClaimTypes.NickName, user.NickName!),
                 new Claim(JwtClaimTypes.Picture, user.AvatarUrl!),

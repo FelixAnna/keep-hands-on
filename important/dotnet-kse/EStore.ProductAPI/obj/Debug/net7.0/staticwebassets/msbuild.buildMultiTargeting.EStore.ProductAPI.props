@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\EStore.ProductAPI.props" />
+</Project>

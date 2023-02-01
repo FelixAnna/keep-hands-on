@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\EStore.CMS.props" />
+</Project>

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Duende.IdentityServer.EntityFramework.Options;
 using EStore.IdentityServer.Models;
+using EStore.Common.Entities;
 
 namespace EStore.IdentityServer.Data;
 
@@ -12,5 +13,15 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         : base(options, operationalStoreOptions)
     {
 
+
     }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DbSet{FriendEntity}"/>.
+    /// </summary>
+    public DbSet<ProductEntity> Products { get; set; }
+
+    //public DbSet<CartEntity> Carts { get; set; }
+
+    //public DbSet<CartItemEntity> CartItems { get; set; }
 }
