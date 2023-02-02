@@ -1,35 +1,40 @@
 ﻿using EStore.Common.Models;
-using EStore.SharedServices.Products.Services;
+using EStore.SharedServices.Products.Contracts;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace EStore.CMS.Controllers
 {
-    [Authorize]
+    [Authorize()]
     public class ProductsController : Controller
     {
+        private readonly HttpClient client;
 
-        private readonly IProductService productService;
-
-        public ProductsController(IProductService productService)
+        public ProductsController(IConfiguration configuration)
         {
-            this.productService = productService;
+            client = new HttpClient();
+            client.BaseAddress = new Uri(uriString: configuration["ProductApiBaseAddress"]!);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var response = await productService.GetAsync();
-            return response.Products != null ? 
-                          View(response.Products) :
-                          Problem("Entity set 'EStoreCMSContext.Products'  is null.");
+            var productsResponse = await GetAsync< GetProductResponse>("products");
+            return productsResponse?.Products != null ? 
+                          View(productsResponse.Products) :
+                          Problem("Entity set 'Products'  is null.");
         }
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var product = await productService.GetByIdAsync(id);
+            var product = await GetAsync<ProductModel>($"products/{id}");
             if (product == null)
             {
                 return NotFound();
@@ -56,7 +61,8 @@ namespace EStore.CMS.Controllers
                 var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
                 product.CreatedBy = userId;
                 product.CreatedAt = DateTime.UtcNow;
-                await productService.SaveAsync(product);
+                var newProduct = await PostAsync<ProductModel, ProductModel>("products", product);
+                Console.WriteLine(Json(newProduct));
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -65,7 +71,7 @@ namespace EStore.CMS.Controllers
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await productService.GetByIdAsync(id);
+            var product = await GetAsync<ProductModel>($"products/{id}");
             if (product == null)
             {
                 return NotFound();
@@ -86,7 +92,7 @@ namespace EStore.CMS.Controllers
                 return NotFound();
             }
 
-            var currentProduct = await productService.GetByIdAsync(id);
+            var currentProduct = await GetAsync<ProductModel>($"products/{id}");
 
             if (ModelState.IsValid)
             {
@@ -99,7 +105,8 @@ namespace EStore.CMS.Controllers
                 currentProduct.UpdatedBy = userId;
                 currentProduct.UpdatedAt = DateTime.UtcNow;
 
-                await productService.SaveAsync(currentProduct);
+                var newProduct = await PostAsync<ProductModel, ProductModel>("products",currentProduct);
+                Console.WriteLine(Json(newProduct));
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -108,7 +115,7 @@ namespace EStore.CMS.Controllers
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await productService.GetByIdAsync(id);
+            var product = await GetAsync<ProductModel>($"products/{id}");
             if (product == null)
             {
                 return NotFound();
@@ -122,10 +129,64 @@ namespace EStore.CMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var result = await DeleteAsync<bool>($"products/{id}");
+
             var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
-            var result = await productService.RemoveAsync(id);
             Console.WriteLine($"User {userId} deleted product ${id}, result is {result}");
             return RedirectToAction(nameof(Index));
+        }
+
+        private void ensureTokenAttached()
+        {
+            if (!client.DefaultRequestHeaders.Any(x => x.Key == "Authorization"))
+            {
+                var token = HttpContext.GetTokenAsync("access_token").Result;
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+            }
+        }
+
+        private async Task<T> GetAsync<T>(string url) where T : class
+        {
+            ensureTokenAttached();
+
+            T TResponse = default;
+            var response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                TResponse = await response.Content.ReadAsAsync<T>();
+            }
+
+            return TResponse;
+        }
+
+        private async Task<T> DeleteAsync<T>(string url) where T : struct
+        {
+            ensureTokenAttached();
+
+            T TResponse = default;
+            var response = await client.DeleteAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                TResponse = await response.Content.ReadAsAsync<T>();
+            }
+
+            return TResponse;
+        }
+
+        private async Task<T> PostAsync<T, TData>(string url, TData data) 
+            where T : class 
+            where TData : class
+        {
+            ensureTokenAttached();
+
+            T TResponse = default;
+            var response = await client.PostAsJsonAsync(url, data);
+            if (response.IsSuccessStatusCode)
+            {
+                TResponse = await response.Content.ReadAsAsync<T>();
+            }
+
+            return TResponse;
         }
     }
 }

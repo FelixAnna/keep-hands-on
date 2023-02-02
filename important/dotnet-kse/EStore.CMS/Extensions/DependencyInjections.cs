@@ -1,13 +1,6 @@
 ﻿using EStore.Common;
-using EStore.DataAccess.MemCache.Products;
-using EStore.DataAccess.Wrapper.Products;
-using EStore.SharedServices.Products.Repositories;
-using EStore.SharedServices.Products.Services;
-using EStore.SharedServices.SqlServer.Products;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using EStore.Common.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
-using NuGet.Configuration;
-using System.Security.Claims;
 
 namespace EStore.CMS.Extensions
 {
@@ -21,11 +14,6 @@ namespace EStore.CMS.Extensions
 
             var connectionString = configuration["ConnectionStrings:DefaultConnection"]!;
             services.AddSingleton(settings); 
-            services.AddMemoryCache();
-            services.AddScoped(op => new SqlProductRepository(connectionString));
-            services.AddScoped<CachedProductRepository>();
-            services.AddScoped<IProductRepository, WrapperProductRepository>();
-            services.AddScoped<IProductService, ProductService>();
 
             return services;
         }
@@ -49,8 +37,10 @@ namespace EStore.CMS.Extensions
                     options.ResponseMode = "query";
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
-                    options.Scope.Add("hub.write");
-                    options.Scope.Add("hub.read");
+                    options.Scope.Add("product.write"); 
+                    options.Scope.Add("product.read");
+                    options.Scope.Add("order.admin");
+                    options.Scope.Add("cart.admin");
                     options.SaveTokens = true;
                 })
                 .AddJwtBearer(options =>
@@ -64,14 +54,8 @@ namespace EStore.CMS.Extensions
                     options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
                 });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
-                {
-                    policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
-                    policy.RequireClaim(ClaimTypes.NameIdentifier);
-                });
-            });
+            services.AddEStoreAuthorization();
+
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders =

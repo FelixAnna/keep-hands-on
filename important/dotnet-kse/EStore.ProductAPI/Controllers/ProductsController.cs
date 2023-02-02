@@ -21,19 +21,34 @@ namespace EStore.ProductAPI.Controllers
 
         // GET: api/<ProductController>
         [HttpGet]
-        public async Task<GetProductResponse> Get()
+        public async Task<GetProductResponse> GetAsync()
         {
             var products = await productService.GetAsync();
             return products;
         }
 
         // GET api/<ProductController>/5
-        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ProductModel> Get(int id)
+        public async Task<ProductModel> GetAsync(int id)
         {
             var product = await productService.GetByIdAsync(id);
             return product;
+        }
+
+        [Authorize(Policy = "ProductAdmin")]
+        [HttpPost("")]
+        public async Task<ProductModel?> CreateAsync(ProductModel product)
+        {
+            var newProduct = await productService.SaveAsync(product);
+            return newProduct;
+        }
+
+        [Authorize(Policy = "ProductAdmin")]
+        [HttpDelete("{id}")]
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var success = await productService.RemoveAsync(id);
+            return success;
         }
     }
 }

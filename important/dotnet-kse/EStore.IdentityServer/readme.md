@@ -74,8 +74,10 @@ Update migrations:
     Update-Database
 
     dotnet ef migrations add migrationName
+    dotnet ef migrations remove  -- remove last migration scripts
+
     dotnet ef database update
     dotnet ef database update migrationName  -- rollback to special migration
 
-    dotnet ef database remove
+
 

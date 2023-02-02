@@ -10,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServices(builder.Configuration);
 builder.Services.AddConsulConfig(builder.Configuration);
-builder.Services.AddAuth();
+builder.Services.AddEStoreAuthentication();
+builder.Services.AddEStoreAuthorization();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

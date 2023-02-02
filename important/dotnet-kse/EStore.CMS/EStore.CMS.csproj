@@ -8,15 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EStore.Common\EStore.Common.csproj" />
-    <ProjectReference Include="..\EStore.DataAccess.InMemoryCache\EStore.DataAccess.MemCache.csproj" />
-    <ProjectReference Include="..\EStore.DataAccess.Wrapper\EStore.DataAccess.Wrapper.csproj" />
-    <ProjectReference Include="..\EStore.SharedServices.SqlServer\EStore.DataAccess.SqlServer.csproj" />
     <ProjectReference Include="..\EStore.SharedServices\EStore.SharedServices.csproj" />
   </ItemGroup>
 

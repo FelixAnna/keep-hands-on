@@ -1,8 +1,12 @@
 ﻿using Consul;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 
 namespace EStore.Common.Extensions
 {
@@ -27,7 +31,7 @@ namespace EStore.Common.Extensions
             return services;
         }
 
-        public static IServiceCollection AddAuth(this IServiceCollection services)
+        public static IServiceCollection AddEStoreAuthentication(this IServiceCollection services)
         {
             // Add services to the container.
             var settings = services.BuildServiceProvider().GetService<IdentityPlatformSettings>()!;
@@ -41,6 +45,8 @@ namespace EStore.Common.Extensions
                     options.Audience = settings.Audience;
                     options.Authority = settings.Authority;
                     options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+
+                    options.TokenValidationParameters.ValidAudiences = new[] { "user", "product", "order", "cart" };
 
                     options.Events = new JwtBearerEvents
                     {
@@ -61,6 +67,49 @@ namespace EStore.Common.Extensions
                         }
                     };
                 });
+
+            return services;
+        }
+        public static IServiceCollection AddEStoreAuthorization(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+                {
+                    options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
+                    {
+                        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                        policy.RequireClaim(ClaimTypes.NameIdentifier);
+                    });
+
+                    options.AddPolicy("ProductAdmin", policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireClaim("scope", "product.write");
+                    });
+
+                    options.AddPolicy("OrderAdmin", policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireClaim("scope", "order.admin");
+                    });
+
+                    options.AddPolicy("CartAdmin", policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireClaim("scope", "cart.admin");
+                    });
+
+                    options.AddPolicy("Customer", policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireClaim("scope", "cart.readwrite", "order.readwrite", "product.read");
+                    });
+
+                    options.AddPolicy("Anonymous", policy =>
+                    {
+                        policy.RequireClaim("scope", "product.read");
+                    });
+                });
+
             return services;
         }
 
@@ -79,19 +128,19 @@ namespace EStore.Common.Extensions
                     Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer {YourToken}\"",
                 });
                 option.AddSecurityRequirement(new OpenApiSecurityRequirement
- {
-     {
-           new OpenApiSecurityScheme
-             {
-                 Reference = new OpenApiReference
                  {
-                     Type = ReferenceType.SecurityScheme,
-                     Id = "Bearer"
-                 }
-             },
-             Array.Empty<string>()
-     }
- });
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                 });
             });
             return services;
         }

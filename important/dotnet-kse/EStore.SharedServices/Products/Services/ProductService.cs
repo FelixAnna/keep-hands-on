@@ -8,7 +8,8 @@ using EStore.SharedServices.Products.Services;
 namespace EStore.SharedServices.SqlServer.Products
 {
     public class ProductService : IProductService
-    {//Using automapper
+    {
+        //Using automapper
         private readonly Mapper mapper = new Mapper(new MapperConfiguration(cfg => {
             cfg.CreateMap<ProductEntity, ProductModel>();
             cfg.CreateMap<ProductModel, ProductEntity>();

@@ -37,7 +37,7 @@ namespace EStore.UserApi.Users.Contracts
 
                 ClientId = settings.ClientId,
                 ClientSecret = settings.ClientSecret,
-                Scope = "openid profile hub.read user.read user.contact",
+                Scope = "openid profile product.read order.readwrite cart.readwrite",
 
                 UserName = request.UserName,
                 Password = request.Password,

@@ -31,15 +31,6 @@
               "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.Common\\EStore.Common.csproj": {
                 "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.Common\\EStore.Common.csproj"
               },
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.InMemoryCache\\EStore.DataAccess.MemCache.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.InMemoryCache\\EStore.DataAccess.MemCache.csproj"
-              },
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.Wrapper\\EStore.DataAccess.Wrapper.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.Wrapper\\EStore.DataAccess.Wrapper.csproj"
-              },
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices.SqlServer\\EStore.DataAccess.SqlServer.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices.SqlServer\\EStore.DataAccess.SqlServer.csproj"
-              },
               "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices\\EStore.SharedServices.csproj": {
                 "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices\\EStore.SharedServices.csproj"
               }
@@ -59,6 +50,10 @@
             "AutoMapper": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "Microsoft.AspNet.WebApi.Client": {
+              "target": "Package",
+              "version": "[5.2.9, )"
             },
             "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
               "target": "Package",
@@ -163,214 +158,6 @@
             "Swashbuckle.AspNetCore.SwaggerGen": {
               "target": "Package",
               "version": "[6.5.0, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.InMemoryCache\\EStore.DataAccess.MemCache.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.InMemoryCache\\EStore.DataAccess.MemCache.csproj",
-        "projectName": "EStore.DataAccess.MemCache",
-        "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.InMemoryCache\\EStore.DataAccess.MemCache.csproj",
-        "packagesPath": "C:\\Users\\Felix_Yu\\.nuget\\packages\\",
-        "outputPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.InMemoryCache\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\Felix_Yu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net7.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
-            "projectReferences": {
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.Common\\EStore.Common.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.Common\\EStore.Common.csproj"
-              },
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices\\EStore.SharedServices.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices\\EStore.SharedServices.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
-          "dependencies": {
-            "Microsoft.Extensions.Caching.Memory": {
-              "target": "Package",
-              "version": "[7.0.0, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.Wrapper\\EStore.DataAccess.Wrapper.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.Wrapper\\EStore.DataAccess.Wrapper.csproj",
-        "projectName": "EStore.DataAccess.Wrapper",
-        "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.Wrapper\\EStore.DataAccess.Wrapper.csproj",
-        "packagesPath": "C:\\Users\\Felix_Yu\\.nuget\\packages\\",
-        "outputPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.Wrapper\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\Felix_Yu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net7.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
-            "projectReferences": {
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.Common\\EStore.Common.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.Common\\EStore.Common.csproj"
-              },
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.InMemoryCache\\EStore.DataAccess.MemCache.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.DataAccess.InMemoryCache\\EStore.DataAccess.MemCache.csproj"
-              },
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices.SqlServer\\EStore.DataAccess.SqlServer.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices.SqlServer\\EStore.DataAccess.SqlServer.csproj"
-              },
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices\\EStore.SharedServices.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices\\EStore.SharedServices.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices.SqlServer\\EStore.DataAccess.SqlServer.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices.SqlServer\\EStore.DataAccess.SqlServer.csproj",
-        "projectName": "EStore.DataAccess.SqlServer",
-        "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices.SqlServer\\EStore.DataAccess.SqlServer.csproj",
-        "packagesPath": "C:\\Users\\Felix_Yu\\.nuget\\packages\\",
-        "outputPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices.SqlServer\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\Felix_Yu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net7.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
-            "projectReferences": {
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.Common\\EStore.Common.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.Common\\EStore.Common.csproj"
-              },
-              "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices\\EStore.SharedServices.csproj": {
-                "projectPath": "D:\\felix\\github\\keep-hands-on\\important\\dotnet-kse\\EStore.SharedServices\\EStore.SharedServices.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
-          "dependencies": {
-            "Dapper.Contrib": {
-              "target": "Package",
-              "version": "[2.0.78, )"
-            },
-            "Microsoft.Data.SqlClient": {
-              "target": "Package",
-              "version": "[5.0.1, )"
             }
           },
           "imports": [
