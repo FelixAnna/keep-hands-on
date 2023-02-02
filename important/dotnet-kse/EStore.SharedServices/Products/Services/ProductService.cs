@@ -3,9 +3,8 @@ using EStore.Common.Entities;
 using EStore.Common.Models;
 using EStore.SharedServices.Products.Contracts;
 using EStore.SharedServices.Products.Repositories;
-using EStore.SharedServices.Products.Services;
 
-namespace EStore.SharedServices.SqlServer.Products
+namespace EStore.SharedServices.Products.Services
 {
     public class ProductService : IProductService
     {

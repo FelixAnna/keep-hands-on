@@ -13,22 +13,29 @@ namespace EStore.DataAccess.MemCache.Products
         {
             this.cache = cache;
         }
-
+        public async Task<IList<ProductEntity>> GetByIdsAsync(int[] ids)
+        {
+            var products = cache.Get<IList<ProductEntity>>(key)??new List<ProductEntity>();
+            return await Task.FromResult(products.Where(x =>
+            {
+                return ids.Contains(x.Id);
+            }).ToList());
+        }
         public async Task<ProductEntity?> GetByIdAsync(int id)
         {
-            var products = cache.Get<IList<ProductEntity>>(key);
-            return await Task.FromResult(products?.FirstOrDefault(x=>x.Id == id));
+            var products = cache.Get<IList<ProductEntity>>(key) ?? new List<ProductEntity>();
+            return await Task.FromResult(products.FirstOrDefault(x=>x.Id == id));
         }
 
         public async Task<IList<ProductEntity>> GetAsync()
         {
-            var products = cache.Get<IList<ProductEntity>>(key);
+            var products = cache.Get<IList<ProductEntity>>(key) ?? new List<ProductEntity>();
             return await Task.FromResult(products??Array.Empty<ProductEntity>());
         }
 
         public async Task<bool> RemoveByIdAsync(int id)
         {
-            var products = cache.Get<IList<ProductEntity>>(key);
+            var products = cache.Get<IList<ProductEntity>>(key) ?? new List<ProductEntity>();
             var newProducts = products.Where(x => x.Id != id).ToArray();
             SetCache(newProducts);
             return await Task.FromResult(products.Any(x=>x.Id == id));
@@ -36,7 +43,7 @@ namespace EStore.DataAccess.MemCache.Products
 
         public async Task<ProductEntity> SaveAsync(ProductEntity product)
         {
-            var products = cache.Get<IList<ProductEntity>>(key);
+            var products = cache.Get<IList<ProductEntity>>(key) ?? new List<ProductEntity>();
             var newProducts = products.Where(x => x.Id != product.Id).ToList();
             newProducts.Add(product);
             SetCache(newProducts);

@@ -19,7 +19,6 @@ namespace EStore.ProductAPI.Controllers
             this.productService = productService;
         }
 
-        // GET: api/<ProductController>
         [HttpGet]
         public async Task<GetProductResponse> GetAsync()
         {
@@ -27,7 +26,6 @@ namespace EStore.ProductAPI.Controllers
             return products;
         }
 
-        // GET api/<ProductController>/5
         [HttpGet("{id}")]
         public async Task<ProductModel> GetAsync(int id)
         {

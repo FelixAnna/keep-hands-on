@@ -62,7 +62,11 @@ namespace EStore.CMS.Controllers
                 product.CreatedBy = userId;
                 product.CreatedAt = DateTime.UtcNow;
                 var newProduct = await PostAsync<ProductModel, ProductModel>("products", product);
-                Console.WriteLine(Json(newProduct));
+                if(newProduct == null)
+                {
+                    return BadRequest("Failed to create product: " + Json(product));
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -93,6 +97,10 @@ namespace EStore.CMS.Controllers
             }
 
             var currentProduct = await GetAsync<ProductModel>($"products/{id}");
+            if (currentProduct == null)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
@@ -106,7 +114,11 @@ namespace EStore.CMS.Controllers
                 currentProduct.UpdatedAt = DateTime.UtcNow;
 
                 var newProduct = await PostAsync<ProductModel, ProductModel>("products",currentProduct);
-                Console.WriteLine(Json(newProduct));
+                if (newProduct == null)
+                {
+                    return BadRequest("Failed to edit product: " + Json(product));
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -183,7 +195,7 @@ namespace EStore.CMS.Controllers
             var response = await client.PostAsJsonAsync(url, data);
             if (response.IsSuccessStatusCode)
             {
-                TResponse = await response.Content.ReadAsAsync<T>();
+                TResponse = await response.Content.ReadAsAsync<T>(); 
             }
 
             return TResponse;

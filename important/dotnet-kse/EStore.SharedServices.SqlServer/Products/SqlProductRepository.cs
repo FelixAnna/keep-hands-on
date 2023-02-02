@@ -15,6 +15,13 @@ namespace EStore.SharedServices.SqlServer.Products
             this.connectionString = connectionString;
         }
 
+        public async Task<IList<ProductEntity>> GetByIdsAsync(int[] ids)
+        {
+            using var connnection = new SqlConnection(connectionString);
+            var product = await connnection.QueryAsync<ProductEntity>("SELECT * FROM store.Products WHERE Id in @ids", new { ids });
+            return product.ToList();
+        }
+
         public async Task<ProductEntity?> GetByIdAsync(int id)
         {
             using var connnection = new SqlConnection(connectionString);

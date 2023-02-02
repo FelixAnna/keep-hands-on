@@ -15,6 +15,20 @@ namespace EStore.DataAccess.Wrapper.Products
             this.cachedProductRepository = cachedProductRepository;
             this.sqlProductRepository = sqlProductRepository;
         }
+        public async Task<IList<ProductEntity>> GetByIdsAsync(int[] ids)
+        {
+            var products = await cachedProductRepository.GetByIdsAsync(ids);
+            if (products == null)
+            {
+                products = await sqlProductRepository.GetByIdsAsync(ids);
+
+                var newProducts = await sqlProductRepository.GetAsync();
+                cachedProductRepository.SetCache(newProducts);
+            }
+
+            return products;
+        }
+
         public async Task<ProductEntity?> GetByIdAsync(int id)
         {
             var product = await cachedProductRepository.GetByIdAsync(id);

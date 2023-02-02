@@ -21,7 +21,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     /// </summary>
     public DbSet<ProductEntity> Products { get; set; }
 
-    //public DbSet<CartEntity> Carts { get; set; }
+    public DbSet<CartEntity> Carts { get; set; }
 
-    //public DbSet<CartItemEntity> CartItems { get; set; }
+    public DbSet<CartItemEntity> CartItems { get; set; }
 }

@@ -6,7 +6,10 @@ namespace EStore.Common.Entities
     public class CartItemEntity : BaseEntity
     {
         public Guid Id { get; set; }
-        public string ProductId { get; set; } = null!;
+        public int ProductId { get; set; }
         public int Quantity { get; set; }
+
+        public int CartId { get; set; }
+        public CartEntity Cart { get; set; } = null!;
     }
 }

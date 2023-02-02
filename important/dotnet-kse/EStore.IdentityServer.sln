@@ -7,15 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.IdentityServer", "ES
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.Common", "EStore.Common\EStore.Common.csproj", "{CA2BAA15-FAF5-4BDE-85AE-E1ACA1798795}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.CMS", "EStore.CMS\EStore.CMS.csproj", "{5D40AE21-E3F7-43FD-B631-AAFAA9F1A98E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.CMS", "EStore.CMS\EStore.CMS.csproj", "{5D40AE21-E3F7-43FD-B631-AAFAA9F1A98E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.SharedServices", "EStore.SharedServices\EStore.SharedServices.csproj", "{034D0BB5-8732-4BEC-AEDF-9A4985F79E99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.SharedServices", "EStore.SharedServices\EStore.SharedServices.csproj", "{034D0BB5-8732-4BEC-AEDF-9A4985F79E99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.DataAccess.SqlServer", "EStore.SharedServices.SqlServer\EStore.DataAccess.SqlServer.csproj", "{283C1B6D-C734-4383-9353-DB94B8CC57C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.DataAccess.SqlServer", "EStore.SharedServices.SqlServer\EStore.DataAccess.SqlServer.csproj", "{283C1B6D-C734-4383-9353-DB94B8CC57C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.DataAccess.MemCache", "EStore.DataAccess.InMemoryCache\EStore.DataAccess.MemCache.csproj", "{D68DC0A7-8212-429B-B043-857C8DDE09B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.DataAccess.MemCache", "EStore.DataAccess.InMemoryCache\EStore.DataAccess.MemCache.csproj", "{D68DC0A7-8212-429B-B043-857C8DDE09B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.DataAccess.Wrapper", "EStore.DataAccess.Wrapper\EStore.DataAccess.Wrapper.csproj", "{C4626405-AA8C-4270-B149-EEF4B2470904}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.DataAccess.Wrapper", "EStore.DataAccess.Wrapper\EStore.DataAccess.Wrapper.csproj", "{C4626405-AA8C-4270-B149-EEF4B2470904}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{FF4A65FA-A3D8-44A4-B183-144AA9A34FBB}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.UserApi", "EStore.UserApi\EStore.UserApi.csproj", "{B4D965E4-1BA2-419F-9389-95BBEB650C74}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.ProductAPI", "EStore.ProductAPI\EStore.ProductAPI.csproj", "{EE57F383-317B-4A6C-B74C-BF813C7BD846}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.CartAPI", "EStore.CartAPI\EStore.CartAPI.csproj", "{026F2BCA-B51A-403C-B65F-F1DEEDF6FDAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{EE57F383-317B-4A6C-B74C-BF813C7BD846}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE57F383-317B-4A6C-B74C-BF813C7BD846}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE57F383-317B-4A6C-B74C-BF813C7BD846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{026F2BCA-B51A-403C-B65F-F1DEEDF6FDAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{026F2BCA-B51A-403C-B65F-F1DEEDF6FDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{026F2BCA-B51A-403C-B65F-F1DEEDF6FDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{026F2BCA-B51A-403C-B65F-F1DEEDF6FDAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
