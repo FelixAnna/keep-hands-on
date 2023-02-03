@@ -13,6 +13,7 @@ namespace EStore.Common.Entities
 
         public string UserId { get; set; } = null!;
 
+        [Dapper.Contrib.Extensions.Computed]
         public List<CartItemEntity> Items { get; set; } = null!;
     }
 }

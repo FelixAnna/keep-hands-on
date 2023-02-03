@@ -41,7 +41,6 @@ namespace EStore.DataAccess.SqlServer.Carts
         public async Task<bool> AddByUserIdAsync(string userId)
         {
             using var connnection = new SqlConnection(connectionString);
-            EnsureMapping();
 
             var item = new CartEntity()
             {
@@ -61,7 +60,6 @@ namespace EStore.DataAccess.SqlServer.Carts
             }
 
             using var connnection = new SqlConnection(connectionString);
-            EnsureMapping();
 
             var count = 0;
             foreach (var item in items)
@@ -110,23 +108,10 @@ namespace EStore.DataAccess.SqlServer.Carts
         public async Task<bool> UpdateCartItemAsync(CartItemEntity item)
         {
             using var connnection = new SqlConnection(connectionString);
-            EnsureMapping();
 
             item.UpdatedAt = DateTime.UtcNow;
             var count = await connnection.ExecuteAsync("update store.CartItems set Quantity=@Quantity ,UpdatedAt=@UpdatedAt where Id=@Id", item);
             return count>0;
-        }
-
-        private static void EnsureMapping()
-        {
-            SqlMapperExtensions.TableNameMapper = (type) =>
-            {
-                if (type == typeof(CartEntity))
-                    return "store.Carts";
-                if (type == typeof(CartItemEntity))
-                    return "store.CartItems";
-                return "undefined";
-            };
         }
     }
 }

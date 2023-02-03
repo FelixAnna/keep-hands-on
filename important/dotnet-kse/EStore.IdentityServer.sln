@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.ProductAPI", "EStore
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.CartAPI", "EStore.CartAPI\EStore.CartAPI.csproj", "{026F2BCA-B51A-403C-B65F-F1DEEDF6FDAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.OrderAPI", "EStore.OrderAPI\EStore.OrderAPI.csproj", "{556A7CA7-BD7A-4008-87E6-2D7E1FE2868A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{026F2BCA-B51A-403C-B65F-F1DEEDF6FDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{026F2BCA-B51A-403C-B65F-F1DEEDF6FDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{026F2BCA-B51A-403C-B65F-F1DEEDF6FDAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{556A7CA7-BD7A-4008-87E6-2D7E1FE2868A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{556A7CA7-BD7A-4008-87E6-2D7E1FE2868A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{556A7CA7-BD7A-4008-87E6-2D7E1FE2868A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{556A7CA7-BD7A-4008-87E6-2D7E1FE2868A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

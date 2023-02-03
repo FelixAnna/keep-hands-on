@@ -95,15 +95,15 @@ namespace EStore.SharedServices.Carts.Services
             return success;
         }
 
-        public async Task<bool> ExistsAsync(int cartId)
-        {
-            return await cartsRepository.ExistsAsync(cartId);
-        }
-
         public async Task<int> ClearCartAsync(int cartId)
         {
             var success = await cartsRepository.ClearProductsAsync(cartId);
             return success;
+        }
+
+        public async Task<bool> ExistsAsync(int cartId)
+        {
+            return await cartsRepository.ExistsAsync(cartId);
         }
     }
 }

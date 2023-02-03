@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Duende.IdentityServer.EntityFramework.Options;
 using EStore.IdentityServer.Models;
 using EStore.Common.Entities;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EStore.IdentityServer.Data;
 
@@ -15,6 +16,11 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 
 
     }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<OrderEntity>().Property(e => e.Status).HasConversion(new EnumToStringConverter<OrderStatus>());
+    }
 
     /// <summary>
     /// Gets or sets the <see cref="DbSet{FriendEntity}"/>.
@@ -24,4 +30,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     public DbSet<CartEntity> Carts { get; set; }
 
     public DbSet<CartItemEntity> CartItems { get; set; }
+
+    public DbSet<OrderEntity> Orders { get; set; }
+
+    public DbSet<OrderItemEntity> OrderItems { get; set; }
 }

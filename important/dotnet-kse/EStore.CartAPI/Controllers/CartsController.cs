@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace EStore.ProductAPI.Controllers
+namespace EStore.CartAPI.Controllers
 {
     [Authorize(Policy = "Customer")]
     [Route("api/[controller]")]
