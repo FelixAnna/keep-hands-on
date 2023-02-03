@@ -32,7 +32,8 @@ namespace EStore.DataAccess.Wrapper.Products
         public async Task<ProductEntity?> GetByIdAsync(int id)
         {
             var product = await cachedProductRepository.GetByIdAsync(id);
-            if(product == null) { 
+            if (product == null)
+            {
                 product = await sqlProductRepository.GetByIdAsync(id);
 
                 var products = await sqlProductRepository.GetAsync();
@@ -57,7 +58,7 @@ namespace EStore.DataAccess.Wrapper.Products
 
         public async Task<bool> RemoveByIdAsync(int id)
         {
-            if(await sqlProductRepository.RemoveByIdAsync(id))
+            if (await sqlProductRepository.RemoveByIdAsync(id))
             {
                 await cachedProductRepository.RemoveByIdAsync(id);
                 return true;

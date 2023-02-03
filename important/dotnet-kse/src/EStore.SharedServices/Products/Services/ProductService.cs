@@ -9,7 +9,8 @@ namespace EStore.SharedServices.Products.Services
     public class ProductService : IProductService
     {
         //Using automapper
-        private readonly Mapper mapper = new Mapper(new MapperConfiguration(cfg => {
+        private readonly Mapper mapper = new Mapper(new MapperConfiguration(cfg =>
+        {
             cfg.CreateMap<ProductEntity, ProductModel>();
             cfg.CreateMap<ProductModel, ProductEntity>();
         }
@@ -25,7 +26,7 @@ namespace EStore.SharedServices.Products.Services
         public async Task<ProductModel> GetByIdAsync(int id)
         {
             var productEntity = await productRepository.GetByIdAsync(id);
-            
+
             return mapper.Map<ProductModel>(productEntity);
         }
 

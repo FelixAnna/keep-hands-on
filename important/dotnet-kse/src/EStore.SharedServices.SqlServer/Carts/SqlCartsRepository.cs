@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
 using EStore.Common.Entities;
 using EStore.SharedServices.Carts.Repositories;
 using Microsoft.Data.SqlClient;
@@ -14,7 +13,7 @@ namespace EStore.DataAccess.SqlServer.Carts
         {
             this.connectionString = connectionString;
         }
-        public async Task<CartEntity> GetByIdAsync(int cartId) 
+        public async Task<CartEntity> GetByIdAsync(int cartId)
         {
             using var connnection = new SqlConnection(connectionString);
             var cart = await connnection.QueryFirstOrDefaultAsync<CartEntity>("SELECT * FROM store.Carts WHERE CartId = @cartId", new { cartId });
@@ -32,7 +31,7 @@ namespace EStore.DataAccess.SqlServer.Carts
             var cart = await connnection.QueryFirstOrDefaultAsync<CartEntity>("SELECT * FROM store.Carts WHERE UserId = @userId", new { userId });
             if (cart != null)
             {
-                 var items = await connnection.QueryAsync<CartItemEntity>("SELECT * FROM store.CartItems WHERE CartId=@cartId", new { cartId = cart.CartId });
+                var items = await connnection.QueryAsync<CartItemEntity>("SELECT * FROM store.CartItems WHERE CartId=@cartId", new { cartId = cart.CartId });
                 cart.Items = items.ToList();
             }
             return cart;
@@ -50,7 +49,7 @@ namespace EStore.DataAccess.SqlServer.Carts
             };
 
             int count = await connnection.ExecuteAsync("insert store.Carts(Name, UserId, CreatedAt) values(@Name, @UserId, @CreatedAt)", item);
-            return count>0;
+            return count > 0;
         }
         public async Task<int> AddProductsAsync(int cartId, params CartItemEntity[] items)
         {
@@ -111,7 +110,7 @@ namespace EStore.DataAccess.SqlServer.Carts
 
             item.UpdatedAt = DateTime.UtcNow;
             var count = await connnection.ExecuteAsync("update store.CartItems set Quantity=@Quantity ,UpdatedAt=@UpdatedAt where Id=@Id", item);
-            return count>0;
+            return count > 0;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace EStore.Common.Models
 
         public decimal GetTotalPrice()
         {
-            return Items.Sum(x => x.Quantity * x.UnitPrice??0);
+            return Items.Sum(x => x.Quantity * x.UnitPrice ?? 0);
         }
     }
 

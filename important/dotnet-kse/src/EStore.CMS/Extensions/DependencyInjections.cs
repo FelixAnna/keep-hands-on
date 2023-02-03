@@ -13,7 +13,7 @@ namespace EStore.CMS.Extensions
             IdentityPlatformSettings settings = configuration.GetRequiredSection("IdentityPlatformSettings").Get<IdentityPlatformSettings>()!;
 
             var connectionString = configuration["ConnectionStrings:DefaultConnection"]!;
-            services.AddSingleton(settings); 
+            services.AddSingleton(settings);
 
             return services;
         }
@@ -37,7 +37,7 @@ namespace EStore.CMS.Extensions
                     options.ResponseMode = "query";
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
-                    options.Scope.Add("product.write"); 
+                    options.Scope.Add("product.write");
                     options.Scope.Add("product.read");
                     options.Scope.Add("order.admin");
                     options.Scope.Add("cart.admin");
@@ -63,8 +63,8 @@ namespace EStore.CMS.Extensions
                 // These three subnets encapsulate the applicable Azure subnets. At the moment, it's not possible to narrow it down further.
                 options.KnownNetworks.Clear();
                 options.KnownProxies.Clear();
-            }); 
-            
+            });
+
             return services;
         }
     }

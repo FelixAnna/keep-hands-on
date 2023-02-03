@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using EStore.Common.Entities;
+﻿using EStore.Common.Entities;
+using EStore.Common.Exceptions;
 using EStore.Common.Models;
-using EStore.SharedServices.Carts.Repositories;
 using EStore.SharedServices.Carts.Services;
 using EStore.SharedServices.Orders.Contracts;
 using EStore.SharedServices.Orders.Services;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Transactions;
 
@@ -13,7 +11,7 @@ namespace EStore.OrderAPI.ApplicationServices
 {
     public class OrdersApplicationService
     {
-        private readonly IOrdersService orderService; 
+        private readonly IOrdersService orderService;
         private readonly ICartsService cartService;
 
         public OrdersApplicationService(IOrdersService orderService, ICartsService cartService)
@@ -39,9 +37,9 @@ namespace EStore.OrderAPI.ApplicationServices
         public async Task<bool> AddAsync(string userId)
         {
             var cart = await cartService.GetOrAddAsync(userId);
-            if(cart== null || cart.Cart.Items == null || !cart.Cart.Items.Any())
+            if (cart == null || cart.Cart.Items == null || !cart.Cart.Items.Any())
             {
-                throw new Exception("User did not add any product to cart");
+                throw new KSEInvalidOperationException($"User: {userId} did not add any product to cart");
             }
 
             var order = new OrderModel()
@@ -85,7 +83,7 @@ namespace EStore.OrderAPI.ApplicationServices
         {
             if (!await orderService.ExistsAsync(userId, orderId))
             {
-                throw new Exception($"Order not found exception: {orderId}");
+                throw new KSENotFoundException($"Order not found exception: {orderId}");
             }
         }
     }

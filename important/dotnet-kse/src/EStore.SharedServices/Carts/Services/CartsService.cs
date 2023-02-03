@@ -11,7 +11,8 @@ namespace EStore.SharedServices.Carts.Services
     public class CartsService : ICartsService
     {
         //Using automapper
-        private readonly Mapper mapper = new(new MapperConfiguration(cfg => {
+        private readonly Mapper mapper = new(new MapperConfiguration(cfg =>
+        {
             cfg.CreateMap<CartEntity, CartModel>();
             cfg.CreateMap<CartModel, CartEntity>();
             cfg.CreateMap<CartItemEntity, CartItemModel>();
@@ -31,8 +32,8 @@ namespace EStore.SharedServices.Carts.Services
 
         public async Task<GetCartResponse> GetOrAddAsync(string userId)
         {
-            var entity= await cartsRepository.GetByUserIdAsync(userId);
-            if(entity== null)
+            var entity = await cartsRepository.GetByUserIdAsync(userId);
+            if (entity == null)
             {
                 await cartsRepository.AddByUserIdAsync(userId);
                 entity = await cartsRepository.GetByUserIdAsync(userId);
@@ -51,7 +52,7 @@ namespace EStore.SharedServices.Carts.Services
 
                 //load products
                 var productLists = await productRepository.GetByIdsAsync(entity.Items.Select(i => i.ProductId).ToArray());
-                result.Products = productLists.Select(x=> mapper.Map<ProductModel>(x)).ToList();
+                result.Products = productLists.Select(x => mapper.Map<ProductModel>(x)).ToList();
             }
 
             return result;
@@ -61,9 +62,9 @@ namespace EStore.SharedServices.Carts.Services
         {
             var cart = await cartsRepository.GetByIdAsync(cartId);
 
-            var affectedProductIds = cartItems.Select(x=>x.ProductId).Distinct().ToList();
+            var affectedProductIds = cartItems.Select(x => x.ProductId).Distinct().ToList();
 
-            var updatedItems = cart.Items.Where(x=> affectedProductIds.Contains(x.ProductId)).ToList();
+            var updatedItems = cart.Items.Where(x => affectedProductIds.Contains(x.ProductId)).ToList();
             var updatedItemProductIds = updatedItems.Select(x => x.ProductId).ToList();
 
             var insertedItems = cartItems.Where(x => !updatedItemProductIds.Contains(x.ProductId)).ToList();

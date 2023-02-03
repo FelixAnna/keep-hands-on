@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,7 +84,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting(); 
+app.UseRouting();
 app.UseCors(builder =>
 {
     builder.AllowAnyOrigin()

@@ -3,7 +3,7 @@
 namespace EStore.Common.Entities
 {
     [Table("Products", Schema = "store")]
-    public class ProductEntity :BaseEntity
+    public class ProductEntity : BaseEntity
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;

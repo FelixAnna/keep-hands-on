@@ -40,15 +40,15 @@ namespace EStore.SharedServices.SqlServer.Products
         {
             using var connnection = new SqlConnection(connectionString);
             var count = await connnection.ExecuteAsync("DELETE FROM store.Products WHERE Id=@id", new { id });
-            return count>0;
+            return count > 0;
         }
 
         public async Task<ProductEntity> SaveAsync(ProductEntity product)
         {
             using var connnection = new SqlConnection(connectionString);
             SqlMapperExtensions.TableNameMapper = (type) =>
-            {   
-                if(type == typeof(ProductEntity))
+            {
+                if (type == typeof(ProductEntity))
                     return "store.Products";
                 return "undefined";
             };

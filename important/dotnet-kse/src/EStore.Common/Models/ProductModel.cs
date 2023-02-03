@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EStore.Common.Models
+﻿namespace EStore.Common.Models
 {
     public class ProductModel
     {

@@ -2,7 +2,7 @@
 using EStore.UserApi.Users.Contracts;
 using EStore.UserApi.Users.Services;
 
-namespace EStore.ProductAPI.Extensions
+namespace EStore.UserApi.Extensions
 {
     public static class DependencyInjections
     {

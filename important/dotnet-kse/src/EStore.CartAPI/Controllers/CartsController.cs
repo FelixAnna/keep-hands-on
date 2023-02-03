@@ -50,7 +50,7 @@ namespace EStore.CartAPI.Controllers
         }
 
         [HttpPost("{cartId}/items/remove")]
-        public async Task<int> RemoveProductsAsync(int cartId,[FromBody] Guid[] cartItemIds)
+        public async Task<int> RemoveProductsAsync(int cartId, [FromBody] Guid[] cartItemIds)
         {
             if (!await cartService.ExistsAsync(cartId))
             {

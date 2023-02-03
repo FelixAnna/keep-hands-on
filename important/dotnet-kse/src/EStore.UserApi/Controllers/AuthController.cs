@@ -1,4 +1,5 @@
-﻿using EStore.UserApi.Users.Contracts;
+﻿using EStore.Common.Exceptions;
+using EStore.UserApi.Users.Contracts;
 using EStore.UserApi.Users.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,18 @@ namespace EStore.UserApi.Controllers
         public async Task<LoginResponse> Login(LoginRequest request)
         {
             return await userService.PasswordSignInAsync(request);
+        }
+
+        [HttpGet("a")]
+        public async Task Error()
+        {
+            throw new KSEOperationFailedException("Text Exception");
+        }
+
+        [HttpGet("b")]
+        public async Task Error2()
+        {
+            throw new KSENotFoundException("Text Exception");
         }
     }
 }

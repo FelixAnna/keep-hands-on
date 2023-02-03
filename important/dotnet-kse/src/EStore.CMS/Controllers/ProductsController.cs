@@ -27,8 +27,8 @@ namespace EStore.CMS.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var productsResponse = await GetAsync< GetProductResponse>("products");
-            return productsResponse?.Products != null ? 
+            var productsResponse = await GetAsync<GetProductResponse>("products");
+            return productsResponse?.Products != null ?
                           View(productsResponse.Products) :
                           Problem("Entity set 'Products'  is null.");
         }
@@ -64,7 +64,7 @@ namespace EStore.CMS.Controllers
                 product.CreatedBy = userId;
                 product.CreatedAt = DateTime.UtcNow;
                 var newProduct = await PostAsync<ProductModel, ProductModel>("products", product);
-                if(newProduct == null)
+                if (newProduct == null)
                 {
                     return BadRequest("Failed to create product: " + Json(product));
                 }
@@ -115,7 +115,7 @@ namespace EStore.CMS.Controllers
                 currentProduct.UpdatedBy = userId;
                 currentProduct.UpdatedAt = DateTime.UtcNow;
 
-                var newProduct = await PostAsync<ProductModel, ProductModel>("products",currentProduct);
+                var newProduct = await PostAsync<ProductModel, ProductModel>("products", currentProduct);
                 if (newProduct == null)
                 {
                     return BadRequest("Failed to edit product: " + Json(product));
@@ -187,8 +187,8 @@ namespace EStore.CMS.Controllers
             return TResponse;
         }
 
-        private async Task<T?> PostAsync<T, TData>(string url, TData data) 
-            where T : class 
+        private async Task<T?> PostAsync<T, TData>(string url, TData data)
+            where T : class
             where TData : class
         {
             EnsureTokenAttached();
@@ -197,7 +197,7 @@ namespace EStore.CMS.Controllers
             var response = await client.PostAsJsonAsync(url, data);
             if (response.IsSuccessStatusCode)
             {
-                TResponse = await response.Content.ReadAsAsync<T>(); 
+                TResponse = await response.Content.ReadAsAsync<T>();
             }
 
             return TResponse;

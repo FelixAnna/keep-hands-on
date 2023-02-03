@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Duende.IdentityServer.EntityFramework.Options;
-using EStore.IdentityServer.Models;
+﻿using Duende.IdentityServer.EntityFramework.Options;
 using EStore.Common.Entities;
+using EStore.IdentityServer.Models;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Options;
 
 namespace EStore.IdentityServer.Data;
 

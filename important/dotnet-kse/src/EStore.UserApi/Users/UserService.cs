@@ -1,5 +1,5 @@
 ﻿using EStore.Common;
-using EStore.UserApi.Users.Exceptions;
+using EStore.Common.Exceptions;
 using EStore.UserApi.Users.Services;
 using IdentityModel;
 using IdentityModel.Client;
@@ -62,7 +62,7 @@ namespace EStore.UserApi.Users.Contracts
                 };
             }
 
-            throw new LoginFailedException(identityServerResponse.Error);
+            throw new KSEOperationFailedException(identityServerResponse.Error);
         }
     }
 }

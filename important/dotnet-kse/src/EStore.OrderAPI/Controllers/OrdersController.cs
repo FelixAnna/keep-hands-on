@@ -1,5 +1,4 @@
 ﻿using EStore.Common.Entities;
-using EStore.Common.Models;
 using EStore.OrderAPI.ApplicationServices;
 using EStore.SharedServices.Orders.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -47,7 +46,7 @@ namespace EStore.OrderAPI.Controllers
         }
 
         [HttpPost("{orderId}")]
-        public async Task<bool> UpdateAsync(int orderId, [FromBody]OrderStatus status)
+        public async Task<bool> UpdateAsync(int orderId, [FromBody] OrderStatus status)
         {
             var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
             var response = await orderService.UpdateAsync(userId, orderId, status);

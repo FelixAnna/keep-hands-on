@@ -10,7 +10,8 @@ namespace EStore.SharedServices.Orders.Services
     public class OrdersService : IOrdersService
     {
         //Using automapper
-        private readonly Mapper mapper = new(new MapperConfiguration(cfg => {
+        private readonly Mapper mapper = new(new MapperConfiguration(cfg =>
+        {
             cfg.CreateMap<OrderEntity, OrderModel>();
             cfg.CreateMap<OrderModel, OrderEntity>();
             cfg.CreateMap<OrderItemModel, OrderItemEntity>();
@@ -43,7 +44,7 @@ namespace EStore.SharedServices.Orders.Services
             {
                 //map cart items
                 model.Items = order.Items!.Select(x => mapper.Map<OrderItemModel>(x)).ToList();
-                result.Orders = new List<OrderModel>{ model };
+                result.Orders = new List<OrderModel> { model };
 
                 //load products
                 var productLists = await productRepository.GetByIdsAsync(order.Items.Select(i => i.ProductId).ToArray());
@@ -64,7 +65,7 @@ namespace EStore.SharedServices.Orders.Services
                 TotalCount = orders.Count,
             };
 
-            var models = orders.Select(order=>
+            var models = orders.Select(order =>
             {
                 var model = mapper.Map<OrderModel>(order);
                 if (order.Items.Any())
@@ -98,7 +99,8 @@ namespace EStore.SharedServices.Orders.Services
         public async Task<int> RemoveAsync(int orderId)
         {
             var order = await orderRepository.GetByIdAsync(orderId);
-            if(order != null) {
+            if (order != null)
+            {
                 return await orderRepository.RemoveAsync(orderId);
             }
             return -1;
