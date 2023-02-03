@@ -21,17 +21,5 @@ namespace EStore.UserApi.Controllers
         {
             return await userService.PasswordSignInAsync(request);
         }
-
-        [HttpGet("a")]
-        public async Task Error()
-        {
-            throw new KSEOperationFailedException("Text Exception");
-        }
-
-        [HttpGet("b")]
-        public async Task Error2()
-        {
-            throw new KSENotFoundException("Text Exception");
-        }
     }
 }

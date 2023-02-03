@@ -22,7 +22,7 @@ namespace EStore.DataAccess.SqlServer.Carts
                 var items = await connnection.QueryAsync<CartItemEntity>("SELECT * FROM store.CartItems WHERE CartId=@cartId", new { cartId = cart.CartId });
                 cart.Items = items.ToList();
             }
-            return cart;
+            return cart!;
         }
 
         public async Task<CartEntity> GetByUserIdAsync(string userId)
@@ -34,7 +34,7 @@ namespace EStore.DataAccess.SqlServer.Carts
                 var items = await connnection.QueryAsync<CartItemEntity>("SELECT * FROM store.CartItems WHERE CartId=@cartId", new { cartId = cart.CartId });
                 cart.Items = items.ToList();
             }
-            return cart;
+            return cart!;
         }
 
         public async Task<bool> AddByUserIdAsync(string userId)

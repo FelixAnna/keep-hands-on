@@ -61,7 +61,7 @@ namespace EStore.DataAccess.SqlServer.Orders
                 order.Items = items.ToList();
             }
 
-            return order;
+            return order!;
         }
 
         public async Task<IList<OrderEntity>> GetByUserIdAsync(string userId)
