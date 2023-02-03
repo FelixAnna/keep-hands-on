@@ -10,6 +10,7 @@ namespace EStore.Common.Entities
         public int Quantity { get; set; }
 
         public int CartId { get; set; }
+
         public CartEntity Cart { get; set; } = null!;
     }
 }

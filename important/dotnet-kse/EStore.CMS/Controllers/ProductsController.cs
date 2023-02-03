@@ -15,8 +15,10 @@ namespace EStore.CMS.Controllers
 
         public ProductsController(IConfiguration configuration)
         {
-            client = new HttpClient();
-            client.BaseAddress = new Uri(uriString: configuration["ProductApiBaseAddress"]!);
+            client = new HttpClient
+            {
+                BaseAddress = new Uri(uriString: configuration["ProductApiBaseAddress"]!)
+            };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -148,7 +150,7 @@ namespace EStore.CMS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private void ensureTokenAttached()
+        private void EnsureTokenAttached()
         {
             if (!client.DefaultRequestHeaders.Any(x => x.Key == "Authorization"))
             {
@@ -157,11 +159,11 @@ namespace EStore.CMS.Controllers
             }
         }
 
-        private async Task<T> GetAsync<T>(string url) where T : class
+        private async Task<T?> GetAsync<T>(string url) where T : class
         {
-            ensureTokenAttached();
+            EnsureTokenAttached();
 
-            T TResponse = default;
+            T? TResponse = default;
             var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
@@ -173,7 +175,7 @@ namespace EStore.CMS.Controllers
 
         private async Task<T> DeleteAsync<T>(string url) where T : struct
         {
-            ensureTokenAttached();
+            EnsureTokenAttached();
 
             T TResponse = default;
             var response = await client.DeleteAsync(url);
@@ -185,13 +187,13 @@ namespace EStore.CMS.Controllers
             return TResponse;
         }
 
-        private async Task<T> PostAsync<T, TData>(string url, TData data) 
+        private async Task<T?> PostAsync<T, TData>(string url, TData data) 
             where T : class 
             where TData : class
         {
-            ensureTokenAttached();
+            EnsureTokenAttached();
 
-            T TResponse = default;
+            T? TResponse = default;
             var response = await client.PostAsJsonAsync(url, data);
             if (response.IsSuccessStatusCode)
             {

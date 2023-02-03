@@ -1,17 +1,36 @@
 ﻿using EStore.Common.Entities;
-using EStore.Common.Models;
 
 namespace EStore.SharedServices.Carts.Repositories
 {
     public interface ICartsRepository
     {
+        /// <summary>
+        /// Get cart
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
+        Task<CartEntity> GetByIdAsync(int cartId);
 
         /// <summary>
-        /// Get User's fisrt default cart, if not exists, add one
+        /// Get User's fisrt default cart
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<CartEntity> GetOrAddByUserIdAsync(string userId);
+        Task<CartEntity> GetByUserIdAsync(string userId);
+
+        /// <summary>
+        /// Add one cart for user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<bool> AddByUserIdAsync(string userId);
+
+        /// <summary>
+        /// Clean all items in user's cart
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
+        Task<int> ClearProductsAsync(int cartId);
 
         /// <summary>
         /// Add one or more items to cart

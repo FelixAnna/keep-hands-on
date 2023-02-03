@@ -4,13 +4,14 @@ using EStore.Common.Models;
 using EStore.SharedServices.Carts.Contracts;
 using EStore.SharedServices.Carts.Repositories;
 using EStore.SharedServices.Products.Repositories;
+using System.Transactions;
 
 namespace EStore.SharedServices.Carts.Services
 {
     public class CartsService : ICartsService
     {
         //Using automapper
-        private readonly Mapper mapper = new Mapper(new MapperConfiguration(cfg => {
+        private readonly Mapper mapper = new(new MapperConfiguration(cfg => {
             cfg.CreateMap<CartEntity, CartModel>();
             cfg.CreateMap<CartModel, CartEntity>();
             cfg.CreateMap<CartItemEntity, CartItemModel>();
@@ -28,9 +29,15 @@ namespace EStore.SharedServices.Carts.Services
             this.productRepository = productRepository;
         }
 
-        public async Task<GetCartResponse> GetAsync(string userId)
+        public async Task<GetCartResponse> GetOrAddAsync(string userId)
         {
-            var entity= await cartsRepository.GetOrAddByUserIdAsync(userId);
+            var entity= await cartsRepository.GetByUserIdAsync(userId);
+            if(entity== null)
+            {
+                await cartsRepository.AddByUserIdAsync(userId);
+                entity = await cartsRepository.GetByUserIdAsync(userId);
+            }
+
             var result = new GetCartResponse()
             {
                 Products = new List<ProductModel>(),
@@ -52,8 +59,28 @@ namespace EStore.SharedServices.Carts.Services
 
         public async Task<int> AddProductsAsync(int cartId, params CartItemModel[] cartItems)
         {
-            var count = await cartsRepository.AddProductsAsync(cartId, cartItems.Select(x=>mapper.Map<CartItemEntity>(x)).ToArray());
-            return count;
+            var cart = await cartsRepository.GetByIdAsync(cartId);
+
+            var affectedProductIds = cartItems.Select(x=>x.ProductId).Distinct().ToList();
+
+            var updatedItems = cart.Items.Where(x=> affectedProductIds.Contains(x.ProductId)).ToList();
+            var updatedItemProductIds = updatedItems.Select(x => x.ProductId).ToList();
+
+            var insertedItems = cartItems.Where(x => !updatedItemProductIds.Contains(x.ProductId)).ToList();
+            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                foreach (var item in updatedItems)
+                {
+                    item.Quantity += cartItems.Where(x => x.ProductId == item.ProductId).Sum(x => x.Quantity);
+                    await cartsRepository.UpdateCartItemAsync(mapper.Map<CartItemEntity>(item));
+                }
+
+                var inserted = await cartsRepository.AddProductsAsync(cartId, insertedItems.Select(x => mapper.Map<CartItemEntity>(x)).ToArray());
+
+                scope.Complete();
+            }
+
+            return cartItems.Count();
         }
 
         public async Task<int> RemoveProductsAsync(int cartId, params Guid[] cartItemIds)
@@ -71,6 +98,12 @@ namespace EStore.SharedServices.Carts.Services
         public async Task<bool> ExistsAsync(int cartId)
         {
             return await cartsRepository.ExistsAsync(cartId);
+        }
+
+        public async Task<int> ClearCartAsync(int cartId)
+        {
+            var success = await cartsRepository.ClearProductsAsync(cartId);
+            return success;
         }
     }
 }

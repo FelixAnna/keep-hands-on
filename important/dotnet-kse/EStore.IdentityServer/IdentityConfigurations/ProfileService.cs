@@ -18,7 +18,7 @@ namespace EStore.IdentityServer.IdentityConfigurations
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            var user = await _userManager.GetUserAsync(context.Subject);
+            var user = await _userManager.GetUserAsync(context.Subject)!;
 
             var claims = new List<Claim>
             {

@@ -25,8 +25,16 @@ namespace EStore.ProductAPI.Controllers
         public async Task<GetCartResponse> GetAsync()
         {
             var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
-            var cart = await cartService.GetAsync(userId);
+            var cart = await cartService.GetOrAddAsync(userId);
             return cart;
+        }
+
+        [HttpDelete("{cartId}")]
+        public async Task<int> ClearAsync(int cartId)
+        {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
+            var count = await cartService.ClearCartAsync(cartId);
+            return count;
         }
 
         [HttpPost("{cartId}/items/add")]
