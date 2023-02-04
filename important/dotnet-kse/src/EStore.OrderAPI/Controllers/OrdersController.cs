@@ -22,7 +22,7 @@ namespace EStore.OrderAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<GetOrderResponse> GetByUserIdAsync()
+        public async Task<GetOrderListResponse> GetByUserIdAsync()
         {
             var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
             var response = await orderService.GetByUserIdAsync(userId);
@@ -45,11 +45,35 @@ namespace EStore.OrderAPI.Controllers
             return response;
         }
 
-        [HttpPost("{orderId}")]
-        public async Task<bool> UpdateAsync(int orderId, [FromBody] OrderStatus status)
+        [HttpPost("{orderId}/pay")]
+        public async Task<bool> UpdateAsync(int orderId)
         {
             var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
-            var response = await orderService.UpdateAsync(userId, orderId, status);
+            var response = await orderService.PayOrderAsync(userId, orderId);
+            return response;
+        }
+
+        [HttpPost("{orderId}/delivery")]
+        public async Task<bool> DeliveryAsync(int orderId)
+        {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
+            var response = await orderService.DeliveryOrderAsync(userId, orderId);
+            return response;
+        }
+
+        [HttpPost("{orderId}/receive")]
+        public async Task<bool> ReceiveAsync(int orderId)
+        {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
+            var response = await orderService.ReceiveOrderAsync(userId, orderId);
+            return response;
+        }
+
+        [HttpPost("{orderId}/finish")]
+        public async Task<bool> FinishAsync(int orderId)
+        {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
+            var response = await orderService.FinishOrderAsync(userId, orderId);
             return response;
         }
 

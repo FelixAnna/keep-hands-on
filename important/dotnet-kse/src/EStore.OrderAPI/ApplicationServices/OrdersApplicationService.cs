@@ -1,8 +1,10 @@
 ﻿using EStore.Common.Entities;
 using EStore.Common.Exceptions;
 using EStore.Common.Models;
+using EStore.EventServices.Azure;
 using EStore.SharedServices.Carts.Services;
 using EStore.SharedServices.Orders.Contracts;
+using EStore.SharedServices.Orders.Events;
 using EStore.SharedServices.Orders.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Transactions;
@@ -13,15 +15,17 @@ namespace EStore.OrderAPI.ApplicationServices
     {
         private readonly IOrdersService orderService;
         private readonly ICartsService cartService;
+        private readonly EventGridService eventGridService;
 
-        public OrdersApplicationService(IOrdersService orderService, ICartsService cartService)
+        public OrdersApplicationService(IOrdersService orderService, ICartsService cartService, EventGridService eventGridService)
         {
             this.orderService = orderService;
             this.cartService = cartService;
+            this.eventGridService = eventGridService;
         }
 
         [HttpGet]
-        public async Task<GetOrderResponse> GetByUserIdAsync(string userId)
+        public async Task<GetOrderListResponse> GetByUserIdAsync(string userId)
         {
             var response = await orderService.GetByUserIdAsync(userId);
             return response;
@@ -56,19 +60,70 @@ namespace EStore.OrderAPI.ApplicationServices
 
             order.TotalPrice = order.GetTotalPrice();
 
-            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                var response = await orderService.AddAsync(order);
-                await cartService.ClearCartAsync(cart.Cart.CartId);
-                scope.Complete();
-                return response;
-            }
+            using TransactionScope scope = new(TransactionScopeAsyncFlowOption.Enabled);
+            var response = await orderService.AddAsync(order);
+            await cartService.ClearCartAsync(cart.Cart.CartId);            
+            scope.Complete();
+            return response;
         }
 
-        public async Task<bool> UpdateAsync(string userId, int orderId, OrderStatus status)
+        public async Task<bool> PayOrderAsync(string userId, int orderId)
         {
             await EnsureUserAccessAsync(userId, orderId);
-            var response = await orderService.UpdateAsync(orderId, status);
+            var result = await orderService.GetByIdAsync(orderId);
+            result.Order.Pay();
+            var response = await orderService.UpdateAsync(orderId, result.Order.Status);
+            if(await eventGridService.SendEventAsync(new OrderPayEvent(orderId)))
+            {
+                //failed to send events
+                Console.WriteLine($"Publish {nameof(OrderPayEvent)} for order: {orderId} failed.");
+            }
+
+            return response;
+        }
+
+        public async Task<bool> DeliveryOrderAsync(string userId, int orderId)
+        {
+            await EnsureUserAccessAsync(userId, orderId);
+            var result = await orderService.GetByIdAsync(orderId);
+            result.Order.Delivery();
+            var response = await orderService.UpdateAsync(orderId, result.Order.Status);
+            if (await eventGridService.SendEventAsync(new OrderDeliveryEvent(orderId)))
+            {
+                //failed to send events
+                Console.WriteLine($"Publish {nameof(OrderDeliveryEvent)} for order: {orderId} failed.");
+            }
+
+            return response;
+        }
+
+        public async Task<bool> ReceiveOrderAsync(string userId, int orderId)
+        {
+            await EnsureUserAccessAsync(userId, orderId);
+            var result = await orderService.GetByIdAsync(orderId);
+            result.Order.Receive();
+            var response = await orderService.UpdateAsync(orderId, result.Order.Status);
+            if (await eventGridService.SendEventAsync(new OrderReceivedEvent(orderId)))
+            {
+                //failed to send events
+                Console.WriteLine($"Publish {nameof(OrderReceivedEvent)} for order: {orderId} failed.");
+            }
+
+            return response;
+        }
+
+        public async Task<bool> FinishOrderAsync(string userId, int orderId)
+        {
+            await EnsureUserAccessAsync(userId, orderId);
+            var result = await orderService.GetByIdAsync(orderId);
+            result.Order.Finish();
+            var response = await orderService.UpdateAsync(orderId, result.Order.Status);
+            if (await eventGridService.SendEventAsync(new OrderFinishEvent(orderId)))
+            {
+                //failed to send events
+                Console.WriteLine($"Publish {nameof(OrderFinishEvent)} for order: {orderId} failed.");
+            }
+
             return response;
         }
 

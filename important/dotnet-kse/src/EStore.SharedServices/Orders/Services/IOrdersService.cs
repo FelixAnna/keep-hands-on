@@ -8,7 +8,7 @@ namespace EStore.SharedServices.Orders.Services
     {
         Task<GetOrderResponse> GetByIdAsync(int orderId);
 
-        Task<GetOrderResponse> GetByUserIdAsync(string userId);
+        Task<GetOrderListResponse> GetByUserIdAsync(string userId);
 
         Task<bool> AddAsync(OrderModel order);
 

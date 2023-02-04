@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EStore.Common\EStore.Common.csproj" />
+    <ProjectReference Include="..\EStore.EventServices.Azure\EStore.EventServices.Azure.csproj" />
   </ItemGroup>
 
 </Project>

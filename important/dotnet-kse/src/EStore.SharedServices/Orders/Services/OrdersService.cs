@@ -35,16 +35,13 @@ namespace EStore.SharedServices.Orders.Services
             var result = new GetOrderResponse()
             {
                 Products = new List<ProductModel>(),
-                Orders = new List<OrderModel>(),
-                TotalCount = 1,
+                Order = mapper.Map<OrderModel>(order),
             };
 
-            var model = mapper.Map<OrderModel>(order);
             if (order.Items.Any())
             {
                 //map cart items
-                model.Items = order.Items!.Select(x => mapper.Map<OrderItemModel>(x)).ToList();
-                result.Orders = new List<OrderModel> { model };
+                result.Order.Items = order.Items!.Select(x => mapper.Map<OrderItemModel>(x)).ToList();
 
                 //load products
                 var productLists = await productRepository.GetByIdsAsync(order.Items.Select(i => i.ProductId).ToArray());
@@ -54,11 +51,11 @@ namespace EStore.SharedServices.Orders.Services
             return result;
         }
 
-        public async Task<GetOrderResponse> GetByUserIdAsync(string userId)
+        public async Task<GetOrderListResponse> GetByUserIdAsync(string userId)
         {
             var orders = await orderRepository.GetByUserIdAsync(userId);
 
-            var result = new GetOrderResponse()
+            var result = new GetOrderListResponse()
             {
                 Products = new List<ProductModel>(),
                 Orders = new List<OrderModel>(),

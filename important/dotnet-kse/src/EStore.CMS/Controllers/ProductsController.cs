@@ -13,12 +13,9 @@ namespace EStore.CMS.Controllers
     {
         private readonly HttpClient client;
 
-        public ProductsController(IConfiguration configuration)
+        public ProductsController(IHttpClientFactory clientFactory)
         {
-            client = new HttpClient
-            {
-                BaseAddress = new Uri(uriString: configuration["ProductApiBaseAddress"]!)
-            };
+            client = clientFactory.CreateClient("productClient");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));

@@ -2,9 +2,10 @@
 
 namespace EStore.SharedServices.Orders.Contracts
 {
-    public record GetOrderResponse
+    public record GetOrderListResponse
     {
-        public OrderModel Order { get; set; } = null!;
+        public int TotalCount { get; set; }
+        public IEnumerable<OrderModel> Orders { get; set; } = null!;
         public IEnumerable<ProductModel> Products { get; set; } = null!;
     }
 }

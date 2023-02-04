@@ -1,4 +1,7 @@
 ﻿using EStore.CMS.Extensions;
+using Polly;
+using Polly.Extensions.Http;
+using Polly.Timeout;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,16 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+var retryPolicy = HttpPolicyExtensions
+  .HandleTransientHttpError()
+  .Or<TimeoutRejectedException>() // thrown by Polly's TimeoutPolicy if the inner execution times out
+  .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(10);
+
+builder.Services.AddHttpClient("productClient", c => c.BaseAddress = new Uri(uriString: builder.Configuration["ProductApiBaseAddress"]!))
+  .AddPolicyHandler(retryPolicy)
+  .AddPolicyHandler(timeoutPolicy);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

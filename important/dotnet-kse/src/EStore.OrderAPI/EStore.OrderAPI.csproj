@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EStore.Common\EStore.Common.csproj" />
+    <ProjectReference Include="..\EStore.EventServices.Azure\EStore.EventServices.Azure.csproj" />
     <ProjectReference Include="..\EStore.SharedServices.SqlServer\EStore.DataAccess.SqlServer.csproj" />
     <ProjectReference Include="..\EStore.SharedServices\EStore.SharedServices.csproj" />
   </ItemGroup>
