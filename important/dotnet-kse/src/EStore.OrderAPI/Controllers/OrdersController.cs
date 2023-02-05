@@ -53,22 +53,6 @@ namespace EStore.OrderAPI.Controllers
             return response;
         }
 
-        [HttpPost("{orderId}/delivery")]
-        public async Task<bool> DeliveryAsync(int orderId)
-        {
-            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
-            var response = await orderService.DeliveryOrderAsync(userId, orderId);
-            return response;
-        }
-
-        [HttpPost("{orderId}/receive")]
-        public async Task<bool> ReceiveAsync(int orderId)
-        {
-            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
-            var response = await orderService.ReceiveOrderAsync(userId, orderId);
-            return response;
-        }
-
         [HttpPost("{orderId}/finish")]
         public async Task<bool> FinishAsync(int orderId)
         {

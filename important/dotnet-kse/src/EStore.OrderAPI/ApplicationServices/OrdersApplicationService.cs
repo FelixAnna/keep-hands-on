@@ -82,36 +82,6 @@ namespace EStore.OrderAPI.ApplicationServices
             return response;
         }
 
-        public async Task<bool> DeliveryOrderAsync(string userId, int orderId)
-        {
-            await EnsureUserAccessAsync(userId, orderId);
-            var result = await orderService.GetByIdAsync(orderId);
-            result.Order.Delivery();
-            var response = await orderService.UpdateAsync(orderId, result.Order.Status);
-            if (response && await eventGridService.SendEventAsync(new OrderDeliveryEvent(orderId)))
-            {
-                //failed to send events
-                Console.WriteLine($"Publish {nameof(OrderDeliveryEvent)} for order: {orderId} failed.");
-            }
-
-            return response;
-        }
-
-        public async Task<bool> ReceiveOrderAsync(string userId, int orderId)
-        {
-            await EnsureUserAccessAsync(userId, orderId);
-            var result = await orderService.GetByIdAsync(orderId);
-            result.Order.Receive();
-            var response = await orderService.UpdateAsync(orderId, result.Order.Status);
-            if (response && await eventGridService.SendEventAsync(new OrderReceivedEvent(orderId)))
-            {
-                //failed to send events
-                Console.WriteLine($"Publish {nameof(OrderReceivedEvent)} for order: {orderId} failed.");
-            }
-
-            return response;
-        }
-
         public async Task<bool> FinishOrderAsync(string userId, int orderId)
         {
             await EnsureUserAccessAsync(userId, orderId);

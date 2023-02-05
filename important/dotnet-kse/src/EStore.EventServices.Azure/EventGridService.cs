@@ -11,8 +11,8 @@ namespace EStore.EventServices.Azure
         public EventGridService(IConfiguration confguration)
         {
             client = new EventGridPublisherClient(
-                new Uri(confguration["eventhub:endpoint"]),
-                new AzureKeyCredential(confguration["eventhub:access-key"]));
+                new Uri(confguration["eventhub:endpoint"]!),
+                new AzureKeyCredential(confguration["eventhub:access-key"]!));
         }
 
         public async Task<bool> SendEventAsync(EventGridEvent gridEvent)

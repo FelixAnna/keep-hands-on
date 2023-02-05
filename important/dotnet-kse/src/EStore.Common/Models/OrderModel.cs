@@ -30,7 +30,7 @@ namespace EStore.Common.Models
             //raise domain event
         }
 
-        public void Delivery()
+        public void Deliver()
         {
             PreCheckToChangeStatus(OrderStatus.Paid, OrderStatus.Delivering);
             //raise domain event
