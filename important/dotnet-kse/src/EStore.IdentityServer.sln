@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.CartAPI", "EStore.Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.OrderAPI", "EStore.OrderAPI\EStore.OrderAPI.csproj", "{556A7CA7-BD7A-4008-87E6-2D7E1FE2868A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.EventServices.Azure", "EStore.EventServices.Azure\EStore.EventServices.Azure.csproj", "{6D9CD3BA-C149-46A2-9AB4-5B376AF6F35F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.EventServices.Azure", "EStore.EventServices.Azure\EStore.EventServices.Azure.csproj", "{6D9CD3BA-C149-46A2-9AB4-5B376AF6F35F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.FunctionApp", "EStore.FunctionApp\EStore.FunctionApp.csproj", "{438DCBEC-D61B-4A52-9243-0701A54FA9B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{6D9CD3BA-C149-46A2-9AB4-5B376AF6F35F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D9CD3BA-C149-46A2-9AB4-5B376AF6F35F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D9CD3BA-C149-46A2-9AB4-5B376AF6F35F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{438DCBEC-D61B-4A52-9243-0701A54FA9B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{438DCBEC-D61B-4A52-9243-0701A54FA9B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{438DCBEC-D61B-4A52-9243-0701A54FA9B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{438DCBEC-D61B-4A52-9243-0701A54FA9B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

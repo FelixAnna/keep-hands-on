@@ -73,7 +73,7 @@ namespace EStore.OrderAPI.ApplicationServices
             var result = await orderService.GetByIdAsync(orderId);
             result.Order.Pay();
             var response = await orderService.UpdateAsync(orderId, result.Order.Status);
-            if(await eventGridService.SendEventAsync(new OrderPayEvent(orderId)))
+            if(response && await eventGridService.SendEventAsync(new OrderPayEvent(orderId)))
             {
                 //failed to send events
                 Console.WriteLine($"Publish {nameof(OrderPayEvent)} for order: {orderId} failed.");
@@ -88,7 +88,7 @@ namespace EStore.OrderAPI.ApplicationServices
             var result = await orderService.GetByIdAsync(orderId);
             result.Order.Delivery();
             var response = await orderService.UpdateAsync(orderId, result.Order.Status);
-            if (await eventGridService.SendEventAsync(new OrderDeliveryEvent(orderId)))
+            if (response && await eventGridService.SendEventAsync(new OrderDeliveryEvent(orderId)))
             {
                 //failed to send events
                 Console.WriteLine($"Publish {nameof(OrderDeliveryEvent)} for order: {orderId} failed.");
@@ -103,7 +103,7 @@ namespace EStore.OrderAPI.ApplicationServices
             var result = await orderService.GetByIdAsync(orderId);
             result.Order.Receive();
             var response = await orderService.UpdateAsync(orderId, result.Order.Status);
-            if (await eventGridService.SendEventAsync(new OrderReceivedEvent(orderId)))
+            if (response && await eventGridService.SendEventAsync(new OrderReceivedEvent(orderId)))
             {
                 //failed to send events
                 Console.WriteLine($"Publish {nameof(OrderReceivedEvent)} for order: {orderId} failed.");
@@ -118,7 +118,7 @@ namespace EStore.OrderAPI.ApplicationServices
             var result = await orderService.GetByIdAsync(orderId);
             result.Order.Finish();
             var response = await orderService.UpdateAsync(orderId, result.Order.Status);
-            if (await eventGridService.SendEventAsync(new OrderFinishEvent(orderId)))
+            if (response && await eventGridService.SendEventAsync(new OrderFinishEvent(orderId)))
             {
                 //failed to send events
                 Console.WriteLine($"Publish {nameof(OrderFinishEvent)} for order: {orderId} failed.");
