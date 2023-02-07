@@ -40,6 +40,8 @@ module "infrastructure" {
   clusterName = "${local.environment_name}Cluster"
   rgName = "kse-${local.environment_name}-rg"
   backendDNS = "api-${local.environment_name}-kse.metadlw.com"
+  idpDNS = "idp-${local.environment_name}-kse.metadlw.com"
+  cmsDNS = "cms-${local.environment_name}-kse.metadlw.com"
   tags = {
       Application = "kse"
       Group = "kse"

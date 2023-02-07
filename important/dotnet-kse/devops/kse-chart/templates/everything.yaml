@@ -17,6 +17,7 @@ type: Opaque
 data:
   aws-access-key-id: {{.Values.config.awsKeyId}}
   aws-secret-access-key: {{.Values.config.awsSecretKey}}
+  app-configuration-conn: {{.Values.config.connectionString}}
     
 ---
 # create configMap
@@ -183,6 +184,10 @@ spec:
               key: profile
         - name: GIN_MODE
           value: "release"
+        - name: ConnectionString
+          secretKeyRef:
+              name: {{ $.Release.Name }}-secret
+              key: app-configuration-conn
         resources:
           requests:
             memory: {{.resources.requests.memory}}
@@ -239,22 +244,52 @@ spec:
   tls:
     - hosts:
       - {{$.Values.ingress.dnsName}}
+      - {{$.Values.ingress.dnsIdpName}}
       # This assumes tls-secret exists and the SSL
       # certificate contains a CN for foo.bar.com
       secretName: kse-tls-secret
   rules:
-  - host: {{$.Values.ingress.dnsName}}
+  - host: {{$.Values.ingress.dnsIdpName}}
     http:
       paths:
-      {{- range .Values.applications }}
-      - path: /{{.name}}/(.*)   # for nginx only
+      - path: /(.*)   # for nginx only
         pathType: Prefix
         backend:
           service:
-            name: {{ $.Release.Name }}-service-{{.name}}
+            name: {{ $.Release.Name }}-service-idp
             port:
-              number: {{ .port }}
-      {{- end}}
+              number: 80
+  - host: {{$.Values.ingress.dnsName}}
+    http:
+      paths:
+      - path: /user/(.*)   # for nginx only
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-service-user
+            port:
+              number: 80
+      - path: /cart/(.*)   # for nginx only
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-service-cart
+            port:
+              number: 80
+      - path: /order/(.*)   # for nginx only
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-service-order
+            port:
+              number: 80
+      - path: /product/(.*)   # for nginx only
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-service-product
+            port:
+              number: 80
 
 ---
 apiVersion: cert-manager.io/v1

@@ -22,6 +22,7 @@ config:
   awsSecretKey: awsSecretKeyPlaceHolder
   region: ap-southeast-1
   profile: local ## get dev config, do not use consul
+  connectionString: connPlaceHolder
 
 quota:
   requests:

@@ -22,6 +22,7 @@ config:
   awsSecretKey: awsSecretKeyPlaceHolder
   region: ap-southeast-1
   profile: dev ## get dev config, do not use consul
+  connectionString: connPlaceHolder
 
 quota:
   requests:
@@ -34,13 +35,14 @@ quota:
 ingress:
   ingressClassName: nginx
   dnsName: api-dev-kse.metadlw.com
+  dnsIdpName: idp-dev-kse.metadlw.com
   issuer: letsencrypt-staging ## letsencrypt-prod
   server: https://acme-staging-v02.api.letsencrypt.org/directory ## https://acme-v02.api.letsencrypt.org/directory
   email: xiangyongyu15@gmail.com  ## need real email address
 
 applications:
   - name: idp
-    port: 8181
+    port: 80
     image: hssdevacr.azurecr.io/kse-idp-api:imageVersion
     resources:
       requests:
@@ -50,7 +52,7 @@ applications:
         memory: 256Mi
         cpu: "256m"
   - name: user
-    port: 8282
+    port: 80
     image: hssdevacr.azurecr.io/kse-user-api:imageVersion
     resources:
       requests:
@@ -60,7 +62,7 @@ applications:
         memory: 128Mi
         cpu: "128m"
   - name: cart
-    port: 8181
+    port: 80
     image: hssdevacr.azurecr.io/kse-cart-api:imageVersion
     resources:
       requests:
@@ -70,7 +72,7 @@ applications:
         memory: 128Mi
         cpu: "128m"
   - name: order
-    port: 8181
+    port: 80
     image: hssdevacr.azurecr.io/kse-order-api:imageVersion
     resources:
       requests:
@@ -81,7 +83,7 @@ applications:
         cpu: "128m"
 
   - name: product
-    port: 8181
+    port: 80
     image: hssdevacr.azurecr.io/kse-product-api:imageVersion
     resources:
       requests:

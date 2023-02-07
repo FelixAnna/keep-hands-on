@@ -37,3 +37,4 @@ resource "azurerm_public_ip" "gwIp" {
   allocation_method   = "Static"
   sku = "Standard"
 }
+

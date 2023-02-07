@@ -34,6 +34,18 @@ variable "backendDNS" {
     default = "api-kse.metadlw.com"
 }
 
+variable "idpDNS" {
+    type = string
+    description = "(optional) dns record to binding to gateway ipaddress"
+    default = "idp-kse.metadlw.com"
+}
+
+variable "cmsDNS" {
+    type = string
+    description = "(optional) dns record to binding to gateway ipaddress"
+    default = "cms-kse.metadlw.com"
+}
+
 variable "tags" {
     type = map
     description = "(optional) tags for resources"

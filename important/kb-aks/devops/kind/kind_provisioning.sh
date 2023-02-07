@@ -13,6 +13,15 @@ fi
 
 ns="${app}ns"
 
+## define your variables somewhere
+## AWS_ACCESS_KEY_ID=xxx
+## AWS_SECRET_ACCESS_KEY=xxx
+## ACR=xxx
+## ACR_USER=xxx
+## ACR_KEY=xxx
+source d:/code/config.sh
+echo $AWS_ACCESS_KEY_ID
+
 kind delete clusters $app-cluster
 
 kind create cluster --config $app-cluster.yml
@@ -33,12 +42,17 @@ kubectl wait --namespace ingress-nginx \
 echo "install services ..."
 cd ..
 
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-echo $AWS_ACCESS_KEY_ID
 sed -i "s/awsKeyIdPlaceHolder/$(echo -n $AWS_ACCESS_KEY_ID | base64)/" ./$app-chart-nossl/values_dev.yaml
 sed -i "s/awsSecretKeyPlaceHolder/$(echo -n $AWS_SECRET_ACCESS_KEY | base64)/" ./$app-chart-nossl/values_dev.yaml
 sed -i "s/imageVersion/$tag/" ./$app-chart-nossl/values_dev.yaml
+
+docker login -u $ACR_USER -p $ACR_KEY $ACR
+
+docker pull $ACR/$app-price-api:$tag
+docker pull $ACR/$app-product-api:$tag
+
+kind load docker-image $ACR/$app-price-api:$tag -n $app-cluster
+kind load docker-image $ACR/$app-product-api:$tag -n $app-cluster
 
 helm upgrade --install $app ./$app-chart-nossl/ \
 --namespace $ns \

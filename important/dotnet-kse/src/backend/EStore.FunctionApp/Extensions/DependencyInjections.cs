@@ -21,7 +21,7 @@ namespace EStore.FunctionApp.Extensions
 
             var connectionString = configuration["kse:sqlconn"]!;
             services.AddSingleton(settings);
-            services.AddScoped<IPackService, PackageService>();
+            services.AddScoped<IPackService, PackService>();
             services.AddScoped<IProductRepository, SqlProductRepository>(op => new SqlProductRepository(connectionString));
             services.AddScoped<IOrdersRepository, SqlOrdersRepository>(op => new SqlOrdersRepository(connectionString));
             services.AddScoped<IOrdersService, OrdersService>();
