@@ -15,9 +15,9 @@ fi
 
 echo $app
 cd ./terraform/profiles/$env
-#terraform init -reconfigure
+terraform init -reconfigure
 
-#terraform apply -auto-approve
+terraform apply -auto-approve
 
 
 ## install basic 
@@ -27,13 +27,12 @@ cd ./terraform/profiles/$env
 ## AWS_SECRET_ACCESS_KEY=xxx
 source d:/code/config.sh
 echo $AWS_ACCESS_KEY_ID
-echo $AppConnectionString
 
 cd ../../../../
 sed -i "s/awsKeyIdPlaceHolder/$(echo -n $AWS_ACCESS_KEY_ID | base64)/" ./$app-chart/values_aks_$env.yaml
 sed -i "s/awsSecretKeyPlaceHolder/$(echo -n $AWS_SECRET_ACCESS_KEY | base64)/" ./$app-chart/values_aks_$env.yaml
 sed -i "s/imageVersion/$tag/" ./$app-chart/values_aks_$env.yaml
-sed -i "s/connPlaceHolder/$AppConnectionString/" ./$app-chart/values_aks_$env.yaml
+sed -i "s/connPlaceHolder/$(echo -n $AppConnectionString | base64 -w 0)/" ./$app-chart/values_aks_$env.yaml
 
 cd aks/services
 
@@ -44,4 +43,4 @@ cd ../../
 sed -i "s/$(echo -n $AWS_ACCESS_KEY_ID | base64)/awsKeyIdPlaceHolder/" ./$app-chart/values_aks_$env.yaml
 sed -i "s/$(echo -n $AWS_SECRET_ACCESS_KEY | base64)/awsSecretKeyPlaceHolder/" ./$app-chart/values_aks_$env.yaml
 sed -i "s/$tag/imageVersion/" ./$app-chart/values_aks_$env.yaml
-sed -i "s/$AppConnectionString/connPlaceHolder/" ./$app-chart/values_aks_$env.yaml
+sed -i "s/$(echo -n $AppConnectionString | base64 -w 0)/connPlaceHolder/" ./$app-chart/values_aks_$env.yaml

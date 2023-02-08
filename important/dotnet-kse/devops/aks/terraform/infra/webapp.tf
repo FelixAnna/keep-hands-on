@@ -27,7 +27,7 @@ resource "azurerm_linux_web_app" "cmsapp" {
   
   site_config {
     application_stack {
-        dotnet_version = "v6.0"
+        dotnet_version = "v7.0"
     }
     worker_count = 1
   }

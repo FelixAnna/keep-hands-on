@@ -1,5 +1,4 @@
-﻿using Azure.Messaging.EventGrid;
-using EStore.Common.Models;
+﻿using EStore.Common.Models;
 using EStore.SharedServices.Packages;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -44,9 +43,8 @@ namespace EStore.OrderAPI.Controllers
                 {
                     // Invoke a method on the clients for 
                     // an event grid notiification.                        
-                    var details = JsonConvert.DeserializeObject<EventGridEvent>(e.ToString());
-                    var eventData = JsonConvert.DeserializeObject<OrderModel>(details.Data.ToString());
-                    var response = await packageService.DeliverOrderAsync(eventData!.OrderId);
+                    var details = JsonConvert.DeserializeObject<GridEvent<OrderModel>>(e.ToString());
+                    var response = await packageService.DeliverOrderAsync(details!.Data!.OrderId);
                     Console.WriteLine(response);
                 }
 
@@ -75,9 +73,8 @@ namespace EStore.OrderAPI.Controllers
                 {
                     // Invoke a method on the clients for 
                     // an event grid notiification.                        
-                    var details = JsonConvert.DeserializeObject<EventGridEvent>(e.ToString());
-                    var eventData = JsonConvert.DeserializeObject<OrderModel>(details.Data.ToString());
-                    var response = await packageService.ReceiveOrderAsync(eventData!.OrderId);
+                    var details = JsonConvert.DeserializeObject<GridEvent<OrderModel>>(e.ToString());
+                    var response = await packageService.ReceiveOrderAsync(details!.Data!.OrderId);
                     Console.WriteLine(response);
 
                 }
@@ -86,19 +83,28 @@ namespace EStore.OrderAPI.Controllers
             }
         }
 
-        private async Task<JsonResult> HandleValidation(string jsonContent)
+        private static async Task<JsonResult> HandleValidation(string jsonContent)
         {
             var gridEvent =
-                JsonConvert.DeserializeObject<List<EventGridEvent>>(jsonContent)
+                JsonConvert.DeserializeObject<List<GridEvent<Dictionary<string, string>>>>(jsonContent)
                     .First();
 
             // Retrieve the validation code and echo back.
-            var eventData = JsonConvert.DeserializeObject<Dictionary<string, string>>(gridEvent.Data.ToString());
-            var validationCode = eventData["validationCode"];
+            var validationCode = gridEvent.Data["validationCode"];
             return new JsonResult(new
             {
                 validationResponse = validationCode
             });
         }
+    }
+
+    public class GridEvent<T> where T : class
+    {
+        public string Id { get; set; }
+        public string EventType { get; set; }
+        public string Subject { get; set; }
+        public DateTime EventTime { get; set; }
+        public T Data { get; set; }
+        public string Topic { get; set; }
     }
 }

@@ -34,8 +34,59 @@ jobs:
   ## need include tests step
   #Multi-configuration and multi-agent job options are not exported to YAML. Configure these options using documentation guidance: https://docs.microsoft.com/vsts/pipelines/process/phases
 
+- job: buildAndPush
+  displayName: Build and Push Images # Human-readable name for the job. 
+  timeoutInMinutes: 10
+
+  steps:
+  - task: Docker@2
+    displayName: 'Build IDP image'
+    inputs:
+      containerRegistry: sharedacr
+      repository: 'kse-idp-api'
+      Dockerfile: 'src/backend/EStore.IdentityServer/Dockerfile'
+      buildContext: 'src/backend'
+      tags: '$(imageTag)'
+
+  - task: Docker@2
+    displayName: 'Build Cart image'
+    inputs:
+      containerRegistry: sharedacr
+      repository: 'kse-cart-api'
+      Dockerfile: 'src/backend/EStore.CartAPI/Dockerfile'
+      buildContext: 'src/backend'
+      tags: '$(imageTag)'
+
+  - task: Docker@2
+    displayName: 'Build Order image'
+    inputs:
+      containerRegistry: sharedacr
+      repository: 'kse-order-api'
+      Dockerfile: 'src/backend/EStore.OrderAPI/Dockerfile'
+      buildContext: 'src/backend'
+      tags: '$(imageTag)'
+
+  - task: Docker@2
+    displayName: 'Build User image'
+    inputs:
+      containerRegistry: sharedacr
+      repository: 'kse-user-api'
+      Dockerfile: 'src/backend/EStore.UserAPI/Dockerfile'
+      buildContext: 'src/backend'
+      tags: '$(imageTag)'
+
+  - task: Docker@2
+    displayName: 'Build Product image'
+    inputs:
+      containerRegistry: sharedacr
+      repository: 'kse-product-api'
+      Dockerfile: 'src/backend/EStore.ProductAPI/Dockerfile'
+      buildContext: 'src/backend'
+      tags: '$(imageTag)'
+
 - job: provisioningInfrastructure
   displayName: Apply infrastructure # Human-readable name for the job. 
+  dependsOn: buildAndPush
   timeoutInMinutes: 30
 
   steps:
@@ -102,7 +153,7 @@ jobs:
         sed -i "s/awsKeyIdPlaceHolder/$(echo -n $(AWS_ACCESS_KEY_ID) | base64)/" ./$(app)-chart/values_aks_$(env).yaml
         sed -i "s/awsSecretKeyPlaceHolder/$(echo -n $(AWS_SECRET_ACCESS_KEY) | base64)/" ./$(app)-chart/values_aks_$(env).yaml
         sed -i "s/imageVersion/$(imageTag)/" ./$(app)-chart/values_aks_$(env).yaml
-        sed -i "s/connPlaceHolder/$(AppConnectionString)/" ./$(app)-chart/values_aks_$(env).yaml
+        sed -i "s/connPlaceHolder/$(echo -n $(AppConnectionString) | base64 -w 0)/" ./$(app)-chart/values_aks_$(env).yaml
       workingDirectory: 'devops'
 
   - task: AzureCLI@2

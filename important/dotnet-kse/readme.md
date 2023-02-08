@@ -25,6 +25,9 @@ A project for dotnet KSE
 
 After you download the code from the code repo, you can debug them in your local env.
 
+### architecture
+![architecture overview](docs/kse_architecture.drawio.png)
+
 ### backend
 
 open the "backend" folder in vs code, to check it works, run:

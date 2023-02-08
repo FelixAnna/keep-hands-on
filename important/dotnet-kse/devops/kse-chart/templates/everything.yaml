@@ -185,7 +185,8 @@ spec:
         - name: GIN_MODE
           value: "release"
         - name: ConnectionString
-          secretKeyRef:
+          valueFrom:
+            secretKeyRef:
               name: {{ $.Release.Name }}-secret
               key: app-configuration-conn
         resources:

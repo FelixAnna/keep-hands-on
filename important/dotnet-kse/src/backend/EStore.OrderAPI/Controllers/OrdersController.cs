@@ -1,5 +1,4 @@
-﻿using EStore.Common.Entities;
-using EStore.OrderAPI.ApplicationServices;
+﻿using EStore.OrderAPI.ApplicationServices;
 using EStore.SharedServices.Orders.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
