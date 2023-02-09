@@ -32,10 +32,23 @@ pool:
   
 jobs:
   ## need include tests step
+- job: runTests
+  displayName: Run Tests # Human-readable name for the job. 
+  timeoutInMinutes: 5
+
+  steps:
+  - task: Bash@3
+    displayName: 'Run Unit Tests'
+    inputs:
+      targetType: 'inline'
+      script: |
+        dotnet test
+      workingDirectory: 'src/backend'
   #Multi-configuration and multi-agent job options are not exported to YAML. Configure these options using documentation guidance: https://docs.microsoft.com/vsts/pipelines/process/phases
 
 - job: buildAndPush
   displayName: Build and Push Images # Human-readable name for the job. 
+  dependsOn: runTests
   timeoutInMinutes: 10
 
   steps:

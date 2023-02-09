@@ -14,9 +14,9 @@ namespace EStore.UserAPI.Users.Contracts
         private readonly DiscoveryDocumentResponse disco;
         private readonly IdentityPlatformSettings settings;
 
-        public UserService(IdentityPlatformSettings settings)
+        public UserService(IdentityPlatformSettings settings, IHttpClientFactory clientFactory)
         {
-            httpClient = new HttpClient();
+            httpClient = clientFactory.CreateClient("idp");
             disco = httpClient.GetDiscoveryDocumentAsync(settings.Authority).Result;
             if (disco.IsError)
             {

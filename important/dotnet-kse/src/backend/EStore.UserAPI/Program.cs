@@ -16,7 +16,7 @@ builder.Services.AddEStoreAuthorization();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddOpenApiSupport();
-
+builder.Services.AddHttpClient("idp");
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
