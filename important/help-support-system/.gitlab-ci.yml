@@ -21,7 +21,7 @@ services:
 variables:  
   DOCKER_HOST: tcp://localhost:2375/
   imageTag: latest
-  env: prod
+  env: dev
   app: hss
 
 workflow:

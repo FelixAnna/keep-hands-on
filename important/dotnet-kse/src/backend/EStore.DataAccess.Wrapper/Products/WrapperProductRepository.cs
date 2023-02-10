@@ -1,4 +1,4 @@
-﻿using EStore.Common.Entities;
+﻿using EStore.SharedModels.Entities;
 using EStore.DataAccess.MemCache.Products;
 using EStore.SharedServices.Products.Repositories;
 using EStore.SharedServices.SqlServer.Products;

@@ -12,7 +12,7 @@ namespace EStore.FunctionApp
         public override void Configure(IFunctionsHostBuilder builder)
         {
             //EnsureLoadConfiguration();
-			builder.Services.AddServices(Configuration);
+            builder.Services.AddServices(Configuration);
         }
     }
 }

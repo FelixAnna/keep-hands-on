@@ -365,3 +365,10 @@ FodyWeavers.xsd
 ## terraform
 *.terraform*
 *.tfstate*
+
+dist/
+node_modules/
+.parcel-cache/
+
+sdk/WebChat/*.local
+sdk/WebChat/mock/*

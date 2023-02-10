@@ -1,13 +1,8 @@
-﻿using EStore.Common.Entities;
+﻿using EStore.SharedModels.Entities;
 using EStore.SharedServices.Orders.Repositories;
 using EStore.SharedServices.Orders.Services;
 using EStore.SharedServices.Products.Repositories;
 using FakeItEasy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EStore.SharedServices.Tests.Orders
 {

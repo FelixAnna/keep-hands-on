@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
-using EStore.Common.Entities;
+using EStore.SharedModels.Entities;
 using EStore.SharedServices.Products.Repositories;
 using Microsoft.Data.SqlClient;
 

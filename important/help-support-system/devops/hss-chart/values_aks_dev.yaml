@@ -19,11 +19,12 @@ serviceAccount:
 
 config:
   profile: Staging ## get dev config, do not use consul
+  connectionString: connPlaceHolder
 
 quota:
   requests:
-    cpu: "2"
-    memory: 2Gi
+    cpu: "3"
+    memory: 3Gi
   limits:
     cpu: "4"
     memory: 4Gi
@@ -41,7 +42,7 @@ ingress:
 applications:
   - name: user
     port: 80
-    image: hssdevacr.azurecr.io/hss-user-api:0.2.3
+    image: hssdevacr.azurecr.io/hss-user-api:imageVersion
     resources:
       requests:
         memory: 64Mi
@@ -51,7 +52,7 @@ applications:
         cpu: "128m"
   - name: message
     port: 80
-    image: hssdevacr.azurecr.io/hss-message-api:0.3.5
+    image: hssdevacr.azurecr.io/hss-message-api:imageVersion
     resources:
       requests:
         memory: 64Mi
@@ -61,31 +62,31 @@ applications:
         cpu: "128m"
   - name: hub
     port: 80
-    image: hssdevacr.azurecr.io/hss-hub-api:0.2.3
+    image: hssdevacr.azurecr.io/hss-hub-api:imageVersion
     resources:
       requests:
-        memory: 64Mi
-        cpu: "64m"
+        memory: 256Mi
+        cpu: "256m"
       limits:
-        memory: 128Mi
-        cpu: "128m"
+        memory: 256Mi
+        cpu: "256m"
   - name: signalrdemo
     port: 80
-    image: hssdevacr.azurecr.io/hss-signalrdemo-api:0.2.4
+    image: hssdevacr.azurecr.io/hss-signalrdemo-api:imageVersion
     resources:
       requests:
         memory: 128Mi
         cpu: "128m"
       limits:
-        memory: 256Mi
-        cpu: "256m"
+        memory: 128Mi
+        cpu: "128m"
   - name: idp
     port: 80
-    image: hssdevacr.azurecr.io/hss-idp-api:0.2.3
+    image: hssdevacr.azurecr.io/hss-idp-api:imageVersion
     resources:
       requests:
-        memory: 256Mi
-        cpu: "256m"
+        memory: 128Mi
+        cpu: "128m"
       limits:
-        memory: 256Mi
-        cpu: "256m"
+        memory: 128Mi
+        cpu: "128m"

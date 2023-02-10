@@ -1,4 +1,4 @@
-﻿using EStore.Common.Entities;
+﻿using EStore.SharedModels.Entities;
 
 namespace EStore.SharedServices.Carts.Repositories
 {

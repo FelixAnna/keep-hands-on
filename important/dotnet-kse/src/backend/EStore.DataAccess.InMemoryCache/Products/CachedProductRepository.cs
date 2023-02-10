@@ -1,4 +1,4 @@
-﻿using EStore.Common.Entities;
+﻿using EStore.SharedModels.Entities;
 using EStore.SharedServices.Products.Repositories;
 using Microsoft.Extensions.Caching.Memory;
 

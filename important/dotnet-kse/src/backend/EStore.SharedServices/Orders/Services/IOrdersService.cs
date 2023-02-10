@@ -1,5 +1,5 @@
-﻿using EStore.Common.Entities;
-using EStore.Common.Models;
+﻿using EStore.SharedModels.Entities;
+using EStore.SharedModels.Models;
 using EStore.SharedServices.Orders.Contracts;
 
 namespace EStore.SharedServices.Orders.Services

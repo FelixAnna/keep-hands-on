@@ -1,5 +1,4 @@
-﻿using EStore.Common.Exceptions;
-using EStore.UserAPI.Users.Contracts;
+﻿using EStore.UserAPI.Users.Contracts;
 using EStore.UserAPI.Users.Services;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,5 +1,5 @@
-﻿using Azure.Messaging.EventGrid;
-using Azure;
+﻿using Azure;
+using Azure.Messaging.EventGrid;
 using Microsoft.Extensions.Configuration;
 
 namespace EStore.EventServices.Azure

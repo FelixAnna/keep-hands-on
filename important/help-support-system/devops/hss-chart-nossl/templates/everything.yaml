@@ -15,8 +15,7 @@ metadata:
   {{- template "hssTemplate.defaultLabel" }}
 type: Opaque
 data:
-  aws-access-key-id: {{.Values.config.awsKeyId}}
-  aws-secret-access-key: {{.Values.config.awsSecretKey}}
+  app-configuration-conn: {{.Values.config.connectionString}}
     
 ---
 # create configMap
@@ -26,7 +25,6 @@ metadata:
   name: {{ .Release.Name }}-config
   {{- template "hssTemplate.defaultLabel" }}
 data:
-  aws-region: {{.Values.config.region}}
   profile: {{.Values.config.profile}}
     
 ---

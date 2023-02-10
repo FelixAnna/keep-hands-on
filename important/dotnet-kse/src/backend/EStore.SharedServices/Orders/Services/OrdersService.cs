@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EStore.Common.Entities;
-using EStore.Common.Models;
+using EStore.SharedModels.Entities;
+using EStore.SharedModels.Models;
 using EStore.SharedServices.Orders.Contracts;
 using EStore.SharedServices.Orders.Repositories;
 using EStore.SharedServices.Products.Repositories;

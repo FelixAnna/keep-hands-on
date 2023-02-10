@@ -1,7 +1,7 @@
 // Default URL for triggering event grid function in the local environment.
 // http://localhost:7071/runtime/webhooks/EventGrid?functionName={functionname}
 using Azure.Messaging.EventGrid;
-using EStore.Common.Models;
+using EStore.SharedModels.Models;
 using EStore.SharedServices.Packages;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
@@ -20,7 +20,7 @@ namespace EStore.FunctionApp
         }
 
         [FunctionName("ReciveOrder")]
-        public async Task Run([EventGridTrigger]EventGridEvent eventGridEvent, ILogger log)
+        public async Task Run([EventGridTrigger] EventGridEvent eventGridEvent, ILogger log)
         {
             log.LogInformation(eventGridEvent.Data.ToString());
             var data = JsonConvert.DeserializeObject<OrderModel>(eventGridEvent.Data.ToString());

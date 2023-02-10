@@ -54,6 +54,10 @@ jobs -p
 ```
 After that, you need to open the below URL in a browser: **https://localhost:7214**, so the IDP service starts working
 
+### Postman Collection
+[Collection Link](https://winter-trinity-348400.postman.co/workspace/My-Workspace~d59ccc87-2082-4bd7-8bc8-ae8be4c4f63d/collection/11581725-bdb8c11c-c888-4285-a53d-7d69fc26c52d?action=share&creator=11581725)
+
+[Environment Link](https://winter-trinity-348400.postman.co/workspace/My-Workspace~d59ccc87-2082-4bd7-8bc8-ae8be4c4f63d/environment/11581725-e96ed1e5-5ee3-4019-a4fd-90806370935c)
 ## DevOps
 
 in "devops" folder, you can find how to deploy the microservices to azure Kubernetes service.

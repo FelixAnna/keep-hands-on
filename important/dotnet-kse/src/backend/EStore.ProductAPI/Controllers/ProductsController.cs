@@ -1,4 +1,4 @@
-﻿using EStore.Common.Models;
+﻿using EStore.SharedModels.Models;
 using EStore.SharedServices.Products.Contracts;
 using EStore.SharedServices.Products.Services;
 using Microsoft.AspNetCore.Authorization;

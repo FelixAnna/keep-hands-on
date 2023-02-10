@@ -1,4 +1,4 @@
-﻿using EStore.Common.Models;
+﻿using EStore.SharedModels.Models;
 using EStore.SharedServices.Products.Contracts;
 
 namespace EStore.SharedServices.Products.Services

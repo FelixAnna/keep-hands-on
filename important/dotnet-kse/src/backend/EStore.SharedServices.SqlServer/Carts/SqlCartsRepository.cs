@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using EStore.Common.Entities;
+using EStore.SharedModels.Entities;
 using EStore.SharedServices.Carts.Repositories;
 using Microsoft.Data.SqlClient;
 

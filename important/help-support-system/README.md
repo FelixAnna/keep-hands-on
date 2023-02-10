@@ -101,12 +101,12 @@ sh uninstall.sh prod  ## prod/dev
 ```
 ## install/upgrade our microservices only (don't need to configure AWS CLI)
 cd aks/services
-sh main_services.sh prod ## prod/dev
+sh main_services.sh prod hss ## prod/dev, appName: hss
 ```
 
 #### local deployment
 
-There is another folder "./hss-chart" which is for deploying to a local kind cluster, it doesn't depend on cert-manager, and consul.
+There is another folder "./hss-chart-nossl" which is for deploying to a local kind cluster, it doesn't depend on cert-manager, and consul.
 
 #### Docker build & push to azure container registry
 

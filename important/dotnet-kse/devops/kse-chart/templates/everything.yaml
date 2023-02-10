@@ -15,8 +15,6 @@ metadata:
   {{- template "kseTemplate.defaultLabel" }}
 type: Opaque
 data:
-  aws-access-key-id: {{.Values.config.awsKeyId}}
-  aws-secret-access-key: {{.Values.config.awsSecretKey}}
   app-configuration-conn: {{.Values.config.connectionString}}
     
 ---
@@ -27,7 +25,6 @@ metadata:
   name: {{ .Release.Name }}-config
   {{- template "kseTemplate.defaultLabel" }}
 data:
-  aws-region: {{.Values.config.region}}
   profile: {{.Values.config.profile}}
     
 ---
@@ -162,28 +159,11 @@ spec:
           failureThreshold: 3
         imagePullPolicy: IfNotPresent
         env:
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: {{ $.Release.Name }}-secret
-              key: aws-access-key-id
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ $.Release.Name }}-secret
-              key: aws-secret-access-key
-        - name: AWS_REGION
-          valueFrom:
-            configMapKeyRef:
-              name: {{ $.Release.Name }}-config
-              key: aws-region
-        - name: profile
+        - name: ASPNETCORE_ENVIRONMENT
           valueFrom:
             configMapKeyRef:
               name: {{ $.Release.Name }}-config
               key: profile
-        - name: GIN_MODE
-          value: "release"
         - name: ConnectionString
           valueFrom:
             secretKeyRef:

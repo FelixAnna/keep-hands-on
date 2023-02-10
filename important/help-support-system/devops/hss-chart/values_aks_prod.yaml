@@ -19,6 +19,7 @@ serviceAccount:
 
 config:
   profile: Production ## get dev config, do not use consul
+  connectionString: connPlaceHolder
 
 quota:
   requests:

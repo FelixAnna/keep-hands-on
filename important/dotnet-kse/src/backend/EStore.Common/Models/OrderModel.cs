@@ -5,7 +5,8 @@ namespace EStore.Common.Models
 {
     public class OrderModel
     {
-        public OrderModel() {
+        public OrderModel()
+        {
             Status = OrderStatus.Created;
         }
 

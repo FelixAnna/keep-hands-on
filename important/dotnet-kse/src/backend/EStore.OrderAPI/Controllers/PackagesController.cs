@@ -1,4 +1,4 @@
-﻿using EStore.Common.Models;
+﻿using EStore.SharedModels.Models;
 using EStore.SharedServices.Packages;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

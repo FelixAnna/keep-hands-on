@@ -33,7 +33,11 @@ kubectl wait --namespace ingress-nginx \
 echo "install services ..."
 cd ..
 
+source d:/code/config.sh
+echo $AWS_ACCESS_KEY_ID
 sed -i "s/imageVersion/$tag/" ./$app-chart-nossl/values_dev.yaml
+sed -i "s/connPlaceHolder/$(echo -n $AppConnectionString | base64 -w 0)/" ./$app-chart/values_aks_$env.yaml
+
 
 helm upgrade --install $app ./$app-chart-nossl/ \
 --namespace $ns \
@@ -44,4 +48,5 @@ helm upgrade --install $app ./$app-chart-nossl/ \
 kubectl get all -n $noss
 
 sed -i "s/$tag/imageVersion/" ./$app-chart-nossl/values_dev.yaml
+sed -i "s/$(echo -n $AppConnectionString | base64 -w 0)/connPlaceHolder/" ./$app-chart/values_aks_$env.yaml
 echo "done"

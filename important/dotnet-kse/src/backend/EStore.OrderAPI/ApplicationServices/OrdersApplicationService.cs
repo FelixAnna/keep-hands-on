@@ -1,6 +1,6 @@
-﻿using EStore.Common.Entities;
+﻿using EStore.SharedModels.Entities;
 using EStore.Common.Exceptions;
-using EStore.Common.Models;
+using EStore.SharedModels.Models;
 using EStore.EventServices.Azure;
 using EStore.SharedServices.Carts.Services;
 using EStore.SharedServices.Orders.Contracts;
@@ -62,7 +62,7 @@ namespace EStore.OrderAPI.ApplicationServices
 
             using TransactionScope scope = new(TransactionScopeAsyncFlowOption.Enabled);
             var response = await orderService.AddAsync(order);
-            await cartService.ClearCartAsync(cart.Cart.CartId);            
+            await cartService.ClearCartAsync(cart.Cart.CartId);
             scope.Complete();
             return response;
         }
@@ -73,7 +73,7 @@ namespace EStore.OrderAPI.ApplicationServices
             var result = await orderService.GetByIdAsync(orderId);
             result.Order.Pay();
             var response = await orderService.UpdateAsync(orderId, result.Order.Status);
-            if(response && await eventGridService.SendEventAsync(new OrderPayEvent(orderId)))
+            if (response && await eventGridService.SendEventAsync(new OrderPayEvent(orderId)))
             {
                 return true;
             }

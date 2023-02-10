@@ -29,7 +29,7 @@ namespace EStore.OrderAPI.Extensions
             services.AddScoped<ICartsService, CartsService>();
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<EventGridService>();
-            services.AddScoped<OrdersApplicationService>(); 
+            services.AddScoped<OrdersApplicationService>();
             services.AddScoped<IPackService, PackService>();
 
 

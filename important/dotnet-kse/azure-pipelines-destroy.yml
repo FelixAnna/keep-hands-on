@@ -60,7 +60,7 @@ jobs:
       backendAzureRmResourceGroupName: 'configuration-rg'
       backendAzureRmStorageAccountName: configstoragefelix
       backendAzureRmContainerName: tfstate
-      backendAzureRmKey: 'demo-$(env).nginx.tfstate'
+      backendAzureRmKey: 'kse-$(env).nginx.tfstate'
       commandOptions: '-reconfigure'
 
   - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0

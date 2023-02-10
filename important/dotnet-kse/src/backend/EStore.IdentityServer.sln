@@ -41,7 +41,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FunctionApp", "FunctionApp"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E70796C7-18AB-4938-8594-980FE008AAFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.SharedServices.Tests", "EStore.SharedServices.Tests\EStore.SharedServices.Tests.csproj", "{D214EEE2-3936-4E64-97B4-CAD8E24689B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EStore.SharedServices.Tests", "EStore.SharedServices.Tests\EStore.SharedServices.Tests.csproj", "{D214EEE2-3936-4E64-97B4-CAD8E24689B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStore.SharedModels", "EStore.SharedModels\EStore.SharedModels.csproj", "{5555BA87-B2E3-4DB2-A2F6-2F8BF78B1248}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{D214EEE2-3936-4E64-97B4-CAD8E24689B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D214EEE2-3936-4E64-97B4-CAD8E24689B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D214EEE2-3936-4E64-97B4-CAD8E24689B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5555BA87-B2E3-4DB2-A2F6-2F8BF78B1248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5555BA87-B2E3-4DB2-A2F6-2F8BF78B1248}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5555BA87-B2E3-4DB2-A2F6-2F8BF78B1248}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5555BA87-B2E3-4DB2-A2F6-2F8BF78B1248}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +125,7 @@ Global
 		{6D9CD3BA-C149-46A2-9AB4-5B376AF6F35F} = {00C81010-E1A6-4952-8DD3-57097CD0B9FC}
 		{438DCBEC-D61B-4A52-9243-0701A54FA9B1} = {99F2E57B-CEF4-4BB0-9BCA-C063D8228609}
 		{D214EEE2-3936-4E64-97B4-CAD8E24689B2} = {E70796C7-18AB-4938-8594-980FE008AAFA}
+		{5555BA87-B2E3-4DB2-A2F6-2F8BF78B1248} = {57A4F673-E8B6-46ED-9F4E-E944D0E3E357}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0865794A-8E7C-4CF6-8502-5F7650AFEE9D}
