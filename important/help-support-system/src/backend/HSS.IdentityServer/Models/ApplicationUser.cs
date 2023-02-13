@@ -11,4 +11,6 @@ public class ApplicationUser : IdentityUser
 
     [PersonalData]
     public int? TenantId { get; set; }
+
+    public bool IsAdHoc { get; set; }
 }

@@ -83,13 +83,27 @@ class GroupChatDetailController extends BaseController {
 
   String getSenderName(senderId) {
     return groupMembers.value.Members
-        .firstWhere((element) => element.UserId == senderId)
+        .firstWhere(
+          (element) => element.UserId == senderId,
+          orElse: () => MemberInfo(
+              UserId: senderId,
+              NickName: "unknown",
+              AvatarUrl: "unknown",
+              Email: "unknown"),
+        )
         .NickName;
   }
 
   String getSenderAvatarUrl(senderId) {
     return groupMembers.value.Members
-        .firstWhere((element) => element.UserId == senderId)
+        .firstWhere(
+          (element) => element.UserId == senderId,
+          orElse: () => MemberInfo(
+              UserId: senderId,
+              NickName: "unknown",
+              AvatarUrl: "unknown",
+              Email: "unknown"),
+        )
         .AvatarUrl;
   }
 }

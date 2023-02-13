@@ -1,4 +1,6 @@
+using Azure.Core;
 using Dapper;
+using HSS.SharedModels.Models;
 using HSS.SharedServices.Tenants;
 using HSS.SharedServices.Tenants.Contracts;
 using HSS.SharedServices.Tenants.Services;
@@ -29,6 +31,25 @@ namespace HSS.SharedServices.Sql.Tenants
             var results = await connnection.QueryAsync<TenantModel>(select.RawSql, parameter);
 
             return results.ToList();
+        }
+
+        public async Task<UserModel> GetSupportAsync(int tenantId)
+        {
+            using var connnection = new SqlConnection(connectionString);
+            var builder = new SqlBuilder();
+
+            var select = builder.AddTemplate(@"SELECT TOP 1 u.Id as UserId, u.Email, u.NickName, u.AvatarUrl, u.TenantId 
+FROM [dbo].[AspNetUsers] u
+inner join [dbo].[AspNetUserRoles] ur on u.Id = ur.UserId
+inner join [dbo].[AspNetRoles] r on r.Id = ur.RoleId
+WHERE ISAdHoc=0 and TenantId=@tenantId and r.Name='Support'");
+            var parameter = new DynamicParameters();
+
+            parameter.Add("tenantId", tenantId);
+
+            var results = await connnection.QueryFirstAsync<UserModel>(select.RawSql, parameter);
+
+            return results;
         }
     }
 }

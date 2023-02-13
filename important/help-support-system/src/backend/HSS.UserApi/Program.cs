@@ -31,7 +31,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime));
-
 app.Run();

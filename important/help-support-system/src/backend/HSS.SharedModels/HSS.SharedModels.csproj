@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\HSS.Common\HSS.Common.csproj" />
-    <ProjectReference Include="..\HSS.SharedModels\HSS.SharedModels.csproj" />
-  </ItemGroup>
 </Project>

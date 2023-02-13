@@ -1,5 +1,6 @@
 ﻿using HSS.Common;
 using HSS.SignalRDemo.Models;
+using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -82,25 +83,25 @@ namespace HSS.SignalRDemo.Controllers
             return RedirectToAction("Error");
         }
 
-        [Authorize(Policy = "Customer")]
+        [Authorize]
         public IActionResult Chat()
         {
             return View();
         }
 
-        [Authorize(Policy = "Customer")]
+        [Authorize]
         public IActionResult GroupChat()
         {
             return View();
         }
 
-        [Authorize(Policy = "Customer")]
+        [Authorize]
         public IActionResult Profile()
         {
             string accessToken = HttpContext.GetTokenAsync("access_token").Result ?? "";
 
             ViewData["id"] = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            ViewData["userName"] = (User.FindFirst(ClaimTypes.Email)?.Value);
+            ViewData["userName"] = (User.FindFirst(JwtClaimTypes.NickName)?.Value);
             return View();
         }
 

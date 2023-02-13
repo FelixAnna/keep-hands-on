@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using HSS.Common.Entities;
+using HSS.SharedModels.Entities;
 using HSS.IdentityServer.Data;
 using HSS.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HSS.Common.Entities;
+namespace HSS.SharedModels.Entities;
 
 [Table("Tenants", Schema = "hss")]
 public class TenantEntity

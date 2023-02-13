@@ -1,4 +1,4 @@
-using HSS.Common.Entities;
+using HSS.SharedModels.Entities;
 
 namespace HSS.SharedServices.Tenants
 {

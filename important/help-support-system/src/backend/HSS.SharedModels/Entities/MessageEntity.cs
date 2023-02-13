@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HSS.Common.Entities;
+namespace HSS.SharedModels.Entities;
 
 [Table("Messages", Schema = "hss")]
 public class MessageEntity

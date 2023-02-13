@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{93318BE2-5723-4DE9-92A1-FCBE52D228FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.SharedModels", "HSS.SharedModels\HSS.SharedModels.csproj", "{B5205D3F-96D5-471A-8BEC-A2863247DD3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{CD3C4132-980A-4483-8B2F-5215095D2907}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD3C4132-980A-4483-8B2F-5215095D2907}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD3C4132-980A-4483-8B2F-5215095D2907}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5205D3F-96D5-471A-8BEC-A2863247DD3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5205D3F-96D5-471A-8BEC-A2863247DD3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5205D3F-96D5-471A-8BEC-A2863247DD3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5205D3F-96D5-471A-8BEC-A2863247DD3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{2FE4FE18-021A-4E8F-AF52-F627D5CEDCBE} = {DB485D14-9FE8-4D21-88AB-22D51ED167FE}
 		{50FA79F4-25B8-4993-BAE8-BBCF759D2B60} = {93318BE2-5723-4DE9-92A1-FCBE52D228FF}
 		{7D4A3603-7022-4DA9-BCD8-9FC6F92C4698} = {C97C27ED-0DD6-4FDD-A884-55522113F2DD}
+		{B5205D3F-96D5-471A-8BEC-A2863247DD3B} = {DB485D14-9FE8-4D21-88AB-22D51ED167FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05DEA39C-AA02-44DC-894E-5702FFC64844}

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HSS.Common.Entities
+namespace HSS.SharedModels.Entities
 {
     [Table("Groups", Schema = "hss")]
     public class GroupEntity

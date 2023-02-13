@@ -47,6 +47,22 @@ namespace HSS.Common.Extensions
 
                     options.Events = new JwtBearerEvents
                     {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+
+                            // If the request is for our hub...
+                            var path = context.HttpContext.Request.Path;
+                            Console.WriteLine("Hub get token: " + accessToken.ToString() + " , path is start with /chat:" + path.StartsWithSegments("/chat"));
+                            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
+                            {
+                                Console.WriteLine("token set");
+                                // Read the token out of the query string
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        },
+
                         OnAuthenticationFailed = ctx =>
                         {
                             Console.WriteLine("Exception:" + ctx.Exception);
@@ -67,6 +83,7 @@ namespace HSS.Common.Extensions
 
             return services;
         }
+
         public static IServiceCollection AddHSSAuthorization(this IServiceCollection services)
         {
             services.AddAuthorization(options =>

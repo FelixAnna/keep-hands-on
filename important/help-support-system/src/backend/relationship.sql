@@ -10,19 +10,47 @@ GO;
 insert into [hss].[Groups]([Name]) values('Hello World');
 insert into [hss].[Groups]([Name]) values('Test Group');
 
-insert into [hss].[GroupMembers](UserId, GroupId) values ('2c8c3408-849d-4f91-beab-0ca1af147f07', 1);
-insert into [hss].[GroupMembers](UserId, GroupId) values ('370bb376-12ba-47c8-8250-f1b9744a1677', 1);
-insert into [hss].[GroupMembers](UserId, GroupId) values ('a65eb99f-eaaf-4051-be30-53bee1084ba8', 1);
+-- add support for different tenants
+INSERT INTO [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) 
+Values ('asupportid','Support', 'SUPPORT', '70962115-06d7-49f9-9774-c99cda0abb96');
 
-insert into [hss].[GroupMembers](UserId, GroupId) values ('2c8c3408-849d-4f91-beab-0ca1af147f07', 2);
-insert into [hss].[GroupMembers](UserId, GroupId) values ('370bb376-12ba-47c8-8250-f1b9744a1677', 2);
-insert into [hss].[GroupMembers](UserId, GroupId) values ('a65eb99f-eaaf-4051-be30-53bee1084ba8', 2);
+-- fake data
+/*
+TRUNCATE TABLE [hss].[GroupMembers];
 
-insert into [hss].[Friends](UserId, FriendId) values('2c8c3408-849d-4f91-beab-0ca1af147f07', '370bb376-12ba-47c8-8250-f1b9744a1677'); --16 & lei
-insert into [hss].[Friends](UserId, FriendId) values('2c8c3408-849d-4f91-beab-0ca1af147f07', 'a65eb99f-eaaf-4051-be30-53bee1084ba8'); --16 & 15
+TRUNCATE TABLE [hss].[Friends];
 
-insert into [hss].[Friends](UserId, FriendId) values('a65eb99f-eaaf-4051-be30-53bee1084ba8', '370bb376-12ba-47c8-8250-f1b9744a1677'); --15 & lei
-insert into [hss].[Friends](UserId, FriendId) values('a65eb99f-eaaf-4051-be30-53bee1084ba8', '2c8c3408-849d-4f91-beab-0ca1af147f07'); --15 & 16
+TRUNCATE TABLE [hss].[MESSAGES];
 
-insert into [hss].[Friends](UserId, FriendId) values('370bb376-12ba-47c8-8250-f1b9744a1677', 'a65eb99f-eaaf-4051-be30-53bee1084ba8'); --lei & 15
-insert into [hss].[Friends](UserId, FriendId) values('370bb376-12ba-47c8-8250-f1b9744a1677', '2c8c3408-849d-4f91-beab-0ca1af147f07'); --lei & 16
+TRUNCATE TABLE [dbo].[AspNetUserRoles];
+*/
+insert into [hss].[GroupMembers](UserId, GroupId)
+select Id, 1
+from(
+	select row_number() over (partition by tenantId order by Email) as Num, *
+	from [dbo].[AspNetUsers]
+	where ISADHOC=0
+) t where t.Num<=3;
+
+insert into [hss].[GroupMembers](UserId, GroupId)
+select Id, 2
+from(
+	select row_number() over (partition by tenantId order by Email) as Num, *
+	from [dbo].[AspNetUsers]
+	where ISADHOC=0
+) t where t.Num<=2;
+
+insert into [hss].[Friends](UserId, FriendId)
+select gm1.UserId, gm2.UserId
+from 
+[hss].[GroupMembers] gm1, [hss].[GroupMembers] gm2
+where gm1.GroupId=2 and gm2.GroupId=2 and gm1.UserId <> gm2.UserId
+
+-- add default support for different tenants
+INSERT INTO [dbo].[AspNetUserRoles]
+select Id, 'asupportid'
+from(
+	select row_number() over (partition by tenantId order by Email) as Num, *
+	from [dbo].[AspNetUsers]
+	where ISADHOC=0
+) t where t.Num<=2;

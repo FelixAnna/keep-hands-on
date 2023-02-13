@@ -5,8 +5,8 @@ const options = {
     transport: signalR.HttpTransportType.WebSockets
 };
 const connection = new signalR.HubConnectionBuilder()
-                            //.withUrl("https://localhost:7133/chat", options)
-                            .withUrl("https://api-prod-hss.metadlw.com/hub/chat", options)
+                            .withUrl("https://localhost:7133/chat", options)
+                            //.withUrl("https://api-prod-hss.metadlw.com/hub/chat", options)
                             .configureLogging(signalR.LogLevel.Information)
                             .withAutomaticReconnect()
                             .build();

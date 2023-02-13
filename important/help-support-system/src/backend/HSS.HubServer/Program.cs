@@ -1,8 +1,12 @@
 using HSS.Common.Extensions;
-using HSS.HubServer;
+using HSS.Common.Middlewares;
 using HSS.HubServer.Extensions;
+using HSS.HubServer;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//connect to azure app configurations
+builder.Configuration.AddAzureAppConfiguration(Environment.GetEnvironmentVariable("ConnectionString"));
 
 builder.Services.AddServices(builder.Configuration);
 builder.Services.AddConsulConfig(builder.Configuration);
@@ -38,15 +42,13 @@ app.UseCors(builder =>
            .AllowAnyMethod()
            .AllowAnyHeader();
 });
+
+//app.UseMiddleware<ErrorHandlerMiddleware>();
+app.Map("/status", () => "hello");
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-
 app.MapHub<Chat>("/chat");
-
-app.Map("/status", () => "hello");
-
 app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime));
-
 app.Run();

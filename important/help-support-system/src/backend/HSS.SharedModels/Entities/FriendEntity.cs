@@ -1,4 +1,4 @@
-﻿namespace HSS.Common.Entities
+﻿namespace HSS.SharedModels.Entities
 {
     using System.ComponentModel.DataAnnotations.Schema;
 

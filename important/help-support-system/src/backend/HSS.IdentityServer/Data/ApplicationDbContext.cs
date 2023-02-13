@@ -1,4 +1,4 @@
-﻿using HSS.Common.Entities;
+﻿using HSS.SharedModels.Entities;
 using HSS.IdentityServer.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;

@@ -20,5 +20,11 @@ namespace HSS.UserApi.Controllers
         {
             return await userService.PasswordSignInAsync(request);
         }
+
+        [HttpPost("login/fake")]
+        public async Task<FakeLoginResponse> Register(int tenantId)
+        {
+            return await userService.FakeRegisterAsync(tenantId);
+        }
     }
 }

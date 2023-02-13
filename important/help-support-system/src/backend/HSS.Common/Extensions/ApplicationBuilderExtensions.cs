@@ -24,7 +24,7 @@ namespace HSS.Common.Extensions
                 // Get server IP address
                 var features = app.Properties["server.Features"] as FeatureCollection;
                 var addresses = features!.Get<IServerAddressesFeature>();
-                var address = addresses.Addresses.First();
+                var address = addresses.Addresses.Last();
 
                 // Register service with consul
                 var uri = new Uri(address);

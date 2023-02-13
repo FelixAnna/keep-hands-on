@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
-using HSS.Common.Entities;
+using HSS.SharedModels.Entities;
 using HSS.SharedServices.Messages;
 using HSS.SharedServices.Messages.Contracts;
 using Microsoft.Data.SqlClient;

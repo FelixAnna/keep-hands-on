@@ -1,4 +1,6 @@
-﻿namespace HSS.UserApi.Users.Contracts
+﻿using HSS.SharedModels.Models;
+
+namespace HSS.UserApi.Users.Contracts
 {
     public class LoginResponse
     {

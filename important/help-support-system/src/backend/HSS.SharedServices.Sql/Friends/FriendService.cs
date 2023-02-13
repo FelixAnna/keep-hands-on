@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
-using HSS.Common.Entities;
+using HSS.SharedModels.Entities;
 using HSS.SharedServices.Friends;
 using HSS.SharedServices.Friends.Contracts;
 using HSS.SharedServices.Friends.Services;

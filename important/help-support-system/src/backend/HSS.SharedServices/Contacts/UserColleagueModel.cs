@@ -1,4 +1,4 @@
-using HSS.Common.Models;
+using HSS.SharedModels.Models;
 
 namespace HSS.SharedServices.Contacts
 {
