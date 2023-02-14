@@ -11,23 +11,27 @@ class MemberInfo {
   String NickName;
   String AvatarUrl;
   String Email;
+  int TenantId;
   MemberInfo(
       {required this.UserId,
       required this.NickName,
       required this.AvatarUrl,
-      required this.Email});
+      required this.Email,
+      required this.TenantId});
 
   MemberInfo.fromJson(Map<String, dynamic> json)
       : UserId = json['userId'],
         NickName = json['nickName'],
-        AvatarUrl = json['avatarUrl'],
-        Email = json['email'];
+        AvatarUrl = json['avatarUrl'] ?? "",
+        Email = json['email'],
+        TenantId = json['tenantId'] ?? -1;
 
   Map<String, dynamic> toJson() => {
         'userId': this.UserId,
         'nickName': this.NickName,
         'avatarUrl': this.AvatarUrl,
-        'email': this.Email
+        'email': this.Email,
+        'tenantId': this.TenantId
       };
 }
 
@@ -47,7 +51,6 @@ class GroupInfo {
 }
 
 class ColleagueInfo extends MemberInfo {
-  int TenantId;
   bool IsFriend;
 
   ColleagueInfo(
@@ -57,19 +60,18 @@ class ColleagueInfo extends MemberInfo {
       required String NickName,
       required String AvatarUrl,
       required String Email})
-      : this.TenantId = TenantId,
-        this.IsFriend = IsFriend,
+      : this.IsFriend = IsFriend,
         super(
             UserId: UserId,
             NickName: NickName,
             AvatarUrl: AvatarUrl,
-            Email: Email);
+            Email: Email,
+            TenantId: TenantId);
 
   ColleagueInfo.fromJson(Map<String, dynamic> json)
-      : TenantId = json['tenantId'],
-        IsFriend = json['isFriend'],
+      : IsFriend = json['isFriend'],
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>
-      {'tenantId': this.TenantId, 'isFriend': this.IsFriend, ...super.toJson()};
+      {'isFriend': this.IsFriend, ...super.toJson()};
 }

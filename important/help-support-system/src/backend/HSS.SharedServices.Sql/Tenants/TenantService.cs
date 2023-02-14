@@ -1,4 +1,3 @@
-using Azure.Core;
 using Dapper;
 using HSS.SharedModels.Models;
 using HSS.SharedServices.Tenants;

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signalr_demo_app/models/contact.dart';
 
-import '../controllers/chatDetailController.dart';
-import 'chat_details_page.dart';
+import '../controllers/groupChatDetailController.dart';
+import 'group_chat_details_page.dart';
 
-class UserItem extends StatelessWidget {
-  final ColleagueInfo member;
-  UserItem({
+class GroupItem extends StatelessWidget {
+  final GroupInfo member;
+  GroupItem({
     required this.member,
   });
 
@@ -23,7 +23,8 @@ class UserItem extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   CircleAvatar(
-                    backgroundImage: NetworkImage(this.member.AvatarUrl),
+                    backgroundImage: NetworkImage(
+                        "https://thumbs.dreamstime.com/z/little-cats-20284533.jpg"),
                     maxRadius: 30,
                   ),
                   SizedBox(
@@ -36,51 +37,38 @@ class UserItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            this.member.NickName,
+                            this.member.Name,
                             style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(
                             height: 6,
                           ),
-                          !this.member.IsFriend
-                              ? IconButton(
-                                  icon: Icon(Icons.person_add),
-                                  color: Colors.lightBlue,
-                                  onPressed: () async {
-                                    // TODO add relationship
-                                    print(
-                                        "add friend relationship is on the way...");
-                                  },
-                                )
-                              : Container()
                         ],
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(this.member.IsFriend
-                        ? Icons.chat
-                        : Icons.chat_bubble_outline_rounded),
+                    icon: Icon(Icons.chat),
                     color: Colors.lightBlue,
                     onPressed: () async {
                       //Get.back();
 
-                      var isRegistered = Get.isRegistered<ChatDetailController>(
-                          tag: this.member.UserId);
+                      var isRegistered =
+                          Get.isRegistered<GroupChatDetailController>(
+                              tag: this.member.GroupId);
                       if (!isRegistered) {
-                        var chatController = ChatDetailController(
-                          chatId: this.member.UserId,
-                          name: this.member.NickName,
+                        var chatController = GroupChatDetailController(
+                          chatId: this.member.GroupId,
+                          name: this.member.Name,
                         );
                         await chatController.initial();
                         chatController.subscribe(Get.find());
-                        Get.put(chatController, tag: this.member.UserId);
+                        Get.put(chatController, tag: this.member.GroupId);
                       }
 
-                      Get.to(() => ChatDetailsPage(
-                            chatId: this.member.UserId,
-                            name: this.member.NickName,
-                            avatarUrl: this.member.AvatarUrl,
+                      Get.to(() => GroupChatDetailsPage(
+                            chatId: this.member.GroupId,
+                            name: this.member.Name,
                           ));
                     },
                   )

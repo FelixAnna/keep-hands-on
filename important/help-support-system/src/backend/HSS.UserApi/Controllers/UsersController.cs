@@ -1,5 +1,6 @@
 ﻿using HSS.SharedServices.Contacts.Contracts;
 using HSS.SharedServices.Contacts.Services;
+using HSS.SharedServices.Messages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,7 +12,7 @@ namespace HSS.UserApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IContactService contactService;
+        private readonly IContactService contactService; 
 
         public UsersController(IContactService contactService)
         {
@@ -23,6 +24,13 @@ namespace HSS.UserApi.Controllers
         {
             var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
             return contactService.GetUserContact(userId);
+        }
+
+        [HttpGet("messengers")]
+        public GetContactResponse GetHistoryContacts()
+        {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value!;
+            return contactService.GetHistoricalContact(userId);
         }
 
         [HttpGet("colleagues")]

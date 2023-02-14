@@ -12,7 +12,7 @@
   "legacy": "dist/legacy.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "clean": "rimraf dist/*",
+    "clean": "del dist",
     "start:serve": "parcel serve ./public/index.html -p 3100",
     "start:watch": "npm run clean && parcel build && parcel watch",
     "start:mock": "json-server --watch ./mock/db.json --port 8080",
@@ -31,7 +31,7 @@
     "json-server": "^0.17.1",
     "parcel": "^2.8.2",
     "process": "^0.11.10",
-    "rimraf": "^4.0.7",
+    "del-cli": "^5.0.0",
     "typescript": "^4.9.4"
   },
   "targets": {

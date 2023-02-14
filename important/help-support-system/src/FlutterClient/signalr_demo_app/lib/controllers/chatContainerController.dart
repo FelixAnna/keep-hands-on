@@ -49,7 +49,7 @@ class ChatContainerController extends BaseController {
 
   loadContactAndMessages() async {
     userService = Get.find();
-    var contact = await userService.getCurrentContacts();
+    var contact = await userService.getCurrentMessengers();
 
     for (var user in contact.Friends) {
       setChatMsgs(user.UserId, []);

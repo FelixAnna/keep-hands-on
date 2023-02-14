@@ -3,6 +3,8 @@ import 'package:signalr_demo_app/controllers/searchUserController.dart';
 import 'package:signalr_demo_app/models/chat_member.dart';
 import 'package:signalr_demo_app/widgets/search_user_page.dart';
 import '../controllers/chatContainerController.dart';
+import '../controllers/contactController.dart';
+import 'contact_page.dart';
 import 'conversation_item.dart';
 import 'package:get/get.dart';
 
@@ -37,11 +39,15 @@ class ChatContainerPage extends GetWidget<ChatContainerController> {
                       child: Row(
                         children: <Widget>[
                           new IconButton(
-                            icon: new Icon(Icons.person_add),
+                            icon: new Icon(Icons.people),
                             color: Colors.lightBlue,
                             onPressed: () async => {
-                              await Get.find<SearchUserController>().initial(),
-                              Get.to(() => SearchUserPage()),
+                              if (!Get.isRegistered<ContactController>())
+                                {
+                                  Get.put(ContactController(), permanent: true),
+                                },
+                              await Get.find<ContactController>().initial(),
+                              Get.to(() => ContactPage()),
                             },
                           ),
                           SizedBox(

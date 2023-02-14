@@ -6,7 +6,7 @@ import 'baseController.dart';
 
 class ProfileController extends BaseController {
   var UserInfo =
-      User(UserId: '', TenantId: '', NickName: '', AvatarUrl: '', Email: '')
+      User(UserId: '', TenantId: -1, NickName: '', AvatarUrl: '', Email: '')
           .obs;
   var TenantName = "".obs;
   @override
@@ -27,7 +27,7 @@ class ProfileController extends BaseController {
     //print(tenants);
     if (tenants != '') {
       var tenant = jsonDecode(tenants)
-          .where((element) => element["id"].toString() == Profile.TenantId);
+          .where((element) => element["id"] == Profile.TenantId);
       TenantName.value = tenant.last["name"];
     }
   }

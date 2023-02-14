@@ -92,7 +92,6 @@ class HSSApp extends StatelessWidget {
     Get.put(GroupMemberService(client, env: envService), permanent: true);
 
     Get.put(AuthStorageService(), permanent: true);
-    Get.put(SearchUserController(), permanent: true);
     Get.put(HubService(env: envService), permanent: true);
     Get.put(MessageStorageService(), permanent: true);
     Get.put(ProfileController(), permanent: true);

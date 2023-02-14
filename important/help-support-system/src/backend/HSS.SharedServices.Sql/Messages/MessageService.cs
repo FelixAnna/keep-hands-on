@@ -49,6 +49,22 @@ namespace HSS.SharedServices.Sql.Messages
             return results.ToList();
         }
 
+        public List<MessageModel> GetMessengers(string fromTo)
+        {
+            using var connnection = new SqlConnection(connectionString);
+            var builder = new SqlBuilder();
+
+            var select = builder.AddTemplate("select distinct [from], [to] from hss.messages /**where**/ ");
+            var parameter = new DynamicParameters();
+
+            parameter.Add("fromTo", fromTo);
+            builder.Where(" [from] = @fromTo or [to] = @fromTo ");
+
+            var results = connnection.Query<MessageModel>(select.RawSql, parameter);
+
+            return results.ToList();
+        }
+
         public async Task SaveMessageAsync(SaveMessageRequest request)
         {
             using var connnection = new SqlConnection(connectionString);

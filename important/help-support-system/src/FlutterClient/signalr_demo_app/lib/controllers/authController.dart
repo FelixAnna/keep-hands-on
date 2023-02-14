@@ -5,9 +5,6 @@ import 'package:signalr_demo_app/controllers/baseController.dart';
 import 'package:signalr_demo_app/models/user.dart';
 import 'package:signalr_demo_app/services/auth_service.dart';
 
-import '../services/auth_storage_service.dart';
-import '../services/tenant_service.dart';
-
 class AuthController extends BaseController {
   late String IdpAuthority = '';
 

@@ -89,7 +89,8 @@ class GroupChatDetailController extends BaseController {
               UserId: senderId,
               NickName: "unknown",
               AvatarUrl: "unknown",
-              Email: "unknown"),
+              Email: "unknown",
+              TenantId: -1),
         )
         .NickName;
   }
@@ -102,7 +103,8 @@ class GroupChatDetailController extends BaseController {
               UserId: senderId,
               NickName: "unknown",
               AvatarUrl: "unknown",
-              Email: "unknown"),
+              Email: "unknown",
+              TenantId: -1),
         )
         .AvatarUrl;
   }

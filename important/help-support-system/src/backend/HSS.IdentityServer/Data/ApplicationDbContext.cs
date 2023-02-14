@@ -1,5 +1,5 @@
-﻿using HSS.SharedModels.Entities;
-using HSS.IdentityServer.Models;
+﻿using HSS.IdentityServer.Models;
+using HSS.SharedModels.Entities;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;

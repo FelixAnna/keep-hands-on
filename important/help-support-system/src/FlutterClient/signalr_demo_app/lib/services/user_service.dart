@@ -30,6 +30,27 @@ class UserService {
     }
   }
 
+  Future<Contact> getCurrentMessengers() async {
+    final response = await client
+        .get(Uri.parse(env.userApiAddress + '/api/users/messengers'));
+    var body = jsonDecode(response.body);
+
+    var friendsJson = body['contact']['friends'] as List;
+    List<MemberInfo> friendsList =
+        friendsJson.map((tagJson) => MemberInfo.fromJson(tagJson)).toList();
+
+    var groupsJson = body['contact']['groups'] as List;
+    List<GroupInfo> groupsList =
+        groupsJson.map((tagJson) => GroupInfo.fromJson(tagJson)).toList();
+
+    if (response.statusCode == HttpStatus.ok) {
+      return Contact(body['userId'], groupsList, friendsList);
+    } else {
+      print('error: ' + response.toString());
+      throw new Exception(response.toString());
+    }
+  }
+
   Future<List<ColleagueInfo>> getColleagues(String keywords) async {
     var query = "";
     if (keywords.trim().length > 0) {

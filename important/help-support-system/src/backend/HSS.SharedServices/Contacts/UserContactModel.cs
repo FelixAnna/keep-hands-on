@@ -1,4 +1,4 @@
-﻿using HSS.SharedServices.Friends;
+﻿using HSS.SharedModels.Models;
 using HSS.SharedServices.Groups;
 
 namespace HSS.SharedServices.Contacts
@@ -7,6 +7,6 @@ namespace HSS.SharedServices.Contacts
     {
         public IEnumerable<GroupModel> Groups { get; set; } = null!;
 
-        public IEnumerable<FriendModel> Friends { get; set; } = null!;
+        public IEnumerable<UserModel> Friends { get; set; } = null!;
     }
 }

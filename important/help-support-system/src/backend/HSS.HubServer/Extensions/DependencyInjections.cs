@@ -6,6 +6,7 @@ using HSS.SharedServices.Messages;
 using HSS.SharedServices.Sql.Contact;
 using HSS.SharedServices.Sql.Friends;
 using HSS.SharedServices.Sql.Messages;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HSS.HubServer.Extensions
 {
@@ -18,7 +19,7 @@ namespace HSS.HubServer.Extensions
 
             var connectionString = configuration.GetValue<string>("hss:sqlconn");
             services.AddSingleton(settings);
-            services.AddScoped<IContactService, ContactService>(x => new ContactService(x.GetRequiredService<IGroupService>(), x.GetRequiredService<IFriendService>(), connectionString));
+            services.AddScoped<IContactService, ContactService>(x => new ContactService(x.GetRequiredService<IGroupService>(), x.GetRequiredService<IFriendService>(), x.GetRequiredService<IMessageService>(), connectionString));
             services.AddScoped<IGroupService, GroupService>(provider => new GroupService(connectionString));
             services.AddScoped<IFriendService, FriendService>(provider => new FriendService(connectionString));
             services.AddScoped<IMessageService, MessageService>(provider => new MessageService(connectionString));

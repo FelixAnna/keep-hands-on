@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace HSS.Common.Exceptions
+﻿namespace HSS.Common.Exceptions
 {
     [Serializable]
     public class HSSConsulServiceNotFoundException : Exception

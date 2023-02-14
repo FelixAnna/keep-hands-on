@@ -31,7 +31,7 @@ class SearchUserPage extends GetWidget<SearchUserController> {
                     Text(
                       "Search User",
                       style:
-                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),

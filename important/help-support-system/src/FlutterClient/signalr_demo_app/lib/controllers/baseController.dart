@@ -12,7 +12,7 @@ class BaseController extends GetxController {
   late String UserName = "";
   late String Token = "";
   late User Profile =
-      User(UserId: '', TenantId: '', NickName: '', AvatarUrl: '', Email: '');
+      User(UserId: '', TenantId: -1, NickName: '', AvatarUrl: '', Email: '');
 
   late AuthStorageService authStorageService;
   @override

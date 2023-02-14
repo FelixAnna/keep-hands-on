@@ -49,7 +49,7 @@ namespace HSS.IdentityServer.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    return new { UserId=user.Id };
+                    return new { UserId = user.Id };
                 }
                 foreach (var error in result.Errors)
                 {

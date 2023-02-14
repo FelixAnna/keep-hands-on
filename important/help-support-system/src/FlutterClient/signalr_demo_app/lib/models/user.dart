@@ -1,6 +1,6 @@
 class User {
   String UserId;
-  String TenantId;
+  int TenantId;
   String NickName;
   String AvatarUrl;
   String Email;

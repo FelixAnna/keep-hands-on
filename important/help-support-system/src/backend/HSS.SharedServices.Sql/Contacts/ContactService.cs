@@ -4,7 +4,10 @@ using HSS.SharedServices.Contacts.Contracts;
 using HSS.SharedServices.Contacts.Services;
 using HSS.SharedServices.Friends.Services;
 using HSS.SharedServices.Groups.Services;
+using HSS.SharedServices.Messages;
+using HSS.SharedServices.Sql.Messages;
 using Microsoft.Data.SqlClient;
+using System.Security.Claims;
 
 namespace HSS.SharedServices.Sql.Contact
 {
@@ -12,12 +15,14 @@ namespace HSS.SharedServices.Sql.Contact
     {
         private readonly string connectionString;
         private readonly IFriendService friendService;
+        private readonly IMessageService messageService;
         private readonly IGroupService groupService;
 
-        public ContactService(IGroupService groupService, IFriendService friendService, string connectionString)
+        public ContactService(IGroupService groupService, IFriendService friendService, IMessageService messageService, string connectionString)
         {
             this.groupService = groupService;
             this.friendService = friendService;
+            this.messageService = messageService;
             this.connectionString = connectionString;
         }
 
@@ -38,6 +43,31 @@ namespace HSS.SharedServices.Sql.Contact
             };
         }
 
+        public GetContactResponse GetHistoricalContact(string userId)
+        {
+            var messengers = messageService.GetMessengers(userId);
+            var messengerIds = messengers.SelectMany(x =>
+            {
+                return new string[] { x.From, x.To };
+            })
+                .Distinct()
+                .Where(x => x != userId)
+                .ToArray();
+
+            var groups = groupService.GetUserGroups(userId);
+            var friends = friendService.GetUsers(messengerIds);
+
+            return new GetContactResponse()
+            {
+                UserId = userId,
+
+                Contact = new UserContactModel
+                {
+                    Groups = groups,
+                    Friends = friends
+                }
+            };
+        }
         public GetColleagueResponse GetColleagues(string userId, string keywords)
         {
 
@@ -64,7 +94,7 @@ namespace HSS.SharedServices.Sql.Contact
             using (var connnection = new SqlConnection(connectionString))
             {
                 var currentUserTenantId = connnection.Query<string>("SELECT TenantId FROM dbo.AspNetUsers WHERE Id=@userId", new { userId });
-                var results = connnection.Query<ColleagueModel>("SELECT Id as UserId, Email, NickName, AvatarUrl, TenantId FROM dbo.AspNetUsers WHERE TenantId = @tenantId", new { tenantId = currentUserTenantId.First() });
+                var results = connnection.Query<ColleagueModel>("SELECT Id as UserId, Email, NickName, AvatarUrl, TenantId FROM dbo.AspNetUsers WHERE TenantId = @tenantId AND IsAdhoc=0", new { tenantId = currentUserTenantId.First() });
                 if (!string.IsNullOrWhiteSpace(keywords))
                 {
                     results = results.Where(x => x.Email.Contains(keywords, StringComparison.OrdinalIgnoreCase) || x.NickName.Contains(keywords, StringComparison.OrdinalIgnoreCase));
