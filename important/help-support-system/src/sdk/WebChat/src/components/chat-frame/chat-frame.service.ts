@@ -8,7 +8,7 @@ export default class ChatFrameService extends HTTPService {
   }
 
   async getService() {
-    const response = await this._http.get(`${ENDPOINT}/register`);
+    const response = await this._http.post(`${ENDPOINT}/api/auth/login/fake?tenantId=1`, null);
     return await response.json();
   }
 }

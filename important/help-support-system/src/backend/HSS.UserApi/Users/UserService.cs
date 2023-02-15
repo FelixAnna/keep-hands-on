@@ -77,8 +77,8 @@ namespace HSS.UserApi.Users.Contracts
             var request = new FakeAuthInputModel()
             {
                 TenantId = tenantId,
-                AvatarUrl = "",
-                NickName = "",
+                AvatarUrl = "http://media.bizj.us/view/img/7182082/thinkstockphotos-452415785*750xx2122-1194-0-111.jpg",
+                NickName = "Customer",
                 Password = "123456aA@",
             };
 
