@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Linq;
+using System.Net.Sockets;
+using System.Net;
 
 namespace HSS.Common.Extensions
 {
@@ -26,13 +29,20 @@ namespace HSS.Common.Extensions
                 var addresses = features!.Get<IServerAddressesFeature>();
                 var address = addresses.Addresses.Last();
 
+                var name = Dns.GetHostName(); // get container id
+                var ip = Dns.GetHostEntry(name).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork);
+
+                Console.WriteLine("Container name: " + name + ", Ip is: " 
+                    + string.Join(",", Dns.GetHostEntry(name).AddressList.Where(x => x.AddressFamily == AddressFamily.InterNetwork).Select(x=>x.ToString())));
+                Console.WriteLine("Service Address is: " + string.Join(",", addresses.Addresses.ToArray()));
+
                 // Register service with consul
                 var uri = new Uri(address);
                 var registration = new AgentServiceRegistration()
                 {
                     ID = $"{consulConfig.ServiceID}-{uri.Host}",
                     Name = consulConfig.ServiceName,
-                    Address = $"{uri.Scheme}://{uri.Host}",
+                    Address = $"{uri.Scheme}://{ip}",
                     Port = uri.Port,
                     Tags = new[] { "HSS" }
                 };

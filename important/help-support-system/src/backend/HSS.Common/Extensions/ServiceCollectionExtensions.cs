@@ -53,7 +53,7 @@ namespace HSS.Common.Extensions
 
                             // If the request is for our hub...
                             var path = context.HttpContext.Request.Path;
-                            Console.WriteLine("Hub get token: " + accessToken.ToString() + " , path is start with /chat:" + path.StartsWithSegments("/chat"));
+                            //Console.WriteLine("Hub get token: " + accessToken.ToString() + " , path is start with /chat:" + path.StartsWithSegments("/chat"));
                             if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
                             {
                                 Console.WriteLine("token set");
