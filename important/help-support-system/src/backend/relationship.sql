@@ -10,6 +10,9 @@ GO;
 insert into [hss].[Groups]([Name]) values('Hello World');
 insert into [hss].[Groups]([Name]) values('Test Group');
 
+--EPAM
+--XXX
+
 -- add support for different tenants
 INSERT INTO [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) 
 Values ('asupportid','Support', 'SUPPORT', '70962115-06d7-49f9-9774-c99cda0abb96');

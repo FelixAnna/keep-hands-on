@@ -16,7 +16,7 @@ metadata:
 type: Opaque
 data:
   app-configuration-conn: {{.Values.config.connectionString}}
-
+---
 # create configMap
 apiVersion: v1
 kind: ConfigMap
@@ -25,7 +25,7 @@ metadata:
   {{- template "hssTemplate.defaultLabel" }}
 data:
   profile: {{.Values.config.profile}}
-    
+
 ---
 # 2. create ResourceQuota for the namespace
 apiVersion: v1
@@ -225,7 +225,6 @@ spec:
     - hosts:
       - {{$.Values.ingress.dnsIdpName}}
       - {{$.Values.ingress.dnsName}}
-      - {{$.Values.ingress.dnsDemoName}}
       # This assumes tls-secret exists and the SSL
       # certificate contains a CN for foo.bar.com
       secretName: hss-secret
@@ -238,16 +237,6 @@ spec:
         backend:
           service:
             name: {{ $.Release.Name }}-service-idp
-            port:
-              number: 80
-  - host: {{$.Values.ingress.dnsDemoName}}
-    http:
-      paths:
-      - path: /(.*)   # for nginx only
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ $.Release.Name }}-service-signalrdemo
             port:
               number: 80
   - host: {{$.Values.ingress.dnsName}}

@@ -18,7 +18,7 @@ serviceAccount:
   name: "hss-service-account"
 
 config:
-  profile: local ## get dev config, do not use consul
+  profile: Development ## get dev config, do not use consul
   connectionString: connPlaceHolder
 
 quota:
@@ -63,9 +63,9 @@ applications:
       limits:
         memory: 256Mi
         cpu: "256m"
-  - name: signalrdemo
+  - name: admin
     port: 80
-    image: hssdevacr.azurecr.io/hss-signalrdemo-api:imageVersion
+    image: hssdevacr.azurecr.io/hss-admin:imageVersion
     resources:
       requests:
         memory: 128Mi

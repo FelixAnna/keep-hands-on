@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 
@@ -30,6 +31,9 @@ namespace HSS.Common.Extensions
 
         public static IServiceCollection AddHSSAuthentication(this IServiceCollection services)
         {
+            //TODO remove this line to compliant with GDPR
+            IdentityModelEventSource.ShowPII = true;
+
             // Add services to the container.
             var settings = services.BuildServiceProvider().GetService<IdentityPlatformSettings>()!;
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -43,7 +47,7 @@ namespace HSS.Common.Extensions
                     options.Authority = settings.Authority;
                     options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
 
-                    options.TokenValidationParameters.ValidAudiences = new[] { "user", "message" };
+                    options.TokenValidationParameters.ValidAudiences = new[] { "user", "message", "tenant" };
 
                     options.Events = new JwtBearerEvents
                     {
@@ -103,6 +107,11 @@ namespace HSS.Common.Extensions
                 {
                     policy.RequireAuthenticatedUser();
                     policy.RequireClaim("scope", "message.admin");
+                });
+                options.AddPolicy("TenantAdmin", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "tenant.admin");
                 });
 
                 options.AddPolicy("Customer", policy =>

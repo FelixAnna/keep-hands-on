@@ -7,14 +7,14 @@ At first, enter into sdk/WebChat folder, and then type the followed commands:
 1. Open a new terminal and type `npm run start:watch` to debug.
 
 2. Open a new terminal and type `npm run start:serve` to boot a http server. 
-_The default uri is `http://localhost:3100`_    
+_The default uri is `http://localhost:3100`_
 
 3. Open a new terminal and type `npm run start:mock` to boot a mock server. 
 _The mock data is placed in `sdk/WebChat/mock/db.json`_
 
 ## Environment Variables
 
-Local Environment, create file `.env.developement.local` that content as below and put it in `sdk/WebChat/`
+Local Environment, create file `.env.development.local` that content as below and put it in `sdk/WebChat/`
 
 ```env
 ENDPOINT=http://localhost:8080

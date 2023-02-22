@@ -41,7 +41,7 @@ module "infrastructure" {
   rgName = "hss-${local.environment_name}-rg"
   backendDNS = "api-${local.environment_name}-hss.metadlw.com"
   idpDNS = "idp-${local.environment_name}-hss.metadlw.com"
-  signalRDemoDNS="demo-${local.environment_name}-hss.metadlw.com"
+  AdminDNS="admin-${local.environment_name}-hss.metadlw.com"
   tags = {
       Application = "hss"
       Group = "hss"

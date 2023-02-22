@@ -46,10 +46,10 @@ variable "idpDNS" {
     default = "idp-hss.metadlw.com"
 }
 
-variable "signalRDemoDNS" {
+variable "AdminDNS" {
     type = string
     description = "(optional) dns record to binding to gateway ipaddress"
-    default = "demo-hss.metadlw.com"
+    default = "admin-hss.metadlw.com"
 }
 
 variable "tags" {

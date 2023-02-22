@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "HSS.SharedServices": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:62540;http://localhost:62541"
+    }
+  }
+}

@@ -208,15 +208,17 @@ export default class ChatFrameScript extends ChatFrameScriptClass {
 
   private _bindEditorEvent() {
     const editor = this._nodes.footer.children[0];
-    editor.addEventListener('keydown', (e: KeyboardEvent) => {
+    editor.addEventListener('keydown', async (e: KeyboardEvent) => {
       if (e.altKey && e.key.toLowerCase() === 'enter') {
         e.preventDefault();
         console.log('alt + enter pressed');
-        const newValue = (<HTMLInputElement>e.target).value;
+        const editorValue = (<HTMLInputElement>e.target).value;
+        //TODO: please remove the below anotation if don't need demo
+        // const sentStatus = await this._sendMessage(editorValue);
         const newMessageItem: MessageItemInterface = {
           type: MessageItemTypeEnum.customer,
           receivedTime: Date.now(),
-          content: newValue,
+          content: editorValue,
           status: false,
         };
         this.setData({

@@ -1,22 +1,30 @@
 {
-  "name": "webchat",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [],
+  "name": "@hss/webchat",
+  "version": "0.0.2",
+  "description": "a single web application for providing help support via real time chat",
+  "keywords": [
+    "real time application",
+    "web chat",
+    "web component"
+  ],
   "author": "",
   "license": "MIT",
-  "source": "src/index.ts",
-  "main": "dist/main.js",
-  "module": "dist/module.js",
-  "modern": "dist/modern.js",
-  "legacy": "dist/legacy.js",
-  "types": "dist/types.d.ts",
+  "files": [
+    "./dist/lib/",
+    "./src/"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/lib/lib.js"
+    }
+  },
+  "type": "module",
   "scripts": {
     "clean": "del dist",
-    "start:serve": "parcel serve ./public/index.html -p 3100",
-    "start:watch": "npm run clean && parcel build && parcel watch",
+    "start:serve": "parcel serve ./public/index.html -p 3101",
+    "debug": "npm run clean && node ./config/parcel.debug.mjs",
     "start:mock": "json-server --watch ./mock/db.json --port 8080",
-    "build": "npm run clean && parcel build"
+    "build": "npm run clean && node ./config/parcel.build.mjs"
   },
   "dependencies": {
     "@microsoft/signalr": "^7.0.2",
@@ -24,29 +32,17 @@
     "rxjs": "^7.8.0"
   },
   "devDependencies": {
+    "@parcel/config-default": "^2.8.3",
+    "@parcel/core": "^2.8.3",
     "@parcel/packager-ts": "^2.8.2",
     "@parcel/transformer-inline-string": "^2.8.2",
     "@parcel/transformer-typescript-types": "^2.8.2",
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.13.0",
+    "del-cli": "^5.0.0",
     "json-server": "^0.17.1",
     "parcel": "^2.8.2",
     "process": "^0.11.10",
-    "del-cli": "^5.0.0",
     "typescript": "^4.9.4"
-  },
-  "targets": {
-    "main": false,
-    "module": false,
-    "modern": {
-      "engines": {
-        "browsers": "last 2 versions"
-      }
-    },
-    "legacy": {
-      "engines": {
-        "browsers": "> 0.5%, last 2 versions, not dead"
-      }
-    }
   },
   "engines": {
     "node": ">= 16"

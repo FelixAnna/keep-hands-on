@@ -33,7 +33,6 @@ ingress:
   ingressClassName: nginx
   dnsName: api-prod-hss.metadlw.com
   dnsIdpName: idp-prod-hss.metadlw.com
-  dnsDemoName: demo-prod-hss.metadlw.com
   issuer: letsencrypt-prod ## letsencrypt-prod
   server: https://acme-v02.api.letsencrypt.org/directory ## https://acme-v02.api.letsencrypt.org/directory
   email: Felix_Yu@epam.com  ## need real email address
@@ -64,16 +63,6 @@ applications:
     image: hssdevacr.azurecr.io/hss-hub-api:imageVersion
     resources:
       requests:
-        memory: 256Mi
-        cpu: "256m"
-      limits:
-        memory: 256Mi
-        cpu: "256m"
-  - name: signalrdemo
-    port: 80
-    image: hssdevacr.azurecr.io/hss-signalrdemo-api:imageVersion
-    resources:
-      requests:
         memory: 128Mi
         cpu: "128m"
       limits:
@@ -84,8 +73,8 @@ applications:
     image: hssdevacr.azurecr.io/hss-idp-api:imageVersion
     resources:
       requests:
-        memory: 128Mi
-        cpu: "128m"
+        memory: 256Mi
+        cpu: "256m"
       limits:
-        memory: 128Mi
-        cpu: "128m"
+        memory: 512Mi
+        cpu: "512m"
