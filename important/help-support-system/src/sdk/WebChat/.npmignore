@@ -1,0 +1,12 @@
+config/
+mock/
+public/
+
+.env
+.env.*
+
+tsconfig.json
+
+.parcel-cache/
+dist/main/
+dist/main.*

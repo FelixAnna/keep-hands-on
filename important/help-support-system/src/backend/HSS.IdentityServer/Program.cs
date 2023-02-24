@@ -107,6 +107,6 @@ app.MapRazorPages();
 
 app.MapFallbackToFile("index.html");
 
-app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime));
+app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime, app.Environment.IsDevelopment()));
 
 app.Run();

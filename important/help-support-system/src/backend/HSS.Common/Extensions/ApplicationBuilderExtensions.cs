@@ -14,7 +14,7 @@ namespace HSS.Common.Extensions
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder RegisterWithConsul(this IApplicationBuilder app,
-         IHostApplicationLifetime lifetime)
+         IHostApplicationLifetime lifetime, bool isDevlopment=false)
         {
             // Retrieve Consul client from DI
             var consulClient = app.ApplicationServices.GetRequiredService<IConsulClient>();
@@ -36,13 +36,19 @@ namespace HSS.Common.Extensions
                     + string.Join(",", Dns.GetHostEntry(name).AddressList.Where(x => x.AddressFamily == AddressFamily.InterNetwork).Select(x=>x.ToString())));
                 Console.WriteLine("Service Address is: " + string.Join(",", addresses.Addresses.ToArray()));
 
+                var ipaddress = ip.ToString();
+                if (isDevlopment)
+                {
+                    ipaddress = "localhost";
+                }
+
                 // Register service with consul
                 var uri = new Uri(address);
                 var registration = new AgentServiceRegistration()
                 {
                     ID = $"{consulConfig.ServiceID}-{uri.Host}",
                     Name = consulConfig.ServiceName,
-                    Address = $"{uri.Scheme}://{ip}",
+                    Address = $"{uri.Scheme}://{ipaddress}",
                     Port = uri.Port,
                     Tags = new[] { "HSS" }
                 };

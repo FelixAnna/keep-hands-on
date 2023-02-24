@@ -49,5 +49,5 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapHub<Chat>("/chat");
-app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime));
+app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime, app.Environment.IsDevelopment()));
 app.Run();

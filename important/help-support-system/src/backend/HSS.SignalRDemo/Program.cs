@@ -48,6 +48,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime));
+app.Lifetime.ApplicationStarted.Register(() => app.RegisterWithConsul(app.Lifetime, app.Environment.IsDevelopment()));
 
 app.Run();
