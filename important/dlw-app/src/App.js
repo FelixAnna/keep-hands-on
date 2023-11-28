@@ -14,6 +14,7 @@ import TestLogin from './features/login/oauth2/test';
 import Mathematicals from './features/mathematicals/index';
 import PrivateRoute from './features/auth/privateRoute';
 import ZdjSearch from './features/zdj';
+import Zhuyin from './features/zhuyin'
 import MemoSearch from './features/memo';
 import Profile from './features/login/profile';
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="login/github" element={<GithubLogin />} />
           <Route path="login/google" element={<GoogleLogin />} />
           <Route path="login/test" element={<TestLogin />} />
+          <Route path="zhuyin" element={<Zhuyin />} />
           <Route path="zdj" element={<ZdjSearch />} />
           <Route exact path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route exact path="/memo" element={<PrivateRoute><MemoSearch /></PrivateRoute>} />
