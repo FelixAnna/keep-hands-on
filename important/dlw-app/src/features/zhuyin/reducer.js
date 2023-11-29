@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { SearchZhuyin } from '../../api/request';
-import pinyin from "pinyin";
+import pinyin from 'pinyin';
 
 // Distrct/Street/Community/MinPrice/MaxPrice/Version/SortKey/Page/Size
 const initialState = {
@@ -19,10 +18,10 @@ export const loadAsync = createAsyncThunk(
   'zhuyin/Search',
   async (criteria) => {
     const response = pinyin(criteria.Keywords, {
-        heteronym: true,              // 启用多音字模式
-        segment: true,              // 启用分词，以解决多音字问题。默认不开启，使用 true 开启使用 Intl.Segmenter 分词库。
-        group: true,               // 启用词组
-      });
+      heteronym: true,
+      segment: true,
+      group: true,
+    });
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   },
@@ -55,13 +54,7 @@ export const zhuyinSlice = createSlice({
       .addCase(loadAsync.fulfilled, (state, action) => {
         const items = action.payload;
         state.status = 'idle';
-        const results = state.ZhuyinItems;
-        items.forEach((item) => {
-          if (!results.some((r) => r.Id === item.Id)) {
-            results.push(item);
-          }
-        });
-        state.Pinyin = results;
+        state.Pinyin = items;
       });
   },
 });

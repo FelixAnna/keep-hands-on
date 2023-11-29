@@ -14,7 +14,7 @@ import TestLogin from './features/login/oauth2/test';
 import Mathematicals from './features/mathematicals/index';
 import PrivateRoute from './features/auth/privateRoute';
 import ZdjSearch from './features/zdj';
-import Zhuyin from './features/zhuyin'
+import Zhuyin from './features/zhuyin';
 import MemoSearch from './features/memo';
 import Profile from './features/login/profile';
 

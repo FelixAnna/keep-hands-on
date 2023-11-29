@@ -53,9 +53,9 @@ export default function ZhuyinContent() {
           </TableHead>
           <TableBody>
             <StyledTableRow key="1">
-                <StyledTableCell align="right">{criteria.Keywords}</StyledTableCell>
-                <StyledTableCell align="right">{items}</StyledTableCell>
-              </StyledTableRow>
+              <StyledTableCell align="right">{criteria.Keywords}</StyledTableCell>
+              <StyledTableCell align="right">{items}</StyledTableCell>
+            </StyledTableRow>
           </TableBody>
         </Table>
       </TableContainer>
