@@ -23,7 +23,8 @@ export const loadAsync = createAsyncThunk(
       group: true,
     });
     // The value we return becomes the `fulfilled` action payload
-    return response.data;
+    console.log(response)
+    return response;
   },
 );
 
@@ -54,6 +55,7 @@ export const zhuyinSlice = createSlice({
       .addCase(loadAsync.fulfilled, (state, action) => {
         const items = action.payload;
         state.status = 'idle';
+        console.log(action.payload);
         state.Pinyin = items;
       });
   },

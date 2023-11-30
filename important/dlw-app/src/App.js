@@ -30,7 +30,7 @@ function App() {
           <Route path="login/github" element={<GithubLogin />} />
           <Route path="login/google" element={<GoogleLogin />} />
           <Route path="login/test" element={<TestLogin />} />
-          <Route path="zhuyin" element={<Zhuyin />} />
+          <Route path="pinyin" element={<Zhuyin />} />
           <Route path="zdj" element={<ZdjSearch />} />
           <Route exact path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route exact path="/memo" element={<PrivateRoute><MemoSearch /></PrivateRoute>} />
