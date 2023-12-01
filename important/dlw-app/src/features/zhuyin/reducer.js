@@ -18,12 +18,11 @@ export const loadAsync = createAsyncThunk(
   'zhuyin/Search',
   async (criteria) => {
     const response = pinyin(criteria.Keywords, {
-      heteronym: true,
       segment: true,
       group: true,
     });
     // The value we return becomes the `fulfilled` action payload
-    console.log(response)
+    console.log(response);
     return response;
   },
 );
