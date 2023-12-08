@@ -1,0 +1,12 @@
+  Name: Titanic
+  Genre: DRAMA
+  DaysInProduction: 160
+  Crew:
+    Actor: 52
+    Cameraman: 13
+    Lawyer: 4
+  Superstars:
+    - Leonardo di Caprio
+    - Kate Winslet
+    - Billy Zane
+    - Bernard Hill

@@ -1,0 +1,11 @@
+- Name: Terminator
+  Genre: ACTION
+  DaysInProduction: 160
+  Crew:
+    Actor: 49
+    Cameraman: 8
+    Lawyer: 3
+  Superstars:
+    - Arnold Schwarzenegger
+    - Linda Hamilton
+   
