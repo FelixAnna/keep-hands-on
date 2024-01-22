@@ -18,6 +18,7 @@ export const loadAsync = createAsyncThunk(
   'zhuyin/Search',
   async (criteria) => {
     const response = pinyin(criteria.Keywords, {
+      heteronym: false,
       segment: true,
       group: true,
     });

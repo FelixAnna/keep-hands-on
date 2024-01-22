@@ -31,8 +31,10 @@ namespace EStore.SharedServices.Tests.Orders
 
             A.CallTo(() => orderRepository.GetByIdAsync(A<int>.Ignored)).Returns(fakeOrder);
 
+            //Action
             var result = service.GetByIdAsync(-1).Result;
 
+            //Assert
             A.CallTo(() => orderRepository.GetByIdAsync(A<int>.Ignored)).MustHaveHappenedOnceExactly();
             A.CallTo(() => productRepository.GetByIdsAsync(A<int[]>.Ignored)).MustNotHaveHappened();
             Assert.Multiple(() =>
@@ -61,9 +63,11 @@ namespace EStore.SharedServices.Tests.Orders
 
             A.CallTo(() => orderRepository.GetByIdAsync(A<int>.Ignored)).Returns(fakeOrder);
             A.CallTo(() => productRepository.GetByIdsAsync(A<int[]>.Ignored)).Returns(fakeProducts);
-
+            
+            //Action
             var result = service.GetByIdAsync(-1).Result;
 
+            //Assert
             A.CallTo(() => orderRepository.GetByIdAsync(A<int>.Ignored)).MustHaveHappenedOnceExactly();
             A.CallTo(() => productRepository.GetByIdsAsync(A<int[]>.Ignored)).MustHaveHappenedOnceExactly();
             Assert.Multiple(() =>
