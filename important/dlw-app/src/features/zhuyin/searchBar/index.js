@@ -44,7 +44,7 @@ function SearchBar() {
             InputProps={{
             }}
           />
-          <Button variant="contained" onClick={() => search()}>Search</Button>
+          <Button variant="contained" onClick={() => search()}>Sumbit</Button>
           <Button variant="outlined" onClick={() => reset()}>Reset</Button>
         </Stack>
       </div>

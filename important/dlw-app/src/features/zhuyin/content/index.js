@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Link } from '@mui/material';
 import { currentCriteria, currentItems, loadAsync } from '../reducer';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -47,14 +48,34 @@ export default function ZhuyinContent() {
         <Table aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="right">汉字</StyledTableCell>
-              <StyledTableCell align="right">拼音</StyledTableCell>
+              <StyledTableCell align="center">汉字</StyledTableCell>
+              <StyledTableCell align="center">拼音</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <StyledTableRow key="1">
-              <StyledTableCell align="right">{criteria.Keywords}</StyledTableCell>
-              <StyledTableCell align="right">{items}</StyledTableCell>
+              <StyledTableCell align="center">{criteria.Keywords}</StyledTableCell>
+              <StyledTableCell align="center">{items}</StyledTableCell>
+            </StyledTableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TableContainer component={Paper} sx={{ minWidth: 700, maxWidth: 680, align: 'center' }}>
+        <Table aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">教材版本</StyledTableCell>
+              <StyledTableCell align="center">链接</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <StyledTableRow key="1">
+              <StyledTableCell align="center">江苏版3年级上册语文和英语</StyledTableCell>
+              <StyledTableCell align="center"><Link href="books/renjiaoban/2018/grade3/first/englishAndChinese.csv">字库</Link></StyledTableCell>
+            </StyledTableRow>
+            <StyledTableRow key="2">
+              <StyledTableCell align="center">江苏版3年级下册语文和英语</StyledTableCell>
+              <StyledTableCell align="center"><Link href="books/renjiaoban/2018/grade3/second/englishAndChinese.csv">字库</Link></StyledTableCell>
             </StyledTableRow>
           </TableBody>
         </Table>
