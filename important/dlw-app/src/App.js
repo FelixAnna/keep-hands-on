@@ -17,6 +17,7 @@ import ZdjSearch from './features/zdj';
 import Zhuyin from './features/zhuyin';
 import MemoSearch from './features/memo';
 import Profile from './features/login/profile';
+import Words from './features/words';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <div>
         <ResponsiveAppBar />
         <Routes>
+          <Route path="" element={<Home />} />
           <Route path="home" element={<Home />} />
           <Route path="logout" element={<Logout />} />
           <Route path="login" element={<Login />} />
@@ -31,6 +33,7 @@ function App() {
           <Route path="login/google" element={<GoogleLogin />} />
           <Route path="login/test" element={<TestLogin />} />
           <Route path="pinyin" element={<Zhuyin />} />
+          <Route path="words" element={<Words />} />
           <Route path="zdj" element={<ZdjSearch />} />
           <Route exact path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route exact path="/memo" element={<PrivateRoute><MemoSearch /></PrivateRoute>} />
