@@ -3,19 +3,25 @@
 If you need to access the global internet for learning purpose, you can setup your own vpn server, here is the guide for wireguard vpn.
 
 ## Provision Infrastructure
-Apply the **azure_arm.yml** file in any resource group to create virtual machine, network, open firewall for ssh(22), udp(51820), and admin ui(80).
+Apply the **azure_arm.json** file in any resource group to create virtual machine, network, open firewall for ssh(22), udp(51820), and admin ui(80).
 
 1. in azure portal, select an empty resource group or create one **in a nearby region**
 2. open the resource group, scroll down to the bottom
 3. click "Automation -> Export template", wait until the default template load complete
-4. click "Deploy", then "Edit template", paste with content from **azure_arm.yml**
+4. click "Deploy", then "Edit template", paste with content from **azure_arm.json**
 5. fill the parameters, then review and create, wait until complete
 
 ```
-username=admin
+username=admin123
 password=Passw0rd
 resourceGroup=my-rg
-az deployment group create --name deploymentName='ExampleDeployment'$(date +"%d-%b-%Y") --resource-group $resourceGroup --template-uri "https://raw.githubusercontent.com/FelixAnna/keep-hands-on/master/important/kxsw/wireguard/azure_arm.json"  --parameters username=$username password=$password
+location=westus
+
+az account set --subscription "xxxx-xxxx-xxxx-xxxx-xxxxxxxx"
+
+az group create --name $resourceGroup --location $location
+
+az deployment group create --name 'ExampleDeployment'$(date +"%d-%b-%Y") --resource-group $resourceGroup --template-uri "https://raw.githubusercontent.com/FelixAnna/keep-hands-on/master/important/kxsw/wireguard/azure_arm.json"  --parameters username=$username password=$password
 
 ```
 
