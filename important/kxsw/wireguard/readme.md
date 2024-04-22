@@ -11,6 +11,14 @@ Apply the **azure_arm.yml** file in any resource group to create virtual machine
 4. click "Deploy", then "Edit template", paste with content from **azure_arm.yml**
 5. fill the parameters, then review and create, wait until complete
 
+```
+username=admin
+password=Passw0rd
+resourceGroup=my-rg
+az deployment group create --name deploymentName='ExampleDeployment'$(date +"%d-%b-%Y") --resource-group $resourceGroup --template-uri "https://raw.githubusercontent.com/FelixAnna/keep-hands-on/master/important/kxsw/wireguard/azure_arm.json"  --parameters username=$username password=$password
+
+```
+
 ## Deploy Wireguard
 
 After the infrastructure deployed, you can get the public ip of the vpnserver, also remember the parameters you input before deployment, then login to the vm by ssh and then start the container:
