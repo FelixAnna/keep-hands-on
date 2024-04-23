@@ -17,7 +17,7 @@ password=Passw0rd
 resourceGroup=my-rg
 location=westus
 
-az account set --subscription "xxxx-xxxx-xxxx-xxxx-xxxxxxxx"
+az account set --subscription "xxxxxxxx"
 
 az group create --name $resourceGroup --location $location
 
@@ -32,7 +32,8 @@ After the infrastructure deployed, you can get the public ip of the vpnserver, a
 ```
 ## open command line, and connect to the vpnserver by ssh
 
-ssh -i ~/.ssh/id_rsa.pem <TheUserNameYouInput>@<ThePublicIpAddress>
+publicIpAddress=$(az network public-ip show -g $resourceGroup -n vpnserverpip --query "ipAddress" --out tsv)
+ssh -i ~/.ssh/id_rsa.pem ./ssh/ $username@$publicIpAddress
 ```
 
 ```
@@ -81,6 +82,9 @@ If you don't need the vpn service any more, just delete all from the resource gr
 1. Go to the resource group in azure portal
 2. Click "Delete resource group" and confirm, wait until it complete
 
+```
+az group delete -n $resourceGroup --force-deletion-types Microsoft.Compute/virtualMachines
+```
 
 ## Refer
 
