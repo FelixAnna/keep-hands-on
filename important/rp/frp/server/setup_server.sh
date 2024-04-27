@@ -45,3 +45,12 @@ export ADMIN_PASSWORD=admin
 EOF
 
 sh start_server.sh
+
+## set as system deamon
+sudo bash
+touch /lib/systemd/system/frp.service
+##
+## copy and update from the [frp.service](./server/frp.service)
+vim /lib/systemd/system/frp.service
+##
+systemctl enable frp.service --now

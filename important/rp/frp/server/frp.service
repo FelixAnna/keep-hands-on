@@ -1,0 +1,12 @@
+#!/bin/sh
+
+[Unit]
+Description=Frp Startup Script
+
+[Service]
+WorkingDirectory=/home/felix/frp/057/frp_0.57.0_linux_amd64/server
+Restart=on-failure
+ExecStart=/home/felix/frp/057/frp_0.57.0_linux_amd64/server/start_server.sh
+
+[Install]
+WantedBy=multi-user.target
