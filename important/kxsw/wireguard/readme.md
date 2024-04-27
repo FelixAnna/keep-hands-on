@@ -5,19 +5,26 @@ If you need to access the global internet for learning purpose, you can setup yo
 ## Provision Infrastructure
 Apply the **azure_arm.json** file in any resource group to create virtual machine, network, open firewall for ssh(22), udp(51820), and admin ui(80).
 
+Provision by Azure Portal
 1. in azure portal, select an empty resource group or create one **in a nearby region**
 2. open the resource group, scroll down to the bottom
 3. click "Automation -> Export template", wait until the default template load complete
 4. click "Deploy", then "Edit template", paste with content from **azure_arm.json**
 5. fill the parameters, then review and create, wait until complete
 
+Provision by Azure Command-Line Interface (CLI):
 ```
+## login and then switch subscription if you have multiple subscriptions
+az account set --subscription "your-azure-subscription-id"
+```
+
+```
+## start provisioning
+
 username=admin123
 password=Passw0rd
 resourceGroup=my-rg
 location=westus
-
-az account set --subscription "xxxxxxxx"
 
 az group create --name $resourceGroup --location $location
 
@@ -27,8 +34,9 @@ az deployment group create --name 'ExampleDeployment'$(date +"%d-%b-%Y") --resou
 
 ## Deploy Wireguard
 
-After the infrastructure deployed, you can get the public ip of the vpnserver, also remember the parameters you input before deployment, then login to the vm by ssh and then start the container:
+After the infrastructure deployed, you can get the public ip of the vpnserver from portal or CLI, also remember the parameters you input before deployment, then login to the vm by ssh and then start the container:
 
+Get the public ip address by Azure Command-Line Interface (CLI):
 ```
 ## open command line, and connect to the vpnserver by ssh
 
@@ -37,7 +45,7 @@ ssh -i ~/.ssh/id_rsa.pem ./ssh/ $username@$publicIpAddress
 ```
 
 ```
-## Start the vpn and admin services in the vpnserver
+## Start the vpn and admin services in the vpnserver virtual machine (after ssh to the server)
 ## replace <ThePublicIpAddress> and <ThePasswordYouInput> with correct value
 
 docker run -d \
@@ -58,7 +66,7 @@ docker run -d \
 
 ## Access the Admin UI
 
-Now you can open the Admin UI, by accessing the http://<ThePublicIpAddress>, input the password when login.
+Now you can open the Admin UI, by accessing the http://ThePublicIpAddress, input the password and login.
 
 After you success login, you can add client profile, and you phone can scan the QR code to add the profile to local client (You need WireGuard client mobile app installed, please searh from google play).
 
