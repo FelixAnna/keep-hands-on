@@ -19,19 +19,18 @@ transport.maxPoolCount = 5
 vhostHTTPPort = 8080
 vhostHTTPSPort = 8443
 
-#transport.tls.enable = true
-#transport.tls.certFile = "certificate.crt"
-#transport.tls.keyFile = "certificate.key"
-#transport.tls.trustedCaFile = "ca.crt"
+transport.tls.force = true
+transport.tls.certFile = "server.crt"
+transport.tls.keyFile = "server.key"
+transport.tls.trustedCaFile = "ca.crt"
 
 webServer.addr = "0.0.0.0"
 webServer.port = {{ .Envs.ADMIN_PORT }}
-# dashboard's username and password are both optional
 webServer.user = "{{ .Envs.ADMIN_USER }}"
 webServer.password = "{{ .Envs.ADMIN_PASSWORD }}"
 
-# webServer.tls.certFile = "server.crt"
-# webServer.tls.keyFile = "server.key"
+webServer.tls.certFile = "server.crt"
+webServer.tls.keyFile = "server.key"
 
 EOF
 

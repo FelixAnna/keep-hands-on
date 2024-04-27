@@ -3,9 +3,8 @@ serverPort = 7000
 includes = ["./config/*.toml"]
 
 transport.poolCount = 1
-#transport.proxyProtocolVersion = "v2"
 
 #transport.tls.enable = true
-#transport.tls.certFile = "certificate.crt"
-#transport.tls.keyFile = "certificate.key"
+#transport.tls.certFile = "server.crt"
+#transport.tls.keyFile = "server.key"
 #transport.tls.trustedCaFile = "ca.crt"
