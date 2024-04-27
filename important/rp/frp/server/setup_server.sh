@@ -36,6 +36,8 @@ webServer.password = "{{ .Envs.ADMIN_PASSWORD }}"
 EOF
 
 cat > start_server.sh << EOF
+#!/bin/sh
+
 export ADMIN_PORT=9090
 export ADMIN_USER=admin
 export ADMIN_PASSWORD=admin

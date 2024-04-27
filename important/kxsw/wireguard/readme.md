@@ -55,7 +55,7 @@ docker run -d \
   -e PASSWORD=<ThePasswordYouInput> \
   -v ~/.wg-easy:/etc/wireguard \
   -p 51820:51820/udp \
-  -p 80:51821/tcp \
+  -p 8080:51821/tcp \
   --cap-add=NET_ADMIN \
   --cap-add=SYS_MODULE \
   --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
@@ -66,7 +66,7 @@ docker run -d \
 
 ## Access the Admin UI
 
-Now you can open the Admin UI, by accessing the http://ThePublicIpAddress, input the password and login.
+Now you can open the Admin UI, by accessing the http://ThePublicIpAddress:8080, input the password and login.
 
 After you success login, you can add client profile, and you phone can scan the QR code to add the profile to local client (You need WireGuard client mobile app installed, please searh from google play).
 
