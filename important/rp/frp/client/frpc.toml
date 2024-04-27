@@ -1,0 +1,11 @@
+serverAddr = "{{ .Envs.FRP_SERVER_ADDR }}"
+serverPort = 7000
+includes = ["./config/*.toml"]
+
+transport.poolCount = 1
+#transport.proxyProtocolVersion = "v2"
+
+#transport.tls.enable = true
+#transport.tls.certFile = "certificate.crt"
+#transport.tls.keyFile = "certificate.key"
+#transport.tls.trustedCaFile = "ca.crt"

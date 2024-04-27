@@ -1,0 +1,6 @@
+[[proxies]]
+name = "dns"
+type = "udp"
+localIP = "8.8.8.8"
+localPort = 53
+remotePort = 6000

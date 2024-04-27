@@ -1,0 +1,22 @@
+
+[[proxies]]
+name = "web"
+type = "http"
+localPort = 80
+customDomains = ["{{ .Envs.CNAME }}"]
+# loadBalancer.group = "web"
+# loadBalancer.groupKey = "123"
+
+[[proxies]]
+name = "test_https2http"
+type = "https"
+localPort = 8443
+customDomains = ["{{ .Envs.CNAME }}"]
+
+[proxies.plugin]
+type = "https2http"
+localAddr = "127.0.0.1:80"
+crtPath = "./server.crt"
+keyPath = "./server.key"
+hostHeaderRewrite = "127.0.0.1"
+requestHeaders.set.x-from-where = "frp"

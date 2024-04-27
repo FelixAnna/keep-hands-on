@@ -1,0 +1,14 @@
+## bug here, to be fix
+[[proxies]]
+name = "test_static_file"
+type = "tcp"
+remotePort = {{ .Envs.STATIC_PORT }}
+
+[proxies.plugin]
+type = "static_file"
+localPath = "{{ .Envs.STATIC_DIR }}"
+stripPrefix = "static"
+httpUser = "{{ .Envs.USER_NAME }}"
+httpPassword =  "{{ .Envs.PASSWORD }}"
+hostHeaderRewrite = "127.0.0.1"
+requestHeaders.set.x-from-where = "frp"
