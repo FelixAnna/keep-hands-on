@@ -19,10 +19,10 @@ transport.maxPoolCount = 5
 vhostHTTPPort = 8080
 vhostHTTPSPort = 8443
 
-transport.tls.force = true
-transport.tls.certFile = "server.crt"
-transport.tls.keyFile = "server.key"
-transport.tls.trustedCaFile = "ca.crt"
+#transport.tls.force = true
+#transport.tls.certFile = "server.crt"
+#transport.tls.keyFile = "server.key"
+#transport.tls.trustedCaFile = "ca.crt"
 
 webServer.addr = "0.0.0.0"
 webServer.port = {{ .Envs.ADMIN_PORT }}
