@@ -238,11 +238,11 @@
             }
           },
           {
-            "name": "default-tcp-80",
+            "name": "default-tcp-8080",
             "properties": {
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "80",
+              "destinationPortRange": "8080",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
