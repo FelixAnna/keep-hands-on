@@ -15,6 +15,20 @@
         "description": "Password for VPN and SSH"
       }
     },
+    "udpport": {
+      "type": "string",
+      "defaultValue": "51820",
+      "metadata": {
+        "description": "Port for UDP"
+      }
+    },
+    "tcpport": {
+      "type": "string",
+      "defaultValue": "8080",
+      "metadata": {
+        "description": "Port for UDP"
+      }
+    },
     "image": {
       "type": "string",
       "allowedValues": [
@@ -225,11 +239,11 @@
             }
           },
           {
-            "name": "default-udp-51820",
+            "name": "default-udp",
             "properties": {
               "protocol": "Udp",
               "sourcePortRange": "*",
-              "destinationPortRange": "51820",
+              "destinationPortRange": "[parameters('udpport)]",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
@@ -238,11 +252,11 @@
             }
           },
           {
-            "name": "default-tcp-8080",
+            "name": "default-tcp",
             "properties": {
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "8080",
+              "destinationPortRange": "[parameters('tcpport)]",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",

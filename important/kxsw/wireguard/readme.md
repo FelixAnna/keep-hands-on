@@ -25,10 +25,12 @@ username=admin123
 password=Passw0rd
 resourceGroup=my-rg
 location=westus
+udpport=1521
+tcpport=8080
 
 az group create --name $resourceGroup --location $location
 
-az deployment group create --name 'ExampleDeployment'$(date +"%d-%b-%Y") --resource-group $resourceGroup --template-uri "https://raw.githubusercontent.com/FelixAnna/keep-hands-on/master/important/kxsw/wireguard/azure_arm.json"  --parameters username=$username password=$password
+az deployment group create --name 'ExampleDeployment'$(date +"%d-%b-%Y") --resource-group $resourceGroup --template-uri "https://raw.githubusercontent.com/FelixAnna/keep-hands-on/master/important/kxsw/wireguard/azure_arm.json"  --parameters username=$username password=$password udpport=$udpport tcpport=$tcpport 
 
 ```
 
@@ -52,10 +54,10 @@ docker run -d \
   --name=wg-easy \
   -e LANG=en \
   -e WG_HOST=<ThePublicIpAddress> \
-  -e PASSWORD=<ThePasswordYouInput> \
+  -e PASSWORD=$password \
   -v ~/.wg-easy:/etc/wireguard \
-  -p 51820:51820/udp \
-  -p 8080:51821/tcp \
+  -p $udpport:51820/udp \
+  -p $tcpport:51821/tcp \
   --cap-add=NET_ADMIN \
   --cap-add=SYS_MODULE \
   --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
