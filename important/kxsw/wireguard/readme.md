@@ -68,7 +68,7 @@ docker run -d \
 
 ## Access the Admin UI
 
-Now you can open the Admin UI, by accessing the http://ThePublicIpAddress:8080, input the password and login.
+Now you can open the Admin UI, by accessing the http://ThePublicIpAddress:<tcpport>, input the password and login.
 
 After you success login, you can add client profile, and you phone can scan the QR code to add the profile to local client (You need WireGuard client mobile app installed, please searh from google play).
 
@@ -81,7 +81,7 @@ It is necessary to close the ssh and tcp port after you finished configured all 
 1. Go to the resource group in azure portal
 2. select "vpnservernsg" (Network security group)
 3. click "Inbound security rules"
-4. click "default-tcp-80" and "default-ssh", change their action to "Deny" and save
+4. click "default-tcp" and "default-ssh", change their action to "Deny" and save
 
 If you want to add new client or connect to the server later, you need to Allow those 2 rules in advance.
 

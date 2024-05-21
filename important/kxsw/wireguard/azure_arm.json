@@ -243,7 +243,7 @@
             "properties": {
               "protocol": "Udp",
               "sourcePortRange": "*",
-              "destinationPortRange": "[parameters('udpport)]",
+              "destinationPortRange": "[parameters('udpport')]",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
@@ -256,7 +256,7 @@
             "properties": {
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "[parameters('tcpport)]",
+              "destinationPortRange": "[parameters('tcpport')]",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
