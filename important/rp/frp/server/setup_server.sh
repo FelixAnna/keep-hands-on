@@ -16,8 +16,8 @@ cat > frps.toml << EOF
 bindPort = 7000
 
 transport.maxPoolCount = 5
-vhostHTTPPort = 8080
-vhostHTTPSPort = 8443
+vhostHTTPPort = 80
+vhostHTTPSPort = 443
 
 #transport.tls.force = true
 #transport.tls.certFile = "server.crt"

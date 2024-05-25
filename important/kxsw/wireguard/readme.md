@@ -3,7 +3,7 @@
 If you need to access the global internet for learning purpose, you can setup your own vpn server, here is the guide for wireguard vpn.
 
 ## Provision Infrastructure
-Apply the **azure_arm.json** file in any resource group to create virtual machine, network, open firewall for ssh(22), udp(51820), and admin ui(80).
+Apply the **azure_arm.json** file in any resource group to create virtual machine, network, open firewall for ssh(22), udp(like 51820), and admin ui(80).
 
 Provision by Azure Portal
 1. in azure portal, select an empty resource group or create one **in a nearby region**
@@ -21,11 +21,11 @@ az account set --subscription "your-azure-subscription-id"
 ```
 ## start provisioning
 
-username=admin123
-password=Passw0rd
+username=admin
+password=123456
 resourceGroup=my-rg
 location=westus
-udpport=1521
+udpport=51800
 tcpport=8080
 
 az group create --name $resourceGroup --location $location
@@ -43,17 +43,14 @@ Get the public ip address by Azure Command-Line Interface (CLI):
 ## open command line, and connect to the vpnserver by ssh
 
 publicIpAddress=$(az network public-ip show -g $resourceGroup -n vpnserverpip --query "ipAddress" --out tsv)
-ssh -i ~/.ssh/id_rsa.pem ./ssh/ $username@$publicIpAddress
-```
 
-```
 ## Start the vpn and admin services in the vpnserver virtual machine (after ssh to the server)
-## replace <ThePublicIpAddress> and <ThePasswordYouInput> with correct value
 
+ssh $username@$publicIpAddress \
 docker run -d \
   --name=wg-easy \
   -e LANG=en \
-  -e WG_HOST=<ThePublicIpAddress> \
+  -e WG_HOST=$publicIpAddress \
   -e PASSWORD=$password \
   -v ~/.wg-easy:/etc/wireguard \
   -p $udpport:51820/udp \
