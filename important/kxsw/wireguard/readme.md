@@ -65,11 +65,14 @@ docker run -d \
 
 ## Access the Admin UI
 
-Now you can open the Admin UI, by accessing the http://ThePublicIpAddress:<tcpport>, input the password and login.
+Now you can open the Admin UI, by accessing the http://ThePublicIpAddress:tcpport, input the password and login.
 
 After you success login, you can add client profile, and you phone can scan the QR code to add the profile to local client (You need WireGuard client mobile app installed, please searh from google play).
 
 You can use the similar way to add client for PC (still need you download the client app: https://www.wireguard.com/install/)
+
+
+If your udpport is not the default value(51820), you need edit in the client profile to change to the actual udp port you specified.
 
 ## Close Unused firewall rules
 
