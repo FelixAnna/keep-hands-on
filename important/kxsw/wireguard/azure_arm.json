@@ -211,7 +211,7 @@
         "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "commandToExecute": "[variables('installCommand')]"
+          "commandToExecute": "ls -al"
         }
       }
     },
