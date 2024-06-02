@@ -80,7 +80,7 @@
       "sku": "20_04-lts",
       "version": "latest"
     },
-    "installCommand": "[concat('curl -sSL https://get.docker.com | sh  && sudo usermod -aG docker ', variables('quote'), parameters('username'), variables('quote'))]"
+    "installCommand": "[concat('curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh && sudo usermod -aG docker ', variables('quote'), parameters('username'), variables('quote'))]"
   },
   "resources": [
     {
@@ -211,7 +211,7 @@
         "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "commandToExecute": "ls -al"
+          "commandToExecute": "[variables('installCommand')]"
         }
       }
     },
