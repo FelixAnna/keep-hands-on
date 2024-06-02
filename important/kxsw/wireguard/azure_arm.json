@@ -42,7 +42,7 @@
     },
     "VMSize": {
       "type": "string",
-      "defaultValue": "Standard_B1s",
+      "defaultValue": "Standard_B1ls",
       "allowedValues": [
         "Standard_B1ls",
         "Standard_B1s",
@@ -211,7 +211,7 @@
         "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "commandToExecute": "[variables('installCommand')]"
+          "commandToExecute": ""
         }
       }
     },

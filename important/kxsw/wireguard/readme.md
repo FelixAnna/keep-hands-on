@@ -21,58 +21,32 @@ az account set --subscription "your-azure-subscription-id"
 ```
 ## start provisioning
 
-username=admin
-password=123456
-resourceGroup=my-rg
-location=westus
-udpport=51800
-tcpport=8080
+## prepare westus.sh with following parameters
+##    username=admin
+##    password=Passw0rd1
+##    resourceGroup=test-rg
+##    location=westus
+##    udpport=51820
+##    tcpport=80
 
-az group create --name $resourceGroup --location $location
-
-az deployment group create --name 'ExampleDeployment'$(date +"%d-%b-%Y") --resource-group $resourceGroup --template-uri "https://raw.githubusercontent.com/FelixAnna/keep-hands-on/master/important/kxsw/wireguard/azure_arm.json"  --parameters username=$username password=$password udpport=$udpport tcpport=$tcpport 
+sh deploy_azure.sh westus
 
 ```
 
 ## Deploy Wireguard
 
-After the infrastructure deployed, you can get the public ip of the vpnserver from portal or CLI, also remember the parameters you input before deployment, then login to the vm by ssh and then start the container:
-
-Get the public ip address by Azure Command-Line Interface (CLI):
-```
-## open command line, and connect to the vpnserver by ssh
-
-publicIpAddress=$(az network public-ip show -g $resourceGroup -n vpnserverpip --query "ipAddress" --out tsv)
-
-## Start the vpn and admin services in the vpnserver virtual machine (after ssh to the server)
-
-ssh $username@$publicIpAddress \
-docker run -d \
-  --name=wg-easy \
-  -e LANG=en \
-  -e WG_HOST=$publicIpAddress \
-  -e PASSWORD=$password \
-  -v ~/.wg-easy:/etc/wireguard \
-  -p $udpport:51820/udp \
-  -p $tcpport:51821/tcp \
-  --cap-add=NET_ADMIN \
-  --cap-add=SYS_MODULE \
-  --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
-  --sysctl="net.ipv4.ip_forward=1" \
-  --restart unless-stopped \
-  ghcr.io/wg-easy/wg-easy
-  ```
+After the infrastructure deployed, you will get some **command** for this step, just follow it to login to the vm, setup docker and then start the container:
 
 ## Access the Admin UI
 
-Now you can open the Admin UI, by accessing the http://ThePublicIpAddress:tcpport, input the password and login.
+After the infrastructure deployed, you will also get the **admin url**, now you can open the Admin UI, input the password and login.
 
 After you success login, you can add client profile, and you phone can scan the QR code to add the profile to local client (You need WireGuard client mobile app installed, please searh from google play).
 
 You can use the similar way to add client for PC (still need you download the client app: https://www.wireguard.com/install/)
 
 
-If your udpport is not the default value(51820), you need edit in the client profile to change to the actual udp port you specified.
+* If your udpport is not the default value(51820), you need edit in the client profile you downloaded to change to the actual udp port you specified.
 
 ## Close Unused firewall rules
 
