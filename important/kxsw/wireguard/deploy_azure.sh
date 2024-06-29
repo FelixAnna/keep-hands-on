@@ -11,11 +11,11 @@ source d:/code/config/wg/$1.sh
 ## udpport=51820
 ## tcpport=80
 
-echo "resource group: $resourceGroup, tcpport:$tcpport, udbport: $udpport, username: $username"
+##echo "resource group: $resourceGroup, tcpport:$tcpport, udbport: $udpport, username: $username"
 
-az group create --name $resourceGroup --location $location
+##az group create --name $resourceGroup --location $location
 
-az deployment group create --name 'ExampleDeployment'$(date +"%d-%b-%Y") --resource-group $resourceGroup --template-uri "https://raw.githubusercontent.com/FelixAnna/keep-hands-on/master/important/kxsw/wireguard/azure_arm.json"  --parameters username=$username password=$password udpport=$udpport tcpport=$tcpport 
+##az deployment group create --name 'ExampleDeployment'$(date +"%d-%b-%Y") --resource-group $resourceGroup --template-uri "https://raw.githubusercontent.com/FelixAnna/keep-hands-on/master/important/kxsw/wireguard/azure_arm.json"  --parameters username=$username password=$password udpport=$udpport tcpport=$tcpport 
 
 echo "open command line, and connect to the vpnserver by ssh"
 

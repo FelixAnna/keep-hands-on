@@ -1,0 +1,103 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+      // Logic App 资源
+      {
+        "type": "Microsoft.Logic/workflows",
+        "apiVersion": "2017-07-01",
+        "name": "logic-app-name",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "definition": {
+            "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+            "contentVersion": "1.0.0.0",
+            "triggers": {
+              "manual": {
+                "type": "Request",
+                "kind": "Http",
+                "inputs": {
+                  "schema": {}
+                }
+              }
+            },
+            "actions": {
+              "Start_a_runbook": {
+                "runAfter": {
+                  "HTTP": [
+                    "Succeeded"
+                  ]
+                },
+                "inputs": {
+                  "body": {
+                    "properties": {
+                      "runbookName": "start-vm-runbook",
+                      "parameters": {
+                        "vmName": "YourVirtualMachineName",
+                        "resourceGroupName": "YourResourceGroupName"
+                      }
+                    }
+                  },
+                  "host": {
+                    "connection": {
+                      "name": "@parameters('$connections')['azureautomation']['connectionId']"
+                    }
+                  },
+                  "method": "post",
+                  "path": "/workflows/@{encodeURIComponent('startvm')}/triggers/request/run",
+                  "authentication": {
+                    "tenant": "<TenantId>",
+                    "audience": "https://management.azure.com/",
+                    "clientId": "<ServicePrincipalClientId>",
+                    "secret": "<ServicePrincipalClientSecret>",
+                    "type": "ActiveDirectoryOAuth"
+                  }
+                },
+                "type": "ApiConnection"
+              }
+            },
+            "outputs": {},
+            "parameters": {},
+            "triggers": {
+              "manual": {
+                "inputs": {
+                  "schema": {}
+                },
+                "kind": "Http",
+                "type": "Request"
+              }
+            }
+          },
+          "state": "Enabled"
+        },
+        "dependsOn": []
+      },
+      // Azure Automation 资源
+      {
+        "type": "Microsoft.Automation/automationAccounts",
+        "apiVersion": "2019-06-01",
+        "name": "automation-account-name",
+        "location": "[resourceGroup().location]",
+        "properties": {},
+        "resources": [
+          {
+            "type": "runbooks",
+            "apiVersion": "2019-06-01",
+            "name": "start-vm-runbook",
+            "dependsOn": [
+              "[resourceId('Microsoft.Automation/automationAccounts', 'automation-account-name')]"
+            ],
+            "properties": {
+              "runbookType": "PowerShell",
+              "logVerbose": true,
+              "publishContentLink": {
+                "uri": "https://yourstorageaccount.blob.core.windows.net/automation-scripts/start-vm.ps1",
+                "version": "1.0.0.0"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  
