@@ -1,18 +1,18 @@
-# Wireguard VPN 部署到微软云
+# Wireguard VPN in azure
 
-如果因为学习的原因（外面的世界也有很多造谣者，切勿轻信），你需要访问外网，这里是怎么搭建 Wireguard VPN 的方法.
+If you need to access the global internet for learning purpose, you can setup your own vpn server, here is the guide for wireguard vpn.
 
-## 创建和配置服务器
-应用 **azure_arm.json** 到任意的azure（微软云） resource group, 以便创建 virtual machine, network, 打开防火墙端口：ssh(22), udp(如：51820), and admin ui(如：80).
+## Provision Infrastructure
+Apply the **azure_arm.json** file in any resource group to create virtual machine, network, open firewall for ssh(22), udp(like 51820), and admin ui(80).
 
-从Azure portal 创建：
-1. 打开portal.azure.com并登陆, 选择或创建新的 resource group （region 可以选择附近的，以确保延迟不大）；
-2. 打开resource group 后，滚动到最后；
-3. 点击 "Automation -> Export template", 等待默认模板加载完毕；
-4. 点击 "Deploy", 然后 "Edit template", 把里面的内容替换为 **azure_arm.json**的内容；
-5. 选择或者输入变量, 然后检查并开始创建, 等待创建结束。
+Provision by Azure Portal
+1. in azure portal, select an empty resource group or create one **in a nearby region**
+2. open the resource group, scroll down to the bottom
+3. click "Automation -> Export template", wait until the default template load complete
+4. click "Deploy", then "Edit template", paste with content from **azure_arm.json**
+5. fill the parameters, then review and create, wait until complete
 
-使用 Azure Command-Line Interface (CLI)创建:
+Provision by Azure Command-Line Interface (CLI):
 ```
 ## login and then switch subscription if you have multiple subscriptions
 az account set --subscription "your-azure-subscription-id"
@@ -33,11 +33,11 @@ sh deploy_azure.sh westus
 
 ```
 
-## 安装 Wireguard
+## Deploy Wireguard
 
 After the infrastructure deployed, you will get some **command** for this step, just follow it to login to the vm, setup docker and then start the container:
 
-## Access the Admin UI
+## Add Client
 
 After the infrastructure deployed, you will also get the **admin url**, now you can open the Admin UI, input the password and login.
 
@@ -70,6 +70,15 @@ If you don't need the vpn service any more, just delete all from the resource gr
 az group delete -n $resourceGroup --force-deletion-types Microsoft.Compute/virtualMachines
 ```
 
+## Restart
+
+To reduce cost, you can stop the vpn server when you do not use it and start it when needed, by adding Automation Task for the VPN Server from azure portal, or by following command (mannully):
+
+```
+az vm start --resource-group $resourceGroup --name vpnserver
+az vm stop --resource-group $resourceGroup --name vpnserver --no-wait
+```
+
 ## Refer
 
 The content here are based on existing popular repositories:
@@ -77,7 +86,3 @@ The content here are based on existing popular repositories:
 wireguard reference: [wg-easy](https://github.com/wg-easy/wg-easy)
 
 arm reference: [setup-ipsec-vpn](https://github.com/hwdsl2/setup-ipsec-vpn)
-
-## Restart
-az vm start --resource-group $resourceGroup --name vpnserver
-az vm stop --resource-group $resourceGroup --name vpnserver --no-wait
