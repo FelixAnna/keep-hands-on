@@ -83,20 +83,20 @@ az vm stop --resource-group $resourceGroup --name vpnserver --no-wait
 ```
 
 ## 拿到conatinerId
-docker ps 
-
-##  Stop the running Container
-docker stop <container-id>
-
+## Stop the running Container
 ## 修改端口
-cd /var/lib/docker/containers/
-cd <container-id>
-
-sed s/1522/1523/g hostconfig.json -i
-
 ## 重启容器
+
+oldPort=1522
+newPort=1523
+
+containerId=$(docker ps -q)
+docker stop $containerId
+cd /var/lib/docker/containers/
+cd $containerId
+sed s/$oldPort/$newPort/g hostconfig.json -i
 systemctl restart docker
-docker start 49531
+docker start $containerId
 
 ## 在Azure Portal 上打开新的（如：1523）防火墙端口
 ## 在客户端软件上修改端口号（如：1523）重试链接

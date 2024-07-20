@@ -79,6 +79,29 @@ az vm start --resource-group $resourceGroup --name vpnserver
 az vm stop --resource-group $resourceGroup --name vpnserver --no-wait
 ```
 
+## Change Port
+The VPN port is easy to be blocked by some reason, to continue work with it, you can change the port by following
+```
+
+## Change the port of the container
+
+sudo bash
+oldPort=1522
+newPort=1523
+
+containerId=$(docker ps -q)
+docker stop $containerId
+cd /var/lib/docker/containers/
+cd $containerId*
+sed s/$oldPort/$newPort/g hostconfig.json -i
+systemctl restart docker
+docker start $containerId
+
+## Open the firewall port from the network security group in Azure Portal
+## Change the port from the client configuration in your PC or mobile
+
+```
+
 ## Refer
 
 The content here are based on existing popular repositories:
