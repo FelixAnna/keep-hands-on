@@ -87,13 +87,14 @@ az vm stop --resource-group $resourceGroup --name vpnserver --no-wait
 ## 修改端口
 ## 重启容器
 
+sudo bash
 oldPort=1522
 newPort=1523
 
 containerId=$(docker ps -q)
 docker stop $containerId
 cd /var/lib/docker/containers/
-cd $containerId
+cd $containerId*
 sed s/$oldPort/$newPort/g hostconfig.json -i
 systemctl restart docker
 docker start $containerId
