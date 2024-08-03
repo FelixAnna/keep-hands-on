@@ -86,16 +86,18 @@ The VPN port is easy to be blocked by some reason, to continue work with it, you
 ## Change the port of the container
 
 sudo bash
-oldPort=1522
-newPort=1523
-
+oldPort=$1
+newPort=$2
 containerId=$(docker ps -q)
 docker stop $containerId
+sleep 5
 cd /var/lib/docker/containers/
 cd $containerId*
 sed s/$oldPort/$newPort/g hostconfig.json -i
 systemctl restart docker
+cat hostconfig.json
 docker start $containerId
+docker ps
 
 ## Open the firewall port from the network security group in Azure Portal
 ## Change the port from the client configuration in your PC or mobile
