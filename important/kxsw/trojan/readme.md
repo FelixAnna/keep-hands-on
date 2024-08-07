@@ -34,3 +34,11 @@ trojan配置文件：
 自签证书：
     生成私钥：openssl ecparam -genkey -name prime256v1 -out ca.key
     生成证书：openssl req -new -x509 -days 36500 -key ca.key -out ca.crt  -subj "/CN=bing.com"
+
+one-click:
+
+https://github.com/jinwyp/one_click_script/blob/master/README2.md#installation
+
+```
+wget --no-check-certificate https://raw.githubusercontent.com/jinwyp/one_click_script/master/trojan_v2ray_install.sh && chmod +x ./trojan_v2ray_install.sh && ./trojan_v2ray_install.sh
+```
