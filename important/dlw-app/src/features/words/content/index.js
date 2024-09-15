@@ -51,6 +51,14 @@ export default function WordsContent() {
                 <StyledTableCell align="center">江苏版3年级下册语文和英语</StyledTableCell>
                 <StyledTableCell align="center"><Link href="books/renjiaoban/2018/grade3/second/englishAndChinese.csv">字库</Link></StyledTableCell>
               </StyledTableRow>
+              <StyledTableRow key="3">
+                <StyledTableCell align="center">统编版四年级语文上册 （出自中小学智慧教育平台PDF文件）</StyledTableCell>
+                <StyledTableCell align="center"><a href="books/pdfoutput/grade4/first/chinese_union.txt" download="chinese_union.txt" target="_blank" rel="noreferrer">字库</a></StyledTableCell>
+              </StyledTableRow>
+              <StyledTableRow key="4">
+                <StyledTableCell align="center">苏教版四年级英语上册 （出自中小学智慧教育平台PDF文件）</StyledTableCell>
+                <StyledTableCell align="center"><a href="books/pdfoutput/grade4/first/english_jiangsu.txt" download="english_jiangsu.txt" target="_blank" rel="noreferrer">字库</a></StyledTableCell>
+              </StyledTableRow>
             </TableBody>
           </Table>
         </TableContainer>
