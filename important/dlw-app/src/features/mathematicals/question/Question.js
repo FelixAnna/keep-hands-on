@@ -15,7 +15,8 @@ function Question(props) {
   const { data } = props;
   const dispatch = useDispatch();
   const handleChange = (e) => {
-    dispatch(updateAnswer({ index: data.index, answer: Number(e.target.value) }));
+    const raw = e.target.value;
+    dispatch(updateAnswer({ index: data.index, answer: raw === '' ? null : Number(raw) }))
   };
 
   let display = 'flex';
